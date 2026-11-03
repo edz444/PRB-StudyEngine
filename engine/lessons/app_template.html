@@ -206,6 +206,12 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 .lb2{position:fixed; inset:0; z-index:80; background:rgba(0,0,0,.85); display:grid; place-items:center; padding:16px}
 .lb2[hidden]{display:none!important}
 .lb2 img{max-width:100%; max-height:90vh; border-radius:8px; background:#fff}
+
+.unit-hd{cursor:pointer; user-select:none}
+.unit-hd .chev{width:26px; height:26px; flex:none; margin-left:4px; transition:transform .2s}
+.unit.closed .unit-hd .chev{transform:rotate(-90deg)}
+.unit-hd:focus-visible{outline:3px solid #fff; outline-offset:-5px}
+@media (prefers-reduced-motion: reduce){ .unit-hd .chev{transition:none} }
 </style>
 
 <div class="wrapx" id="home"></div>
@@ -260,6 +266,7 @@ function todayIdx(){ const t=new Date(); t.setHours(0,0,0,0); for(let i=0;i<PLAN
 function dayProg(P){ let tot=0, d=0; P.lecs.forEach(id=>{ if(id==='review'){ return; } const L=LECS.find(x=>x.id===id); tot += L.lessons.length+1; d += L.lessons.filter((x,i)=>S.done[lkey(id,i)]).length + (S.boss[id]?1:0); }); return tot ? d/tot : 0; }
 
 /* ---------- home ---------- */
+function isClosed(L, p){ const o = S.open && S.open[L.id]; if(o === true) return false; if(o === false) return true; return p >= 1; }
 function renderHome(){
   const days = Math.max(0, Math.ceil((EXAM - new Date())/86400000));
   const totalL = LECS.reduce((a,L)=>a+L.lessons.length+1,0), doneL = Object.keys(S.done).length + Object.keys(S.boss).length;
@@ -274,7 +281,8 @@ function renderHome(){
     `<div class="row2"><button class="bigbtn ghost" id="rev">Review pile<small>${S.review.length} card${S.review.length===1?'':'s'} to fix</small></button><a class="bigbtn ghost" href="${esc(CFG.guideUrl)}" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Full guide<small>3D models and Pathway Lab</small></a></div></section>`;
   LECS.forEach(L=>{
     const p = lecProg(L), color = uc(L.id); let nxt = nl && nl[0]===L.id ? nl[1] : null;
-    h += `<section class="unit" style="--uc:${color}"><div class="unit-hd">${ring(p)}<div class="meta"><h3>${L.code} ${esc(L.name)}</h3><p>${esc(L.tag)} · ${L.lessons.length} lessons + boss</p><button class="bdlink" data-bd="${L.id}">Board cheat sheet</button></div><div class="badge-mini">${medal('#ffffff33', !S.boss[L.id], L.badge)}${S.boss[L.id]?esc(L.badge):'Locked'}</div></div><ol class="path">`;
+    const closed = isClosed(L, p);
+    h += `<section class="unit ${closed?'closed':''}" style="--uc:${color}"><div class="unit-hd" role="button" tabindex="0" aria-expanded="${closed?'false':'true'}" data-tog="${L.id}" aria-label="${closed?'Show':'Hide'} ${L.code} lessons">${ring(p)}<div class="meta"><h3>${L.code} ${esc(L.name)}</h3><p>${esc(L.tag)} · ${L.lessons.length} lessons + boss</p><button class="bdlink" data-bd="${L.id}">Board cheat sheet</button></div><div class="badge-mini">${medal('#ffffff33', !S.boss[L.id], L.badge)}${S.boss[L.id]?esc(L.badge):'Locked'}</div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div><ol class="path" ${closed?'hidden':''}>`;
     let lastGroup = null;
     L.lessons.forEach((Ls,i)=>{
       if(Ls.group && Ls.group!==lastGroup){ h += `<li class="grouplab">${esc(Ls.group.replace(/^Part \d+: /,''))}</li>`; lastGroup = Ls.group; }
@@ -287,7 +295,15 @@ function renderHome(){
   h += `<p class="note-sm">Your progress saves in this browser on this device.</p>`;
   $('#home').innerHTML = h;
   $('#home').querySelectorAll('.node').forEach(b=>b.addEventListener('click',()=>open(b.dataset.l, b.dataset.i==='boss'?'boss':+b.dataset.i)));
-  $('#home').querySelectorAll('.bdlink').forEach(b=>b.addEventListener('click',()=>openSheet(b.dataset.bd)));
+  $('#home').querySelectorAll('.bdlink').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openSheet(b.dataset.bd); }));
+  $('#home').querySelectorAll('.unit-hd[data-tog]').forEach(hd=>{
+    const tog = ()=>{ const id = hd.dataset.tog, sec = hd.closest('.unit'), now = !sec.classList.contains('closed');
+      S.open = S.open || {}; S.open[id] = !now; save();
+      sec.classList.toggle('closed', now); sec.querySelector('.path').hidden = now;
+      hd.setAttribute('aria-expanded', now ? 'false' : 'true'); hd.setAttribute('aria-label', (now?'Show ':'Hide ') + id.toUpperCase() + ' lessons'); };
+    hd.addEventListener('click', tog);
+    hd.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tog(); } });
+  });
   const c = $('#cont'); if(c) c.addEventListener('click',()=>open(nl[0], nl[1]));
   $('#rev').addEventListener('click', openReview);
 }
