@@ -214,17 +214,41 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 .unit.closed .unit-hd .chev{transform:rotate(-90deg)}
 .unit-hd:focus-visible{outline:3px solid #fff; outline-offset:-5px}
 @media (prefers-reduced-motion: reduce){ .unit-hd .chev{transition:none} }
+
+.savebtn[aria-pressed="true"]{background:var(--star); border-color:var(--star); color:#1b1300}
+.savebtn[aria-pressed="true"] svg{fill:currentColor}
+@media (max-width:420px){ .bdtoggle .sv-t{display:none} .bdtoggle{padding:0 10px} }
+.node .mark{flex:none; color:var(--star); display:grid; place-items:center; margin-left:auto}
+.node .mark svg{width:18px; height:18px}
+.node .mark + .stars{margin-left:6px}
+.savedbox{background:var(--card); border:2px solid var(--star); border-radius:22px; padding:16px; margin:0 0 22px}
+.savedbox h2{font-family:var(--f-play); font-size:22px; margin:0; border:0; padding:0; display:flex; align-items:center; gap:8px}
+.savedbox h2 span{font-size:14px; background:var(--star); color:#1b1300; border-radius:999px; padding:1px 10px}
+.sv-sub{color:var(--soft); font-size:14px; margin:2px 0 10px}
+.sv-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px}
+.sv-list li{border-top:2px dashed var(--rule); padding-top:12px}
+.sv-list li:first-child{border-top:0; padding-top:0}
+.sv-top{display:flex; gap:8px; align-items:baseline; min-width:0}
+.sv-code{font-family:var(--f-play); font-weight:800; color:var(--uc); flex:none}
+.sv-title{min-width:0; line-height:1.3}
+.sv-lab{display:block; font-size:13px; color:var(--soft); margin:8px 0 4px}
+.sv-note{width:100%; box-sizing:border-box; font:inherit; font-size:15px; color:var(--ink2); background:var(--pg); border:2px solid var(--rule); border-radius:12px; padding:8px 10px; resize:vertical}
+.sv-btns{display:flex; gap:8px; margin-top:8px}
+.sv-btns .bigbtn{font-size:16px; padding:9px 12px; box-shadow:0 3px 0 color-mix(in srgb, var(--go) 60%, #000)}
+.sv-btns .bigbtn.ghost{flex:0 0 auto; width:auto; box-shadow:0 3px 0 var(--rule)}
+.toast{position:fixed; left:50%; transform:translateX(-50%); bottom:calc(92px + env(safe-area-inset-bottom,0px)); z-index:65; background:var(--ink2); color:var(--pg); font-family:var(--f-play); font-weight:700; font-size:15px; padding:10px 16px; border-radius:14px; max-width:calc(100vw - 32px); box-shadow:0 6px 20px rgba(0,0,0,.25)}
 </style>
 
 <div class="wrapx" id="home"></div>
 
 <div class="player" id="player" hidden>
   <div class="ptop"><button class="xbtn" id="pclose" aria-label="Close lesson"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 4l12 12M16 4L4 16"/></svg></button>
-    <div class="pbar"><i id="pfill"></i></div><span class="pcount" id="pcount"></span><button class="bdtoggle" id="pboard" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21l4-4 4 4M7 9h6M7 12h9" stroke-linecap="round"/></svg>Board</button></div>
+    <div class="pbar"><i id="pfill"></i></div><span class="pcount" id="pcount"></span><button class="bdtoggle savebtn" id="psave" type="button" aria-pressed="false" aria-label="Save this lesson to revisit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span class="sv-t">Save</span></button><button class="bdtoggle" id="pboard" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21l4-4 4 4M7 9h6M7 12h9" stroke-linecap="round"/></svg>Board</button></div>
   <div class="plabel" id="plabel"></div>
   <div class="pbody" id="pbody"><div class="pin" id="pin"></div></div>
   <div class="pfoot"><div class="fin"><button class="bigbtn ghost back" id="pback" type="button">Back</button><button class="bigbtn" id="pnext" type="button">Next</button></div></div>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
 <div class="lb2" id="lb2" hidden><img alt=""></div>
 
@@ -236,8 +260,9 @@ const CFG = window.CFG; // exam date, day plan and names come from courses/<name
 const EXAM = new Date(CFG.exam);
 const PLAN = CFG.plan.map(p=>{ const [y,m,d] = p.date.split('-').map(Number); return Object.assign({}, p, {d:new Date(y, m-1, d)}); });
 const KEY = CFG.slug + '-lessonpath-v1';
-let S = {done:{}, xp:0, ticks:{}, review:[], boss:{}, days:[]};
+let S = {done:{}, xp:0, ticks:{}, review:[], boss:{}, days:[], saved:{}};
 try{ const raw = localStorage.getItem(KEY); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
+function skey(lid, i){ return lid + '-' + (i==='boss' ? 'boss' : i); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -249,6 +274,7 @@ const ICON = {
   bolt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>',
   clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>',
+  mark:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>',
   crown:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg>'
 };
 function medal(color, locked, label){
@@ -268,6 +294,36 @@ function nextLesson(){
 function todayIdx(){ const t=new Date(); t.setHours(0,0,0,0); for(let i=0;i<PLAN.length;i++){ const d=new Date(PLAN[i].d); if(d.getTime()===t.getTime()) return i; } return t < PLAN[0].d ? 0 : -1; }
 function dayProg(P){ let tot=0, d=0; P.lecs.forEach(id=>{ if(id==='review'){ return; } const L=LECS.find(x=>x.id===id); tot += L.lessons.length+1; d += L.lessons.filter((x,i)=>S.done[lkey(id,i)]).length + (S.boss[id]?1:0); }); return tot ? d/tot : 0; }
 
+/* ---------- saved lessons ---------- */
+function savedList(){
+  return Object.entries(S.saved||{}).map(([k,v])=>{ const m=k.match(/^(l\d+)-(boss|\d+)$/); if(!m) return null; const L=LECS.find(x=>x.id===m[1]); if(!L) return null;
+    const i = m[2]==='boss' ? 'boss' : +m[2]; if(i!=='boss' && !L.lessons[i]) return null; return {k, v, L, i}; }).filter(Boolean).sort((a,b)=>b.v.at-a.v.at);
+}
+function savedHTML(){
+  const list = savedList(); if(!list.length) return '';
+  return `<section class="savedbox"><h2>Saved to revisit <span>${list.length}</span></h2><p class="sv-sub">Lessons you flagged. Open one to jump back to the screen you saved it on.</p><ul class="sv-list">` +
+    list.map(({k,v,L,i})=>{ const title = i==='boss' ? 'Boss level: ' + L.badge : `Lesson ${i+1} · ${L.lessons[i].title}`;
+      return `<li style="--uc:${uc(L.id)}"><div class="sv-top"><span class="sv-code">${L.code}</span><b class="sv-title">${esc(title)}</b></div>
+      <label class="sv-lab" for="svn-${k}">What's confusing? (optional)</label><textarea class="sv-note" id="svn-${k}" data-k="${k}" rows="2" placeholder="e.g. why does Gβγ open the K+ channel and not Gα?">${esc(v.note||'')}</textarea>
+      <div class="sv-btns"><button type="button" class="bigbtn sv-open" data-k="${k}">Open at screen ${(v.k||0)+1}</button><button type="button" class="bigbtn ghost sv-del" data-k="${k}">Remove</button></div></li>`; }).join('') + `</ul></section>`;
+}
+function openSaved(k){
+  const m = k.match(/^(l\d+)-(boss|\d+)$/); if(!m) return; const s = S.saved[k];
+  open(m[1], m[2]==='boss' ? 'boss' : +m[2]);
+  if(s && s.k){ P.k = Math.min(s.k, P.steps.filter(x=>x.t!=='reward').length-1); show(); }
+}
+function toast(msg){ const el=$('#toast'); el.textContent=msg; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>{ el.hidden=true; }, 2600); }
+$('#psave').addEventListener('click', ()=>{
+  if(!P || P.i==='review' || P.i==='sheet') return;
+  const k = skey(P.L.id, P.i); S.saved = S.saved || {};
+  if(S.saved[k]){ delete S.saved[k]; toast('Removed from Saved to revisit'); }
+  else { S.saved[k] = {k: P.board ? 0 : P.k, at: Date.now(), note: ''}; toast('Saved. It is on the home screen under Saved to revisit.'); }
+  save(); syncSave();
+});
+function syncSave(){ const b=$('#psave'); if(!P){ return; } const hide = (P.i==='review'||P.i==='sheet'); b.hidden = hide; if(hide) return;
+  const on = !!(S.saved && S.saved[skey(P.L.id, P.i)]); b.setAttribute('aria-pressed', on?'true':'false'); b.querySelector('.sv-t').textContent = on ? 'Saved' : 'Save';
+  b.setAttribute('aria-label', on ? 'Remove this lesson from Saved to revisit' : 'Save this lesson to revisit'); }
+
 /* ---------- home ---------- */
 function isClosed(L, p){ const o = S.open && S.open[L.id]; if(o === true) return false; if(o === false) return true; return p >= 1; }
 function renderHome(){
@@ -282,6 +338,7 @@ function renderHome(){
     PLAN.map((p,i)=>`<div class="day ${i===ti?'now':''}"><span class="dn">${p.name}</span>${p.lecs.map(x=>x==='review'?'Review':LECS.find(L=>L.id===x).code).join(' + ')}<div class="bar"><i style="width:${Math.round(dayProg(p)*100)}%"></i></div></div>`).join('') +
     `</div>` + (nl ? `<button class="bigbtn" id="cont">Continue<small>${esc(nl[1]==='boss' ? LECS.find(L=>L.id===nl[0]).code + ' boss level' : LECS.find(L=>L.id===nl[0]).code + ': ' + LECS.find(L=>L.id===nl[0]).lessons[nl[1]].title)}</small></button>` : `<button class="bigbtn" disabled>Every lesson done. You're ready.</button>`) +
     `<div class="row2"><button class="bigbtn ghost" id="rev">Review pile<small>${S.review.length} card${S.review.length===1?'':'s'} to fix</small></button><a class="bigbtn ghost" href="${esc(CFG.guideUrl)}" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Full guide<small>3D models and Pathway Lab</small></a></div></section>`;
+  h += savedHTML();
   LECS.forEach(L=>{
     const p = lecProg(L), color = uc(L.id); let nxt = nl && nl[0]===L.id ? nl[1] : null;
     const closed = isClosed(L, p);
@@ -290,7 +347,7 @@ function renderHome(){
     L.lessons.forEach((Ls,i)=>{
       if(Ls.group && Ls.group!==lastGroup){ h += `<li class="grouplab">${esc(Ls.group.replace(/^Part \d+: /,''))}</li>`; lastGroup = Ls.group; }
       const st = S.done[lkey(L.id,i)];
-      h += `<li><button class="node ${st?'done':''} ${nxt===i?'next':''}" data-l="${L.id}" data-i="${i}"><span class="dot">${st?ICON.check.replace('<svg','<svg width="22" height="22"'):i+1}</span><span class="nt"><b>${esc(Ls.title)}</b><span>${Ls.cards.length} screens · ${Ls.checks.length} quick check${Ls.checks.length===1?'':'s'}</span></span>${st?`<span class="stars">${'★'.repeat(st.stars)}${'☆'.repeat(3-st.stars)}</span>`:''}</button></li>`;
+      h += `<li><button class="node ${st?'done':''} ${nxt===i?'next':''}" data-l="${L.id}" data-i="${i}"><span class="dot">${st?ICON.check.replace('<svg','<svg width="22" height="22"'):i+1}</span><span class="nt"><b>${esc(Ls.title)}</b><span>${Ls.cards.length} screens · ${Ls.checks.length} quick check${Ls.checks.length===1?'':'s'}</span></span>${S.saved[skey(L.id,i)]?`<span class="mark" title="Saved to revisit">${ICON.mark}</span>`:''}${st?`<span class="stars">${'★'.repeat(st.stars)}${'☆'.repeat(3-st.stars)}</span>`:''}</button></li>`;
     });
     const bd = S.boss[L.id];
     h += `<li><button class="node boss ${bd?'done':''} ${nxt==='boss'?'next':''}" data-l="${L.id}" data-i="boss"><span class="dot">${ICON.crown.replace('<svg','<svg width="24" height="24"')}</span><span class="nt"><b>Boss level: ${esc(L.badge)}</b><span>Her question styles, practice questions, then your badge</span></span></button></li></ol></section>`;
@@ -298,6 +355,9 @@ function renderHome(){
   h += `<p class="note-sm">Your progress saves in this browser on this device.</p>`;
   $('#home').innerHTML = h;
   $('#home').querySelectorAll('.node').forEach(b=>b.addEventListener('click',()=>open(b.dataset.l, b.dataset.i==='boss'?'boss':+b.dataset.i)));
+  $('#home').querySelectorAll('.sv-open').forEach(b=>b.addEventListener('click',()=>openSaved(b.dataset.k)));
+  $('#home').querySelectorAll('.sv-del').forEach(b=>b.addEventListener('click',()=>{ delete S.saved[b.dataset.k]; save(); renderHome(); }));
+  $('#home').querySelectorAll('.sv-note').forEach(n=>n.addEventListener('input',()=>{ const s=S.saved[n.dataset.k]; if(s){ s.note=n.value; save(); } }));
   $('#home').querySelectorAll('.bdlink').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openSheet(b.dataset.bd); }));
   $('#home').querySelectorAll('.unit-hd[data-tog]').forEach(hd=>{
     const tog = ()=>{ const id = hd.dataset.tog, sec = hd.closest('.unit'), now = !sec.classList.contains('closed');
@@ -466,6 +526,7 @@ function show(){
   } else if(st.t==='reward'){
     h = st.html; nb.textContent = st.btn || 'Back to path';
   }
+  syncSave();
   const bt = $('#pboard'); bt.hidden = (P.i==='review'); bt.setAttribute('aria-pressed', P.board ? 'true':'false');
   if(P.board){
     if(P.i==='sheet' || P.i==='boss'){ P.bpages = [lectureSheet(L)]; } else { P.bpages = lessonPages(L, Ls); }
