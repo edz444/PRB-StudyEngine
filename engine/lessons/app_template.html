@@ -92,6 +92,8 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 .pbar{cursor:pointer; flex:1; height:14px; border-radius:7px; background:var(--rule); overflow:hidden}
 .pbar i{display:block; height:100%; width:0; background:var(--uc); border-radius:7px; transition:width .25s}
 .pcount{font-family:var(--f-play); font-weight:700; font-size:14px; color:var(--soft); flex:none; font-variant-numeric:tabular-nums}
+.plabel{max-width:760px; width:100%; margin:-4px auto 2px; box-sizing:border-box; padding-left:max(14px, env(safe-area-inset-left,0px)); padding-right:max(14px, env(safe-area-inset-right,0px)); font-family:var(--f-play); font-weight:700; font-size:14px; line-height:1.3; color:var(--uc); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.plabel span{color:var(--soft); font-weight:600}
 .pbody{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch}
 .pin{max-width:720px; margin:0 auto; padding-block:6px 30px; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
 .pfoot{padding-block:10px calc(12px + env(safe-area-inset-bottom,0px)); padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); border-top:2px solid var(--rule); background:var(--pg)}
@@ -219,6 +221,7 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 <div class="player" id="player" hidden>
   <div class="ptop"><button class="xbtn" id="pclose" aria-label="Close lesson"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 4l12 12M16 4L4 16"/></svg></button>
     <div class="pbar"><i id="pfill"></i></div><span class="pcount" id="pcount"></span><button class="bdtoggle" id="pboard" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21l4-4 4 4M7 9h6M7 12h9" stroke-linecap="round"/></svg>Board</button></div>
+  <div class="plabel" id="plabel"></div>
   <div class="pbody" id="pbody"><div class="pin" id="pin"></div></div>
   <div class="pfoot"><div class="fin"><button class="bigbtn ghost back" id="pback" type="button">Back</button><button class="bigbtn" id="pnext" type="button">Next</button></div></div>
 </div>
@@ -422,6 +425,8 @@ function clozeHTML(c){
 }
 function show(){
   const st = P.steps[P.k], L = P.L, Ls = P.i==='boss'?null:L.lessons[P.i];
+  const lab = P.i==='review' ? 'Review pile' : P.i==='sheet' ? `${L.code} <span>· Board cheat sheet</span>` : P.i==='boss' ? `${L.code} <span>· Boss level: ${esc(L.badge)}</span>` : `${L.code} <span>· Lesson ${P.i+1} · ${esc(Ls.title)}</span>`;
+  $('#plabel').innerHTML = lab; $('#plabel').title = $('#plabel').textContent;
   const total = P.steps.length; $('#pfill').style.width = (P.k/(total-1)*100)+'%'; $('#pcount').textContent = `${P.k+1}/${total}`;
   const pvx = (P.i==='review'||P.i==='sheet') ? null : prevOf(L.id, P.i);
   $('#pback').hidden = P.k===0 && !pvx;
