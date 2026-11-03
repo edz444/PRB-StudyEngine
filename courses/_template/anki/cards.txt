@@ -1,0 +1,4 @@
+# Template: CLOZE ||| EXPLANATION ~~~ HOOK ^^^ TRAP   (one note per line; the section header names the lecture)
+# ---------- L1 Cells ----------
+The membrane is made of two layers of {{c1::phospholipids}}, with the {{c2::tails}} facing inward. ||| A greasy wall. ~~~ A sandwich with the fat in the middle. ^^^ Heads face the water, not the tails.
+Ions need a {{c1::protein channel}} to cross the membrane. ||| Charged things can't get through grease. ~~~ Castle gates.

@@ -1,0 +1,643 @@
+<title>/*APP_TITLE*/</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500&family=Patrick+Hand&display=swap">
+<style>/*GUIDECSS*/</style>
+<style>
+/* Layout: a game-style path of lesson bubbles per lecture; lessons play full-screen one idea at a time with a big thumb-reach Next button. */
+:root{
+  --pg:#f3f6fb; --card:#ffffff; --ink2:#1b2433; --soft:#5a6576; --rule:#dde3ee;
+  --go:#16a34a; --go-ink:#ffffff; --star:#f5a524; --miss:#e11d48;
+  --u5:#0e8fb0; --u6:#e08a00; --u7:#7c4ddb; --u8:#14a06a; --u9:#e4572e; --u10:#2f6fe4; --u11:#d6338a;
+  --f-play:"Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --f-read:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --pg:#0f1520; --card:#18212f; --ink2:#e8edf5; --soft:#a3adbd; --rule:#2a3546;
+  --go:#22c55e; --go-ink:#06260f; --star:#fbbf24; --miss:#fb7185;
+  --u5:#38bdf8; --u6:#fbbf24; --u7:#a78bfa; --u8:#34d399; --u9:#fb8a63; --u10:#7aa7ff; --u11:#f472b6; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --pg:#0f1520; --card:#18212f; --ink2:#e8edf5; --soft:#a3adbd; --rule:#2a3546;
+  --go:#22c55e; --go-ink:#06260f; --star:#fbbf24; --miss:#fb7185;
+  --u5:#38bdf8; --u6:#fbbf24; --u7:#a78bfa; --u8:#34d399; --u9:#fb8a63; --u10:#7aa7ff; --u11:#f472b6; color-scheme:dark }
+html,body{background:var(--pg); color:var(--ink2)}
+body{font-family:var(--f-read); font-size:17px; line-height:1.55; margin:0}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:50; background:var(--pg)}
+button{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--u5); outline-offset:2px}
+.wrapx{max-width:720px; margin:0 auto; padding-block:16px 120px; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
+h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px); line-height:1.05; margin:6px 0 4px; letter-spacing:-.01em}
+.sub2{color:var(--soft); margin:0 0 14px}
+
+/* top stats */
+.stats{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 16px}
+.pill{display:flex; align-items:center; gap:6px; background:var(--card); border:2px solid var(--rule); border-radius:999px; padding:6px 12px; font-family:var(--f-play); font-weight:700; font-size:16px}
+.pill b{font-variant-numeric:tabular-nums}
+.pill svg{width:18px; height:18px; flex:none}
+.pill.xp{color:var(--star)} .pill.cd{color:var(--miss)} .pill.done{color:var(--go)}
+
+/* today card */
+.today{background:var(--card); border:2px solid var(--rule); border-radius:22px; padding:16px; margin-bottom:22px; box-shadow:0 4px 0 var(--rule)}
+.today h2{font-family:var(--f-play); font-size:22px; margin:0 0 2px}
+.today .daydesc{color:var(--soft); margin:0 0 10px; font-size:15px}
+.days{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; margin:10px 0 14px}
+.day{border-radius:14px; padding:8px 6px; text-align:center; border:2px solid var(--rule); font-size:13px; line-height:1.25}
+.day .dn{font-family:var(--f-play); font-weight:800; font-size:15px; display:block}
+.day.now{border-color:var(--go); background:color-mix(in srgb, var(--go) 12%, transparent)}
+.day .bar{height:6px; border-radius:3px; background:var(--rule); margin-top:6px; overflow:hidden}
+.day .bar i{display:block; height:100%; background:var(--go); width:0}
+.bigbtn{display:block; width:100%; box-sizing:border-box; border:0; border-radius:16px; padding:14px 18px; font-family:var(--f-play); font-weight:800; font-size:20px; cursor:pointer; background:var(--go); color:var(--go-ink); box-shadow:0 5px 0 color-mix(in srgb, var(--go) 60%, #000); transition:transform .08s}
+.bigbtn:active{transform:translateY(3px); box-shadow:0 2px 0 color-mix(in srgb, var(--go) 60%, #000)}
+.bigbtn.ghost{background:var(--card); color:var(--ink2); border:2px solid var(--rule); box-shadow:0 4px 0 var(--rule)}
+.bigbtn[hidden]{display:none!important}
+.today h2,.unit-hd h3{border:0; padding:0}
+.tcard{background:var(--card); border:2px solid var(--rule); border-radius:18px; padding:16px 16px 6px; font-size:19px; line-height:1.6}
+.tcard ul,.tcard ol{padding-left:22px; margin:0 0 10px}
+.tcard li{margin:4px 0}
+.bigbtn small{display:block; font-family:var(--f-read); font-weight:400; font-size:14px; opacity:.85}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px}
+
+/* units */
+.unit{margin:26px 0 8px; border-radius:22px; overflow:hidden; border:2px solid var(--rule); background:var(--card)}
+.unit-hd{background:var(--uc); color:#fff; padding:14px 16px; display:flex; gap:12px; align-items:center}
+.unit-hd .ring{width:52px; height:52px; flex:none}
+.unit-hd h3{font-family:var(--f-play); font-weight:800; font-size:22px; margin:0; line-height:1.1}
+.unit-hd p{margin:2px 0 0; font-size:14px; opacity:.92}
+.unit-hd .meta{min-width:0}
+.badge-mini{margin-left:auto; flex:none; text-align:center; font-family:var(--f-play); font-size:12px; line-height:1.1; opacity:.95}
+.badge-mini svg{width:40px; height:40px; display:block; margin:0 auto 2px}
+.path{list-style:none; margin:0; padding:14px 10px 18px; display:flex; flex-direction:column; gap:4px}
+.node{display:flex; align-items:center; gap:12px; padding:6px 8px; border-radius:16px; cursor:pointer; border:0; background:none; text-align:left; width:100%}
+.node:hover{background:color-mix(in srgb, var(--uc) 8%, transparent)}
+.node .dot{width:46px; height:46px; border-radius:50%; flex:none; display:grid; place-items:center; font-family:var(--f-play); font-weight:800; font-size:18px; border:3px solid var(--uc); color:var(--uc); background:var(--card); box-shadow:0 4px 0 color-mix(in srgb, var(--uc) 45%, transparent)}
+.node.done .dot{background:var(--uc); color:#fff}
+.node.next .dot{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)} 50%{transform:scale(1.09)}}
+@media (prefers-reduced-motion: reduce){ .node.next .dot{animation:none} }
+.node .nt{min-width:0}
+.node .nt b{display:block; font-weight:700; line-height:1.25}
+.node .nt span{font-size:13px; color:var(--soft)}
+.node .stars{margin-left:auto; flex:none; color:var(--star); font-size:15px; letter-spacing:1px}
+.node:nth-child(4n+2){padding-left:30px} .node:nth-child(4n+3){padding-left:52px} .node:nth-child(4n+4){padding-left:30px}
+@media (max-width:420px){ .node:nth-child(4n+2){padding-left:18px} .node:nth-child(4n+3){padding-left:32px} .node:nth-child(4n+4){padding-left:18px} }
+.node.boss .dot{border-radius:14px; width:52px; height:52px}
+.grouplab{font-family:var(--f-play); font-weight:700; font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); padding:10px 8px 0}
+
+/* player */
+.player{position:fixed; inset:0; z-index:40; background:var(--pg); display:flex; flex-direction:column; padding-top:env(safe-area-inset-top,0px)}
+.player[hidden]{display:none!important}
+.ptop{display:flex; align-items:center; gap:10px; padding-block:10px; padding-left:max(12px, env(safe-area-inset-left,0px)); padding-right:max(12px, env(safe-area-inset-right,0px)); max-width:760px; width:100%; margin:0 auto; box-sizing:border-box}
+.xbtn{width:40px; height:40px; border-radius:12px; border:2px solid var(--rule); background:var(--card); cursor:pointer; flex:none; display:grid; place-items:center}
+.xbtn svg{width:18px; height:18px}
+.pbar{cursor:pointer; flex:1; height:14px; border-radius:7px; background:var(--rule); overflow:hidden}
+.pbar i{display:block; height:100%; width:0; background:var(--uc); border-radius:7px; transition:width .25s}
+.pcount{font-family:var(--f-play); font-weight:700; font-size:14px; color:var(--soft); flex:none; font-variant-numeric:tabular-nums}
+.pbody{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch}
+.pin{max-width:720px; margin:0 auto; padding-block:6px 30px; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
+.pfoot{padding-block:10px calc(12px + env(safe-area-inset-bottom,0px)); padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); border-top:2px solid var(--rule); background:var(--pg)}
+.pfoot .fin{max-width:720px; margin:0 auto; display:flex; gap:10px}
+.pfoot .bigbtn{flex:1}
+.pfoot .back{flex:0 0 auto; width:auto; padding-inline:18px}
+.ltitle{font-family:var(--f-play); font-weight:800; font-size:24px; line-height:1.15; margin:6px 0 2px; text-wrap:balance}
+.kick{font-family:var(--f-play); font-weight:700; color:var(--uc); font-size:15px; margin:4px 0 6px}
+.tag{display:inline-block; font-family:var(--f-play); font-weight:700; font-size:13px; letter-spacing:.05em; text-transform:uppercase; padding:3px 10px; border-radius:999px; background:color-mix(in srgb, var(--uc) 16%, transparent); color:var(--uc); margin-bottom:8px}
+.stage{animation:slidein .22s ease-out}
+@keyframes slidein{from{opacity:.4; transform:translateX(14px)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion: reduce){ .stage{animation:none} }
+.bigidea{font-family:var(--f-play); font-weight:700; font-size:clamp(22px,4.8vw,28px); line-height:1.3; margin:8px 0}
+.stage p{margin:0 0 12px}
+.stage .co{margin:4px 0}
+.stage figure, .stage .slide, .stage .fig{margin:4px 0}
+.stage .tbl{overflow-x:auto}
+
+/* mission checklist */
+.mission{background:var(--card); border:2px solid var(--rule); border-radius:18px; padding:14px 14px 8px; margin:12px 0}
+.mission h4{font-family:var(--f-play); font-size:18px; margin:0 0 8px}
+.chk{display:flex; gap:10px; align-items:flex-start; padding:8px 4px; border-top:1px dashed var(--rule); cursor:pointer}
+.chk:first-of-type{border-top:0}
+.chk input{appearance:none; -webkit-appearance:none; width:26px; height:26px; border-radius:8px; border:2.5px solid var(--uc); flex:none; margin:1px 0 0; display:grid; place-items:center; cursor:pointer; background:var(--card)}
+.chk input:checked{background:var(--go); border-color:var(--go)}
+.chk input:checked::after{content:""; width:7px; height:13px; border:solid var(--go-ink); border-width:0 3px 3px 0; transform:rotate(45deg) translate(-1px,-1px)}
+.chk input:disabled{opacity:.7; cursor:default}
+.skimnote{font-size:14px; color:var(--soft); margin:6px 0 4px}
+.skimnote b{color:var(--ink2)}
+
+/* cloze check */
+.qcard{background:var(--card); border:2px solid var(--rule); border-radius:18px; padding:16px; font-size:19px; line-height:1.5}
+.blank{display:inline-block; min-width:64px; padding:0 10px; margin:2px; border-radius:10px; border:2px dashed var(--uc); color:var(--uc); font-weight:700; cursor:pointer; background:color-mix(in srgb, var(--uc) 8%, transparent); text-align:center}
+.blank.shown{border-style:solid; background:color-mix(in srgb, var(--go) 18%, transparent); border-color:var(--go); color:var(--ink2)}
+.qexp{margin-top:12px; font-size:16px; color:var(--ink2); background:color-mix(in srgb, var(--uc) 9%, transparent); border-radius:12px; padding:10px 12px}
+.qexp b{color:var(--uc)}
+.gm{display:flex; gap:10px; margin-top:12px}
+.gm button{flex:1; border-radius:14px; padding:12px; font-family:var(--f-play); font-weight:800; font-size:17px; cursor:pointer; border:2px solid var(--rule); background:var(--card)}
+.gm .got{border-color:var(--go); color:var(--go)} .gm .miss{border-color:var(--miss); color:var(--miss)}
+.gm .sel.got{background:var(--go); color:var(--go-ink)} .gm .sel.miss{background:var(--miss); color:#fff}
+.hint{font-size:14px; color:var(--soft); margin:8px 0 0}
+.opts{display:grid; gap:8px; margin-top:12px}
+.opt{border:2px solid var(--rule); background:var(--card); border-radius:14px; padding:10px 14px; text-align:left; cursor:pointer; font-size:16px}
+.opt.right{border-color:var(--go); background:color-mix(in srgb, var(--go) 16%, transparent)}
+.opt.wrong{border-color:var(--miss); background:color-mix(in srgb, var(--miss) 12%, transparent)}
+
+/* reward */
+.reward{text-align:center; padding-top:20px}
+.reward .big{font-family:var(--f-play); font-weight:800; font-size:clamp(32px,8vw,46px); line-height:1.05; margin:10px 0 6px}
+.reward .starsbig{font-size:52px; color:var(--star); letter-spacing:6px; line-height:1}
+.reward .xpgain{display:inline-block; font-family:var(--f-play); font-weight:800; font-size:24px; color:var(--star); background:color-mix(in srgb, var(--star) 15%, transparent); border-radius:999px; padding:4px 16px; margin:8px 0}
+.reward p{color:var(--soft)} .reward p.big{color:var(--ink2)}
+.medal{width:150px; height:150px; margin:0 auto; display:block; filter:drop-shadow(0 8px 0 color-mix(in srgb, var(--uc) 35%, transparent))}
+.pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.4); opacity:0} to{transform:none; opacity:1}}
+@media (prefers-reduced-motion: reduce){ .pop{animation:none} }
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:60}
+.onepage{text-align:left; margin-top:14px}
+.note-sm{font-size:13px; color:var(--soft); text-align:center; margin-top:18px}
+.gpop{z-index:70}
+.reviewbox{background:var(--card); border:2px solid var(--rule); border-radius:18px; padding:14px; margin:14px 0}
+/* Board view: a white Panaboard with four marker colors, same in both themes on purpose */
+.bdtoggle{flex:none; height:40px; border-radius:12px; border:2px solid var(--rule); background:var(--card); cursor:pointer; padding:0 12px; font-family:var(--f-play); font-weight:800; font-size:15px; display:flex; align-items:center; gap:6px}
+.bdtoggle svg{width:18px; height:18px}
+.bdtoggle[aria-pressed="true"]{background:#111; color:#fff; border-color:#111}
+.board{--mk:#151515; --mb:#1d4ed8; --mr:#d42020; --mg:#15803d; background:#ffffff; color:var(--mk); border:10px solid #c9ced6; border-radius:10px; box-shadow:inset 0 0 0 2px #e6e9ee, 0 6px 0 #9aa3ae; padding:16px 18px; font-family:"Patrick Hand", "Comic Sans MS", "Segoe Print", cursive; font-size:21px; line-height:1.35; margin:6px 0 14px}
+.board *{color:inherit}
+.bd-t{border-top:0!important; padding-top:0; font-family:inherit; font-size:30px; line-height:1.1; margin:0 0 10px; border-bottom:3px solid var(--mk); padding-bottom:4px; display:inline-block}
+.bd-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px}
+@media (max-width:700px){ .bd-grid{grid-template-columns:minmax(0,1fr)} }
+.bd-h{font-size:17px; letter-spacing:.12em; margin:10px 0 4px; text-transform:uppercase; text-decoration:underline; text-underline-offset:3px}
+.bd-h.b{color:var(--mb)} .bd-h.r{color:var(--mr)} .bd-h.g{color:var(--mg)}
+.board ul{margin:0; padding-left:22px} .board li{margin:2px 0}
+.bd-g{color:var(--mg)} .bd-r{color:var(--mr)} .bd-b{color:var(--mb)}
+.pw{margin:4px 0 14px}
+.pw-t{color:var(--mb); font-size:22px; margin:0 0 6px; text-decoration:underline}
+.pw ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; align-items:flex-start}
+.pw li{border:2.5px solid var(--mk); border-radius:8px; padding:2px 10px; margin:0; background:#fff; max-width:100%}
+.pw li + li{margin-top:22px; position:relative}
+.pw li + li::before{content:""; position:absolute; left:22px; top:-21px; width:0; height:14px; border-left:2.5px solid var(--mb)}
+.pw li + li::after{content:""; position:absolute; left:16px; top:-9px; border:7px solid transparent; border-top:8px solid var(--mb); border-bottom:0}
+.pw .side{margin:8px 0 0 4px; font-size:19px}
+.bd-skim{font-size:17px; color:#6b7280; margin-top:10px}
+.bd-row{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) minmax(0,1.3fr); gap:10px; border-top:1.5px dashed #b5bcc7; padding:5px 0}
+@media (max-width:560px){ .bd-row{grid-template-columns:minmax(0,1fr)} }
+.bd-tip{font-size:16px; color:#6b7280; margin:2px 0 10px}
+.bd-sec{font-size:24px; margin:14px 0 4px; text-decoration:underline; text-underline-offset:4px}
+.bd-big{border:3px solid var(--mb); color:var(--mb); border-radius:10px; padding:6px 12px; font-size:24px; margin:8px 0}
+.bd-notes{margin:4px 0 8px; padding-left:24px} .bd-notes li{margin:3px 0}
+.board strong, .board b{text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px; font-weight:400}
+.board em{font-style:normal; color:var(--mb)}
+.bd-line{margin:8px 0; padding-left:2px}
+.bd-nancy{border-left:4px solid var(--mb); padding-left:10px}
+.bd-tblw{overflow-x:auto; margin:8px 0}
+.bd-tbl{display:grid; border-top:2.5px solid var(--mk); border-left:2.5px solid var(--mk); min-width:min(100%, 420px)}
+.bd-tbl > div{border-right:2.5px solid var(--mk); border-bottom:2.5px solid var(--mk); padding:4px 8px; font-size:19px; line-height:1.3}
+.bd-th{color:var(--mb)}
+.bd-fig{margin:10px 0} .bd-fig img, .bd-fig svg{max-width:100%; height:auto; max-height:340px; border:2px solid #d5d9df; border-radius:6px; background:#fff; cursor:zoom-in}
+.bd-fig svg{cursor:default; min-width:0; width:100%}
+.bd-cap{font-size:17px; color:#4b5563; margin:4px 0 0}
+.bd-pg{font-size:17px; color:#6b7280; text-decoration:none; display:inline-block; margin-left:6px}
+.bd-pager{display:flex; align-items:center; gap:10px; margin:8px 0}
+.bd-nav{width:44px; height:44px; border-radius:12px; border:2px solid var(--rule); background:var(--card); font-size:26px; line-height:1; cursor:pointer; font-family:var(--f-play); font-weight:800; flex:none}
+.bd-nav:disabled{opacity:.35; cursor:default}
+.bd-dots{display:flex; gap:6px; flex-wrap:wrap; flex:1; min-width:0}
+.bd-dot{width:14px; height:14px; border-radius:50%; border:2px solid var(--uc); background:transparent; padding:0; cursor:pointer}
+.bd-dot.on{background:var(--uc)}
+.bd-pc{font-family:var(--f-play); font-weight:700; font-size:14px; color:var(--soft); flex:none}
+.bd-jump{display:flex; flex-direction:column; gap:4px; margin:0 0 6px; font-family:var(--f-play); font-weight:700; font-size:14px; color:var(--soft)}
+.bd-jump select{font:inherit; font-family:var(--f-read); font-weight:400; font-size:16px; color:var(--ink2); background:var(--card); border:2px solid var(--rule); border-radius:12px; padding:8px 10px; max-width:100%}
+.unit-hd .bdlink{display:inline-block; margin-top:6px; font-family:var(--f-play); font-weight:800; font-size:14px; color:#fff; background:rgba(0,0,0,.22); border:0; border-radius:999px; padding:3px 12px; cursor:pointer}
+.lb2{position:fixed; inset:0; z-index:80; background:rgba(0,0,0,.85); display:grid; place-items:center; padding:16px}
+.lb2[hidden]{display:none!important}
+.lb2 img{max-width:100%; max-height:90vh; border-radius:8px; background:#fff}
+</style>
+
+<div class="wrapx" id="home"></div>
+
+<div class="player" id="player" hidden>
+  <div class="ptop"><button class="xbtn" id="pclose" aria-label="Close lesson"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 4l12 12M16 4L4 16"/></svg></button>
+    <div class="pbar"><i id="pfill"></i></div><span class="pcount" id="pcount"></span><button class="bdtoggle" id="pboard" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21l4-4 4 4M7 9h6M7 12h9" stroke-linecap="round"/></svg>Board</button></div>
+  <div class="pbody" id="pbody"><div class="pin" id="pin"></div></div>
+  <div class="pfoot"><div class="fin"><button class="bigbtn ghost back" id="pback" type="button">Back</button><button class="bigbtn" id="pnext" type="button">Next</button></div></div>
+</div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="lb2" id="lb2" hidden><img alt=""></div>
+
+<script>window.DATA=/*DATA*/;window.CFG=/*CFG*/;</script>
+<script>
+(function(){
+const D = window.DATA, LECS = D.lecs;
+const CFG = window.CFG; // exam date, day plan and names come from courses/<name>/course.py
+const EXAM = new Date(CFG.exam);
+const PLAN = CFG.plan.map(p=>{ const [y,m,d] = p.date.split('-').map(Number); return Object.assign({}, p, {d:new Date(y, m-1, d)}); });
+const KEY = CFG.slug + '-lessonpath-v1';
+let S = {done:{}, xp:0, ticks:{}, review:[], boss:{}, days:[]};
+try{ const raw = localStorage.getItem(KEY); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uc = id => `var(--u${id.slice(1)})`;
+const lkey = (lid, i) => lid + '-' + i;
+
+/* ---------- icons ---------- */
+const ICON = {
+  bolt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>',
+  crown:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg>'
+};
+function medal(color, locked, label){
+  const c = locked ? 'var(--rule)' : color;
+  return `<svg viewBox="0 0 120 120" role="img" aria-label="${esc(label)}"><path d="M38 6h18l-8 34H30z" fill="${c}" opacity=".75"/><path d="M82 6H64l8 34h18z" fill="${c}" opacity=".75"/>
+  <circle cx="60" cy="72" r="40" fill="${c}"/><circle cx="60" cy="72" r="31" fill="none" stroke="#fff" stroke-width="4" opacity="${locked?.5:.9}"/>
+  <path d="M60 52l6.5 13.5 14.5 2-10.5 10 2.6 14.5L60 85l-13.1 7 2.6-14.5-10.5-10 14.5-2z" fill="#fff" opacity="${locked?.55:1}"/></svg>`;
+}
+function ring(p){ const r=22, C=2*Math.PI*r; return `<svg class="ring" viewBox="0 0 52 52"><circle cx="26" cy="26" r="${r}" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="6"/><circle cx="26" cy="26" r="${r}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 26 26)"/><text x="26" y="31" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="14" fill="#fff">${Math.round(p*100)}%</text></svg>`; }
+
+/* ---------- progress helpers ---------- */
+function lecProg(L){ const n = L.lessons.length + 1; let d = L.lessons.filter((x,i)=>S.done[lkey(L.id,i)]).length + (S.boss[L.id]?1:0); return d/n; }
+function nextLesson(){
+  for(const L of LECS){ for(let i=0;i<L.lessons.length;i++) if(!S.done[lkey(L.id,i)]) return [L.id,i]; if(!S.boss[L.id]) return [L.id,'boss']; }
+  return null;
+}
+function todayIdx(){ const t=new Date(); t.setHours(0,0,0,0); for(let i=0;i<PLAN.length;i++){ const d=new Date(PLAN[i].d); if(d.getTime()===t.getTime()) return i; } return t < PLAN[0].d ? 0 : -1; }
+function dayProg(P){ let tot=0, d=0; P.lecs.forEach(id=>{ if(id==='review'){ return; } const L=LECS.find(x=>x.id===id); tot += L.lessons.length+1; d += L.lessons.filter((x,i)=>S.done[lkey(id,i)]).length + (S.boss[id]?1:0); }); return tot ? d/tot : 0; }
+
+/* ---------- home ---------- */
+function renderHome(){
+  const days = Math.max(0, Math.ceil((EXAM - new Date())/86400000));
+  const totalL = LECS.reduce((a,L)=>a+L.lessons.length+1,0), doneL = Object.keys(S.done).length + Object.keys(S.boss).length;
+  const ti = todayIdx(), nl = nextLesson();
+  let h = `<p class="tag" style="--uc:var(--u5)">${esc(CFG.eyebrow)}</p>
+  <h1 class="app">Lesson Path</h1><p class="sub2">Small lessons, one idea per screen. Finish a lesson, earn stars. Finish a lecture, earn its badge.</p>
+  <div class="stats"><span class="pill cd">${ICON.clock}<b>${days}</b>&nbsp;days to the exam</span><span class="pill xp">${ICON.bolt}<b>${S.xp}</b>&nbsp;XP</span><span class="pill done">${ICON.check}<b>${doneL}</b>/${totalL}&nbsp;lessons</span></div>`;
+  const P = ti>=0 ? PLAN[ti] : null;
+  h += `<section class="today"><h2>${P ? "Today's mission: " + P.name : 'Final stretch'}</h2><p class="daydesc">${P ? P.desc : 'Clear anything left on the path, then hit your review pile.'}</p><div class="days">` +
+    PLAN.map((p,i)=>`<div class="day ${i===ti?'now':''}"><span class="dn">${p.name}</span>${p.lecs.map(x=>x==='review'?'Review':LECS.find(L=>L.id===x).code).join(' + ')}<div class="bar"><i style="width:${Math.round(dayProg(p)*100)}%"></i></div></div>`).join('') +
+    `</div>` + (nl ? `<button class="bigbtn" id="cont">Continue<small>${esc(nl[1]==='boss' ? LECS.find(L=>L.id===nl[0]).code + ' boss level' : LECS.find(L=>L.id===nl[0]).code + ': ' + LECS.find(L=>L.id===nl[0]).lessons[nl[1]].title)}</small></button>` : `<button class="bigbtn" disabled>Every lesson done. You're ready.</button>`) +
+    `<div class="row2"><button class="bigbtn ghost" id="rev">Review pile<small>${S.review.length} card${S.review.length===1?'':'s'} to fix</small></button><a class="bigbtn ghost" href="${esc(CFG.guideUrl)}" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Full guide<small>3D models and Pathway Lab</small></a></div></section>`;
+  LECS.forEach(L=>{
+    const p = lecProg(L), color = uc(L.id); let nxt = nl && nl[0]===L.id ? nl[1] : null;
+    h += `<section class="unit" style="--uc:${color}"><div class="unit-hd">${ring(p)}<div class="meta"><h3>${L.code} ${esc(L.name)}</h3><p>${esc(L.tag)} · ${L.lessons.length} lessons + boss</p><button class="bdlink" data-bd="${L.id}">Board cheat sheet</button></div><div class="badge-mini">${medal('#ffffff33', !S.boss[L.id], L.badge)}${S.boss[L.id]?esc(L.badge):'Locked'}</div></div><ol class="path">`;
+    let lastGroup = null;
+    L.lessons.forEach((Ls,i)=>{
+      if(Ls.group && Ls.group!==lastGroup){ h += `<li class="grouplab">${esc(Ls.group.replace(/^Part \d+: /,''))}</li>`; lastGroup = Ls.group; }
+      const st = S.done[lkey(L.id,i)];
+      h += `<li><button class="node ${st?'done':''} ${nxt===i?'next':''}" data-l="${L.id}" data-i="${i}"><span class="dot">${st?ICON.check.replace('<svg','<svg width="22" height="22"'):i+1}</span><span class="nt"><b>${esc(Ls.title)}</b><span>${Ls.cards.length} screens · ${Ls.checks.length} quick check${Ls.checks.length===1?'':'s'}</span></span>${st?`<span class="stars">${'★'.repeat(st.stars)}${'☆'.repeat(3-st.stars)}</span>`:''}</button></li>`;
+    });
+    const bd = S.boss[L.id];
+    h += `<li><button class="node boss ${bd?'done':''} ${nxt==='boss'?'next':''}" data-l="${L.id}" data-i="boss"><span class="dot">${ICON.crown.replace('<svg','<svg width="24" height="24"')}</span><span class="nt"><b>Boss level: ${esc(L.badge)}</b><span>Her question styles, practice questions, then your badge</span></span></button></li></ol></section>`;
+  });
+  h += `<p class="note-sm">Your progress saves in this browser on this device.</p>`;
+  $('#home').innerHTML = h;
+  $('#home').querySelectorAll('.node').forEach(b=>b.addEventListener('click',()=>open(b.dataset.l, b.dataset.i==='boss'?'boss':+b.dataset.i)));
+  $('#home').querySelectorAll('.bdlink').forEach(b=>b.addEventListener('click',()=>openSheet(b.dataset.bd)));
+  const c = $('#cont'); if(c) c.addEventListener('click',()=>open(nl[0], nl[1]));
+  $('#rev').addEventListener('click', openReview);
+}
+
+/* ---------- glossary tap-to-define ---------- */
+const GL = D.gloss; const gmap = {}; const keys = [];
+GL.forEach((g,gi)=>g.m.forEach(m=>{ gmap[m]=gi; keys.push(m); }));
+keys.sort((a,b)=>b.length-a.length);
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const W = 'A-Za-z0-9Ͱ-Ͽ';
+const gre = new RegExp(`(?<![${W}-])(${keys.map(reEsc).join('|')})(?![${W}])`, 'g');
+let seen = new Set();
+function linkTerms(root){
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){
+    const p = n.parentElement; if(!p || p.closest('svg,button,a,.term,code,table,.kick,.ltitle')) return NodeFilter.FILTER_REJECT; return NodeFilter.FILTER_ACCEPT; }});
+  const nodes = []; while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(n=>{
+    const t = n.nodeValue; gre.lastIndex = 0; let m, last = 0, frag = null;
+    while((m = gre.exec(t))){
+      const gi = gmap[m[1]]; if(gi===undefined || seen.has(gi)) continue;
+      seen.add(gi); frag = frag || document.createDocumentFragment();
+      frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+      const b = document.createElement('button'); b.type='button'; b.className='term'; b.dataset.g = gi; b.textContent = m[1]; frag.appendChild(b); last = m.index + m[1].length;
+    }
+    if(frag){ frag.appendChild(document.createTextNode(t.slice(last))); n.parentNode.replaceChild(frag, n); }
+  });
+}
+let gpop = null;
+document.addEventListener('click', e=>{
+  const b = e.target.closest('.term');
+  if(gpop && !e.target.closest('.gpop')){ gpop.remove(); gpop = null; }
+  if(!b) return;
+  const g = GL[+b.dataset.g]; gpop = document.createElement('div'); gpop.className='gpop';
+  gpop.innerHTML = `<p class="gpop-t">${esc(g.t)}</p><p>${esc(g.d)}</p>`; document.body.appendChild(gpop);
+  const r = b.getBoundingClientRect(), vw = document.documentElement.clientWidth, pw = Math.min(330, vw-24);
+  gpop.style.position='fixed'; gpop.style.width = pw+'px'; gpop.style.left = Math.max(12, Math.min(r.left, vw-pw-12))+'px';
+  const below = r.bottom + 8; gpop.style.top = (below + 160 > window.innerHeight ? Math.max(12, r.top - 8 - gpop.offsetHeight) : below) + 'px';
+  e.stopPropagation();
+});
+
+/* ---------- player ---------- */
+let P = null;
+function buildSteps(L, i){
+  const steps = [];
+  if(i==='boss'){
+    steps.push({t:'bossintro'});
+    L.boss_cards.forEach(c=>steps.push({t:'card', c}));
+    L.boss_q.forEach(q=>steps.push({t:'prac', q}));
+    const pool = L.lessons.flatMap(x=>x.checks); const pick = pool.slice().sort(()=>Math.random()-.5).slice(0,6);
+    pick.forEach(c=>steps.push({t:'cloze', c}));
+    steps.push({t:'bossend'});
+  } else {
+    const Ls = L.lessons[i];
+    steps.push({t:'mission'});
+    Ls.cards.forEach(c=>steps.push({t:'card', c}));
+    Ls.checks.forEach(c=>steps.push({t:'cloze', c}));
+    steps.push({t:'ican'});
+  }
+  return steps;
+}
+function open(lid, i){
+  const L = LECS.find(x=>x.id===lid);
+  P = {L, i, steps: buildSteps(L,i), k:0, got:0, asked:0, answered:{}};
+  seen = new Set();
+  $('#player').style.setProperty('--uc', uc(lid));
+  $('#player').hidden = false; document.body.style.overflow='hidden';
+  try{ history.replaceState(null,'', '#' + lid + (i==='boss'?'-boss':'-'+i)); }catch(e){}
+  show();
+}
+function close(){ $('#player').hidden = true; document.body.style.overflow=''; P = null; try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} renderHome(); }
+$('#pclose').addEventListener('click', close);
+$('#pback').addEventListener('click', goBack);
+document.addEventListener('keydown', e=>{ if(!P || $('#player').hidden || e.target.closest('input,select,textarea')) return;
+  const np = e.code==='Numpad4' ? 'f' : (e.code==='Numpad1' ? 'b' : null);
+  const fwd = np ? np==='f' : (e.key==='ArrowRight' || e.key===' ' || e.code==='Space' || e.key==='4');
+  const bwd = np ? np==='b' : (e.key==='ArrowLeft' || e.key==='1');
+  if(e.target.closest('button') && (e.key===' ')) { e.preventDefault(); }
+  if(bwd){ e.preventDefault(); goBack(); return; }
+  if(fwd){ e.preventDefault();
+    if(P.board){ goNext(); return; }
+    const st = P.steps[P.k];
+    if(st.t==='cloze' && !P.answered[P.k]){ const b = document.querySelector('#pin .blank:not(.shown)'); if(b) b.click(); return; }
+    goNext(); } });
+(function(){ let sx=null, sy=null; const el=document.getElementById('pbody');
+  el.addEventListener('touchstart', e=>{ if(P && !P.board){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; } }, {passive:true});
+  el.addEventListener('touchend', e=>{ if(sx===null||!P||P.board) { sx=null; return; } const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; sx=null;
+    if(Math.abs(dx)>80 && Math.abs(dx)>Math.abs(dy)*1.5 && !e.target.closest('.tbl,.bd-tblw,iframe')){ if(dx>0) goBack(); else if(!(P.steps[P.k].t==='cloze' && !P.answered[P.k])) goNext(); } }, {passive:true}); })();
+document.querySelector('.pbar').addEventListener('click', e=>{ if(!P || P.board) return; const r=e.currentTarget.getBoundingClientRect();
+  const steps=P.steps.filter(s=>s.t!=='reward').length; const k=Math.max(0, Math.min(steps-1, Math.round((e.clientX-r.left)/r.width*(steps-1))));
+  P.k=k; show(); });
+$('#pnext').addEventListener('click', ()=>{ if(!P) return; if(P.board){ if(P.bpages && P.bp < P.bpages.length-1){ P.bp++; show(); return; } if(P.i==='sheet'){ close(); return; } P.board=false; P.bp=0; show(); return; } const st = P.steps[P.k];
+  if(st.t==='cloze' && !P.answered[P.k]){ flash('Tap the blanks, then pick Got it or Missed it'); return; }
+  if(st.t==='ican' || st.t==='bossend'){ finish(); return; }
+  if(st.t==='reward'){ const after = P.after; close(); if(after) open(after[0], after[1]); return; }
+  P.k++; show(); });
+function prevOf(lid, i){
+  const li = LECS.findIndex(x=>x.id===lid), L = LECS[li];
+  if(i==='boss') return [lid, L.lessons.length-1];
+  if(typeof i==='number' && i>0) return [lid, i-1];
+  if(li>0) return [LECS[li-1].id, 'boss'];
+  return null;
+}
+function goBack(){
+  if(!P) return;
+  if(P.board){ if(P.bp>0){ P.bp--; show(); } return; }
+  if(P.k>0){ P.k--; show(); return; }
+  const pv = (P.i==='review'||P.i==='sheet') ? null : prevOf(P.L.id, P.i);
+  if(pv){ open(pv[0], pv[1]); const st = P.steps; let k = st.length-1; while(k>0 && st[k].t!=='card') k--; P.k = k; show(); }
+}
+function goNext(){ $('#pnext').click(); }
+function flash(msg){ const h = $('#pin').querySelector('.hint'); if(h){ h.textContent = msg; h.style.color='var(--miss)'; } }
+
+function clozeHTML(c){
+  let n = 0;
+  return esc(c.c).replace(/\{\{c\d::(.*?)\}\}/g, (m, a)=>`<button type="button" class="blank" data-a="${esc(a)}" data-i="${n++}">?</button>`);
+}
+function show(){
+  const st = P.steps[P.k], L = P.L, Ls = P.i==='boss'?null:L.lessons[P.i];
+  const total = P.steps.length; $('#pfill').style.width = (P.k/(total-1)*100)+'%'; $('#pcount').textContent = `${P.k+1}/${total}`;
+  const pvx = (P.i==='review'||P.i==='sheet') ? null : prevOf(L.id, P.i);
+  $('#pback').hidden = P.k===0 && !pvx;
+  const nb = $('#pnext'); nb.textContent = 'Next'; $('#pback').textContent = P.k===0 ? 'Prev lesson' : 'Back';
+  let h = '';
+  if(st.t==='mission'){
+    h = `<span class="tag">${L.code} · Lesson ${P.i+1} of ${L.lessons.length}</span><h2 class="ltitle">${esc(Ls.title)}</h2>
+    <div class="mission"><h4>Your mission</h4>${Ls.obj.map(o=>`<label class="chk"><input type="checkbox" disabled><span>${esc(o)}</span></label>`).join('')}
+    ${Ls.skim?`<p class="skimnote"><b>Don't sweat:</b> ${esc(Ls.skim)}</p>`:''}</div>
+    <p class="hint">${Ls.cards.length} quick screens, then ${Ls.checks.length || 'no'} check${Ls.checks.length===1?'':'s'}. You'll tick these off at the end.</p>`;
+    nb.textContent = "Let's go";
+  } else if(st.t==='card'){
+    const c = st.c; const lab = {hook:'Memory trick', trap:'Exam trap', nancy:'How Nancy says it', easy:'Easy marks', she:'She emphasized this', conn:'Connects to', story:'The story so far', big:'The big idea'}[c.k];
+    h = (c.kick?`<p class="kick">${esc(c.kick)}</p>`:'') + (c.k==='big' ? `<span class="tag">The big idea</span><p class="bigidea">${cap1(c.h)}</p>` : (c.k==='text'||c.k==='list') ? `<div class="tcard">${c.h}</div>` : c.h);
+  } else if(st.t==='cloze'){
+    const c = st.c; P.asked = Math.max(P.asked, 0);
+    h = `<span class="tag">Quick check</span><div class="qcard">${clozeHTML(c)}<div class="qexp" hidden><b>Why:</b> ${esc(c.e)}${c.hook?`<br><b>Trick:</b> ${esc(c.hook)}`:''}</div>
+    <div class="gm" hidden><button type="button" class="got">Got it</button><button type="button" class="miss">Missed it</button></div></div><p class="hint">Say the answer in your head, then tap each blank (or press Space) to check.</p>`;
+  } else if(st.t==='prac'){
+    const q = st.q;
+    h = `<span class="tag">Her style of question</span><div class="qcard"><p style="margin:0">${esc(q.q)}</p>` +
+      (q.opts ? `<div class="opts">${q.opts.map((o,j)=>`<button type="button" class="opt" data-j="${j}">${'ABCDE'[j]}. ${esc(o)}</button>`).join('')}</div>` : `<p class="hint">Answer it out loud: verdict first, then the reason.</p><button type="button" class="bigbtn ghost" id="showa" style="margin-top:8px">Show answer</button>`) +
+      `<div class="qexp" hidden>${esc(q.a)}</div></div>`;
+  } else if(st.t==='ican'){
+    h = `<span class="tag">Last step</span><h2 class="ltitle">Tick what you can do now</h2><div class="mission">${Ls.obj.map((o,j)=>`<label class="chk"><input type="checkbox" data-j="${j}" ${S.ticks[lkey(L.id,P.i)+'-'+j]?'checked':''}><span>I can explain: ${esc(o)}</span></label>`).join('')}</div>
+    <p class="hint">Not sure about one? Tap Back and look again. It's faster than relearning it Thursday night.</p>`;
+    nb.textContent = 'Finish lesson';
+  } else if(st.t==='bossintro'){
+    h = `<span class="tag">${L.code} boss level</span><h2 class="ltitle">How Nancy asks about ${esc(L.name)}</h2><div class="mission"><h4>Your mission</h4>
+      <label class="chk"><input type="checkbox" disabled><span>Spot what each question wording is really testing</span></label>
+      <label class="chk"><input type="checkbox" disabled><span>Answer her style of question: verdict, then reason</span></label>
+      <label class="chk"><input type="checkbox" disabled><span>Win the ${esc(L.badge)} badge</span></label></div>`;
+    nb.textContent = 'Start boss level';
+  } else if(st.t==='bossend'){
+    h = `<span class="tag">Almost there</span><h2 class="ltitle">Ready to claim your badge?</h2><p>You just worked through her question styles for ${esc(L.name)}. Tap below to collect the ${esc(L.badge)} badge and your one-page summary.</p>`;
+    nb.textContent = 'Claim badge';
+  } else if(st.t==='reward'){
+    h = st.html; nb.textContent = st.btn || 'Back to path';
+  }
+  const bt = $('#pboard'); bt.hidden = (P.i==='review'); bt.setAttribute('aria-pressed', P.board ? 'true':'false');
+  if(P.board){
+    if(P.i==='sheet' || P.i==='boss'){ P.bpages = [lectureSheet(L)]; } else { P.bpages = lessonPages(L, Ls); }
+    P.bp = Math.min(P.bp||0, P.bpages.length-1);
+    const n = P.bpages.length;
+    h = jumpSelect(L.id, P.i) + (n>1 ? pagerHTML(n, P.bp) : '') + P.bpages[P.bp] + (n>1 ? pagerHTML(n, P.bp) : '');
+    $('#pback').hidden = P.bp===0; $('#pback').textContent = 'Prev page';
+    nb.textContent = P.bp < n-1 ? 'Next board page' : (P.i==='sheet' ? 'Back to path' : 'Back to lesson');
+    $('#pcount').textContent = n>1 ? `Board ${P.bp+1}/${n}` : 'Board view';
+  }
+  const pin = $('#pin'); pin.innerHTML = `<div class="stage">${h}</div>`;
+  $('#pbody').scrollTop = 0;
+  if(!P.board && (st.t==='card' || st.t==='mission')) linkTerms(pin);
+  if(P.board){
+    pin.querySelectorAll('.bd-nav').forEach(b=>b.addEventListener('click',()=>{ P.bp += +b.dataset.d; show(); }));
+    pin.querySelectorAll('.bd-dot').forEach(b=>b.addEventListener('click',()=>{ P.bp = +b.dataset.p; show(); }));
+    const js = pin.querySelector('#bdjump'); if(js) js.addEventListener('change',()=>{ const [lid,i] = js.value.split('|'); if(i==='sheet') openSheet(lid); else { open(lid, +i); P.board = true; P.bp = 0; show(); } });
+    pin.querySelectorAll('.bd-fig img').forEach(im=>im.addEventListener('click',()=>{ const lb=$('#lb2'); lb.querySelector('img').src=im.src; lb.hidden=false; }));
+    let sx=null; const bodyEl=$('#pbody');
+    bodyEl.ontouchstart = e=>{ sx = e.touches[0].clientX; };
+    bodyEl.ontouchend = e=>{ if(sx===null||!P||!P.board) return; const dx = e.changedTouches[0].clientX - sx; sx=null; if(Math.abs(dx)>70){ const n=P.bpages.length; const np = P.bp + (dx<0?1:-1); if(np>=0 && np<n){ P.bp=np; show(); } } };
+    return;
+  }
+  wire(st, pin);
+}
+function wire(st, pin){
+  pin.querySelectorAll('.slide .zoom, .zoom').forEach(z=>z.addEventListener('click',()=>{ const im=z.querySelector('img'); if(!im) return; const lb=$('#lb2'); lb.querySelector('img').src=im.src; lb.hidden=false; }));
+  pin.querySelectorAll('.labbtn').forEach(b=>b.addEventListener('click',()=>{
+    const box = b.nextElementSibling, openNow = b.getAttribute('aria-expanded')==='true';
+    if(openNow){ b.setAttribute('aria-expanded','false'); box.hidden=true; box.innerHTML=''; return; }
+    b.setAttribute('aria-expanded','true'); box.hidden=false; const f=document.createElement('iframe'); f.title='Pathway Lab'; f.src='lab.html#'+b.dataset.lab; box.appendChild(f);
+    const fit=()=>{ try{ const d=f.contentDocument; const hh=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight); if(hh>200) f.style.height=(hh+4)+'px'; }catch(e){} };
+    f.addEventListener('load',()=>{ fit(); setTimeout(fit,500); setTimeout(fit,1500); });
+  }));
+  if(st.t==='cloze'){
+    const blanks = [...pin.querySelectorAll('.blank')];
+    const done = ()=>{ if(blanks.every(b=>b.classList.contains('shown'))){ pin.querySelector('.qexp').hidden=false; pin.querySelector('.gm').hidden=false; } };
+    blanks.forEach(b=>b.addEventListener('click',()=>{ b.textContent=b.dataset.a; b.classList.add('shown'); done(); }));
+    pin.querySelectorAll('.gm button').forEach(b=>b.addEventListener('click',()=>{
+      pin.querySelectorAll('.gm button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel');
+      const got = b.classList.contains('got'), prev = P.answered[P.k];
+      if(prev==='got') P.got--; P.answered[P.k] = got?'got':'miss'; if(got) P.got++;
+      const n = st.c.n; S.review = S.review.filter(x=>x!==n); if(!got) S.review.push(n); save();
+      setTimeout(()=>{ if(P){ P.k++; show(); } }, 380);
+    }));
+    if(P.answered[P.k]){ blanks.forEach(b=>{ b.textContent=b.dataset.a; b.classList.add('shown'); }); done(); pin.querySelector('.gm .'+(P.answered[P.k]==='got'?'got':'miss')).classList.add('sel'); }
+  }
+  if(st.t==='prac'){
+    const ex = pin.querySelector('.qexp');
+    pin.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{ const j=+o.dataset.j; const a=st.q.ans;
+      pin.querySelectorAll('.opt').forEach(x=>{ x.disabled=true; if(+x.dataset.j===a) x.classList.add('right'); }); if(j!==a) o.classList.add('wrong'); ex.hidden=false; }));
+    const sa = pin.querySelector('#showa'); if(sa) sa.addEventListener('click',()=>{ ex.hidden=false; sa.hidden=true; });
+  }
+  if(st.t==='ican'){
+    pin.querySelectorAll('input[data-j]').forEach(c=>c.addEventListener('change',()=>{ S.ticks[lkey(P.L.id,P.i)+'-'+c.dataset.j] = c.checked; save(); }));
+  }
+}
+const CHEERS = ['Lesson cleared!','Nailed it!','Locked in!','That one is yours now.','Keep the streak going!','Brain upgraded.'];
+function finish(){
+  const L = P.L; P.steps = P.steps.filter(s=>s.t!=='reward');
+  if(P.i==='boss'){
+    const first = !S.boss[L.id]; S.boss[L.id] = true; if(first) S.xp += 50; save();
+    const nl = nextLesson();
+    P.steps.push({t:'reward', btn: nl ? 'Next lecture' : 'Back to path', html:`<div class="reward"><div class="pop">${medal(uc(L.id), false, L.badge)}</div><p class="big">${esc(L.badge)}</p><span class="xpgain">+${first?50:0} XP</span><p>You finished ${L.code} ${esc(L.name)}. Here's the whole lecture on one card. Screenshot it for Thursday night.</p><div class="onepage">${L.onepage||''}</div></div>`});
+    P.after = nl ? nl : null;
+    P.k = P.steps.length-1; show(); confetti(true); return;
+  }
+  const total = P.steps.filter(s=>s.t==='cloze').length;
+  const stars = total===0 ? 3 : (P.got===total ? 3 : (P.got >= total/2 ? 2 : 1));
+  const prev = S.done[lkey(L.id,P.i)]; const gain = prev ? 0 : 10 + 5*P.got;
+  S.done[lkey(L.id,P.i)] = {stars: Math.max(stars, prev?prev.stars:0)}; S.xp += gain; save();
+  const lastOfLec = L.lessons.every((x,j)=>S.done[lkey(L.id,j)]);
+  const nl = nextLesson();
+  const left = L.lessons.filter((x,j)=>!S.done[lkey(L.id,j)]).length;
+  P.steps.push({t:'reward', btn: nl ? (nl[1]==='boss' ? 'Start the boss level' : 'Next lesson') : 'Back to path', html:`<div class="reward"><div class="starsbig pop">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div><p class="big">${CHEERS[Math.floor(Math.random()*CHEERS.length)]}</p><span class="xpgain">+${gain} XP</span>
+    <p>${total? `You got ${P.got} of ${total} checks.` : ''} ${P.got<total ? 'The ones you missed are in your review pile.' : ''}</p>
+    <p>${lastOfLec ? `Every ${L.code} lesson done. The boss level is next, and the badge is waiting.` : `${left} lesson${left===1?'':'s'} left in ${L.code}.`}</p></div>`});
+  P.after = nl;
+  P.k = P.steps.length-1; show(); confetti(false);
+}
+function openReview(){
+  const all = LECS.flatMap(L=>L.lessons.flatMap(x=>x.checks)); const byN = {}; all.forEach(c=>byN[c.n]=c);
+  const cards = S.review.map(n=>byN[n]).filter(Boolean);
+  if(!cards.length){ flashHome('Your review pile is empty. Miss a quick check and it lands here.'); return; }
+  P = {L:LECS[0], i:'review', steps: cards.map(c=>({t:'cloze', c})).concat([{t:'reward', html:`<div class="reward"><p class="big">Review round done</p><p>Anything you marked "Got it" left the pile. Run it again later to clear the rest.</p></div>`}]), k:0, got:0, answered:{}};
+  $('#player').style.setProperty('--uc','var(--u9)'); $('#player').hidden=false; document.body.style.overflow='hidden'; show();
+}
+function flashHome(msg){ const b=$('#rev'); if(b){ b.querySelector('small').textContent = msg; } }
+$('#lb2').addEventListener('click',()=>{ $('#lb2').hidden=true; });
+
+
+/* ---------- board view ---------- */
+const BD = D.boards || {};
+const norm = s => s.replace(/^#+\s*/,'');
+function boardsFor(lid, title){ return (BD[lid]||[]).filter(b=>b.at.some(a=>title.startsWith(norm(a)))); }
+function plain(h){ const d=document.createElement('div'); d.innerHTML=h; d.querySelectorAll('.co-lab').forEach(x=>x.remove()); return d.textContent.replace(/\s+/g,' ').trim(); }
+function pwHTML(b){
+  return `<div class="pw"><p class="pw-t">${esc(b.t)}</p><ol>${b.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>` +
+    (b.off.length?`<p class="side bd-b">OFF: ${b.off.map(esc).join(' · ')}</p>`:'') +
+    (b.brk.length?`<p class="side bd-r">${b.brk.map(x=>'✗ '+esc(x)).join('<br>')}</p>`:'') +
+    (b.tip?`<p class="side bd-g">★ ${esc(b.tip)}</p>`:'') + `</div>`;
+}
+function lessonBoard(L, Ls){
+  const pws = boardsFor(L.id, Ls.title);
+  const hooks = Ls.cards.filter(c=>c.k==='hook').slice(0,3).map(c=>plain(c.h));
+  const traps = Ls.cards.filter(c=>c.k==='trap'||c.k==='easy').slice(0,3).map(c=>plain(c.h));
+  const left = `<p class="bd-h">Must know</p><ul>${Ls.obj.map(o=>`<li>${esc(o)}</li>`).join('')}</ul>` +
+    (hooks.length?`<p class="bd-h g">Tricks</p><ul class="bd-g">${hooks.map(h=>`<li>${esc(h)}</li>`).join('')}</ul>`:'') +
+    (traps.length?`<p class="bd-h r">Traps</p><ul class="bd-r">${traps.map(h=>`<li>${esc(h)}</li>`).join('')}</ul>`:'');
+  const right = pws.length ? `<p class="bd-h b">Draw it</p>` + pws.map(pwHTML).join('') : '';
+  return `<p class="bd-tip">Copy this onto your board: black = must know, blue = pathway, green = tricks, red = traps.</p><div class="board"><h2 class="bd-t">${esc(L.code)}: ${esc(Ls.title)}</h2>` +
+    (right ? `<div class="bd-grid"><div>${left}</div><div>${right}</div></div>` : left) +
+    (Ls.skim?`<p class="bd-skim">Skip on the board: ${esc(Ls.skim)}</p>`:'') + `</div>`;
+}
+
+/* ---------- multi-page board notes ---------- */
+function cap1(h){ return h.trim().replace(/^([a-z])/, m=>m.toUpperCase()); }
+function sentBullets(html){
+  const d=document.createElement('div'); d.innerHTML=html; const out=[];
+  d.querySelectorAll('p').forEach(p=>{ p.querySelectorAll('button.term').forEach(b=>b.replaceWith(b.textContent));
+    p.innerHTML.split(/(?<=[.!?])\s+(?=[A-Z("])/).forEach(s=>{ s=s.trim(); if(s) out.push(s); }); });
+  return out;
+}
+function boardTable(html){
+  const d=document.createElement('div'); d.innerHTML=html; const tb=d.querySelector('table'); if(!tb) return '';
+  const rows=[...tb.querySelectorAll('tr')].map(tr=>[...tr.children].map(c=>c.innerHTML));
+  const n=Math.max(...rows.map(r=>r.length));
+  return `<div class="bd-tblw"><div class="bd-tbl" style="grid-template-columns:repeat(${n},minmax(90px,1fr))">` + rows.map((r,ri)=>r.map(c=>`<div class="${ri===0?'bd-th':''}">${c}</div>`).join('')).join('') + `</div></div>`;
+}
+function blockHTML(c){
+  const kick = c.kick ? `<p class="bd-sec">${esc(c.kick)}</p>` : '';
+  switch(c.k){
+    case 'big': return kick + `<p class="bd-big">${cap1(c.h)}</p>`;
+    case 'text': return kick + `<ul class="bd-notes">${sentBullets(c.h).map(s=>`<li>${s}</li>`).join('')}</ul>`;
+    case 'list': return kick + `<div class="bd-notes">${c.h}</div>`;
+    case 'table': return kick + boardTable(c.h);
+    case 'hook': return kick + `<p class="bd-g bd-line">★ ${esc(plain(c.h))}</p>`;
+    case 'trap': case 'easy': return kick + `<p class="bd-r bd-line">✗ Trap: ${esc(plain(c.h))}</p>`;
+    case 'nancy': return kick + `<div class="bd-b bd-line bd-nancy">${esc(plain(c.h)).replace(/(Plain version)/,'<br><b>$1</b>')}</div>`;
+    case 'she': return kick + `<p class="bd-b bd-line">? She asks: ${esc(plain(c.h))}</p>`;
+    case 'conn': return kick + `<p class="bd-b bd-line">↔ Link: ${esc(plain(c.h))}</p>`;
+    case 'story': return kick + `<p class="bd-line">${esc(plain(c.h))}</p>`;
+    case 'fig': { const d=document.createElement('div'); d.innerHTML=c.h; const im=d.querySelector('img'); const sv=d.querySelector('svg'); const cap=d.querySelector('figcaption');
+      return kick + `<div class="bd-fig"><p class="bd-h b">Sketch this</p>${im?`<img src="${im.getAttribute('src')}" alt="">`:(sv?sv.outerHTML:'')}${cap?`<p class="bd-cap">${esc(cap.textContent.trim())}</p>`:''}</div>`; }
+    default: return '';
+  }
+}
+function blockWeight(c){ if(c.k==='fig') return 140; if(c.k==='table') return 40 + plain(c.h).split(/\s+/).length; return 14 + plain(c.h).split(/\s+/).length; }
+function lessonPages(L, Ls){
+  const pages=[lessonBoard(L, Ls)]; let cur=[], w=0;
+  Ls.cards.filter(c=>c.k!=='lab').forEach(c=>{ const bw=blockWeight(c); if(cur.length && w+bw>300){ pages.push(cur.join('')); cur=[]; w=0; } cur.push(blockHTML(c)); w+=bw; });
+  if(cur.length) pages.push(cur.join(''));
+  return pages.map((p,i)=> i===0 ? p : `<div class="board"><h2 class="bd-t">${esc(L.code)}: ${esc(Ls.title)} <span class="bd-pg">notes ${i}/${pages.length-1}</span></h2>${p}</div>`);
+}
+function jumpSelect(curL, curI){
+  return `<label class="bd-jump"><span>Jump to any board</span><select id="bdjump">` + LECS.map(L=>`<optgroup label="${esc(L.code+' '+L.name)}">${L.lessons.map((s,i)=>`<option value="${L.id}|${i}" ${L.id===curL&&i===curI?'selected':''}>${esc(L.code)} · ${esc(s.title)}</option>`).join('')}<option value="${L.id}|sheet">${esc(L.code)} · Board cheat sheet</option></optgroup>`).join('') + `</select></label>`;
+}
+function pagerHTML(n, k){
+  return `<div class="bd-pager"><button type="button" class="bd-nav" data-d="-1" ${k===0?'disabled':''} aria-label="Previous board page">‹</button><div class="bd-dots">${Array.from({length:n},(_,i)=>`<button type="button" class="bd-dot ${i===k?'on':''}" data-p="${i}" aria-label="Board page ${i+1}"></button>`).join('')}</div><span class="bd-pc">Page ${k+1} of ${n}</span><button type="button" class="bd-nav" data-d="1" ${k===n-1?'disabled':''} aria-label="Next board page">›</button></div>`;
+}
+
+function lectureSheet(L){
+  const pws = (BD[L.id]||[]);
+  let rows = '';
+  if(L.onepage){ const d=document.createElement('div'); d.innerHTML=L.onepage;
+    d.querySelectorAll('tbody tr').forEach(tr=>{ const td=[...tr.children].map(x=>x.textContent.trim());
+      rows += `<div class="bd-row"><span>${esc(td[0]||'')}</span><span class="bd-b">${esc(td[1]||'')}</span><span class="bd-g">${esc(td[2]||'')}</span></div>`; }); }
+  return `<p class="bd-tip">Your ${esc(L.code)} cheat sheet, board style. Two boards' worth: pathways first, then the summary.</p>
+  <div class="board"><h2 class="bd-t">${esc(L.code)} ${esc(L.name)}: pathways to draw</h2><div class="bd-grid">${pws.map(pwHTML).join('')}</div></div>
+  <div class="board"><h2 class="bd-t">${esc(L.code)} on one board</h2><div class="bd-row" style="border-top:0"><span class="bd-h">Part</span><span class="bd-h b">What it does</span><span class="bd-h g">Trick</span></div>${rows}</div>`;
+}
+function openSheet(lid){
+  const L = LECS.find(x=>x.id===lid);
+  P = {L, i:'sheet', steps:[{t:'sheet'}], k:0, got:0, answered:{}, board:true};
+  $('#player').style.setProperty('--uc', uc(lid)); $('#player').hidden=false; document.body.style.overflow='hidden'; show();
+}
+$('#pboard').addEventListener('click', ()=>{ if(!P || P.i==='review' || P.i==='sheet') return; P.board = !P.board; P.bp = 0; show(); });
+
+/* ---------- confetti ---------- */
+function confetti(big){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv = $('#confetti'), ctx = cv.getContext('2d'); const dpr = window.devicePixelRatio||1;
+  cv.width = innerWidth*dpr; cv.height = innerHeight*dpr; ctx.scale(dpr,dpr);
+  const cols = ['#16a34a','#f5a524','#0e8fb0','#d6338a','#7c4ddb','#e4572e','#2f6fe4'];
+  const N = big ? 220 : 110; const ps = [];
+  for(let i=0;i<N;i++) ps.push({x:innerWidth/2 + (Math.random()-.5)*120, y:innerHeight*0.35, vx:(Math.random()-.5)*(big?16:11), vy:-Math.random()*(big?16:12)-4, r:Math.random()*6+4, c:cols[i%cols.length], a:Math.random()*6, s:(Math.random()-.5)*.3});
+  let t = 0; (function f(){ ctx.clearRect(0,0,innerWidth,innerHeight); t++;
+    ps.forEach(p=>{ p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.s; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.fillStyle=p.c; ctx.fillRect(-p.r/2,-p.r/3,p.r,p.r*.66); ctx.restore(); });
+    if(t < 150) requestAnimationFrame(f); else ctx.clearRect(0,0,innerWidth,innerHeight); })();
+}
+
+renderHome();
+const hm = (location.hash||'').match(/^#(l\d+)-(boss|\d+)$/);
+if(hm){ const L = LECS.find(x=>x.id===hm[1]); if(L) open(hm[1], hm[2]==='boss'?'boss':Math.min(+hm[2], L.lessons.length-1)); }
+})();
+</script>

@@ -1,0 +1,670 @@
+<title>MBB 322 Pathway Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700&family=Literata:opsz,wght@7..72,700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: lab bench. Left = pathway board (membrane bands, live signal), right = controls + readout; stacks on phones. */
+:root{
+  --bg:#f7f3ec; --surface:#fffdf9; --ink:#1f2a33; --muted:#5b6670; --line:#ded6c9;
+  --teal:#0e7490; --teal-soft:#d5edf2; --orange:#c2410c; --orange-soft:#fbe3d6;
+  --amber:#b45309; --amber-soft:#f8ead2; --slate:#e6e3dd; --mem:#efe3c8; --nuc:#e9e4f2; --out:#eef4f6;
+  --f-display:"Literata", Georgia, serif; --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#141b22; --surface:#1b242d; --ink:#e7e2d8; --muted:#a2acb5; --line:#2e3a45;
+  --teal:#38b2cc; --teal-soft:#123843; --orange:#f08a5d; --orange-soft:#4a2617;
+  --amber:#e6a23c; --amber-soft:#3f2e12; --slate:#28323c; --mem:#3a3324; --nuc:#2a2638; --out:#18262c; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#141b22; --surface:#1b242d; --ink:#e7e2d8; --muted:#a2acb5; --line:#2e3a45;
+  --teal:#38b2cc; --teal-soft:#123843; --orange:#f08a5d; --orange-soft:#4a2617;
+  --amber:#e6a23c; --amber-soft:#3f2e12; --slate:#28323c; --mem:#3a3324; --nuc:#2a2638; --out:#18262c; color-scheme:dark }
+html,body{background:var(--bg)}
+body{color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.55}
+.wrap{max-width:1180px; margin:0 auto; padding-block:20px 60px; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
+header h1{font-family:var(--f-display); font-size:clamp(26px,4vw,36px); margin:0; line-height:1.15}
+header p{margin:6px 0 0; color:var(--muted); max-width:70ch}
+.eyebrow{font-family:var(--f-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); margin:0 0 6px}
+.tabs{display:flex; gap:6px; overflow-x:auto; padding-block:14px; scrollbar-width:thin}
+.tabs button{flex:none; font-family:var(--f-mono); font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--teal); color:var(--surface); border-color:var(--teal)}
+.grid{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:18px; align-items:start}
+@media (max-width:900px){ .grid{grid-template-columns:minmax(0,1fr)} }
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px; min-width:0}
+.card h2{font-family:var(--f-display); font-size:20px; margin:0 0 4px}
+.card h3{font-size:13px; font-family:var(--f-mono); letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:14px 0 8px}
+.sub{color:var(--muted); font-size:14px; margin:0}
+.modes{display:flex; gap:6px; margin:10px 0 0; flex-wrap:wrap}
+.modes button, .btn{font:inherit; font-size:14px; padding:6px 12px; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--ink); cursor:pointer}
+.modes button[aria-pressed="true"]{border-color:var(--teal); color:var(--teal); font-weight:700}
+.btn:hover,.tabs button:hover,.modes button:hover{border-color:var(--teal)}
+button:focus-visible{outline:2px solid var(--teal); outline-offset:2px}
+.stage{perspective:1100px; overflow-x:auto; overflow-y:hidden; border-radius:12px; margin-top:10px}
+.board{transform-origin:50% 60%; transition:transform .35s ease}
+@media (prefers-reduced-motion: reduce){ .board{transition:none} .flow{animation:none!important} }
+svg.pw{display:block; width:100%; min-width:640px; height:auto}
+.pw text{font-family:var(--f-body)}
+.band-out{fill:var(--out)} .band-mem{fill:var(--mem)} .band-cyt{fill:var(--surface)} .band-nuc{fill:var(--nuc)}
+.bandlab{fill:var(--muted); font-size:10px; font-family:var(--f-mono)!important; letter-spacing:.06em; text-transform:uppercase}
+.node rect{stroke-width:1.5; rx:10}
+.node.on rect{fill:var(--teal-soft); stroke:var(--teal)}
+.node.off rect{fill:var(--slate); stroke:var(--line)}
+.node.off text{opacity:.6}
+.node.ko rect{fill:none; stroke:var(--muted); stroke-dasharray:5 4}
+.node.locked rect{stroke:var(--orange); stroke-width:3}
+.node.prol rect{stroke:var(--amber); stroke-width:3}
+.node.output rect{stroke-width:2.5}
+.node text{fill:var(--ink); font-size:12.5px; pointer-events:none}
+.node .tag{font-size:10px; font-family:var(--f-mono)!important; fill:var(--orange)}
+.node .tagA{font-size:10px; font-family:var(--f-mono)!important; fill:var(--amber)}
+.node{cursor:pointer}
+.node:focus-visible rect{stroke:var(--orange); stroke-width:3}
+.edge{fill:none; stroke-width:2}
+.edge.pos{stroke:var(--muted)} .edge.neg{stroke:var(--orange)}
+.edge.live.pos{stroke:var(--teal)}
+.flow{stroke:var(--surface); stroke-width:2.5; stroke-dasharray:3 14; animation:flow 1.1s linear infinite; opacity:.85}
+@keyframes flow{to{stroke-dashoffset:-28}}
+.ahP{fill:var(--muted)} .ahT{fill:var(--teal)} .ahO{fill:var(--orange)}
+.legend{display:flex; flex-wrap:wrap; gap:10px 16px; font-size:13px; color:var(--muted); margin-top:10px}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:16px; height:12px; border-radius:4px; display:inline-block; border:1.5px solid var(--line)}
+.tilt{display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-size:13px; color:var(--muted); margin-top:10px}
+.tilt input{accent-color:var(--teal)}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{font:inherit; font-size:13.5px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:var(--bg); color:var(--ink); cursor:pointer; text-align:left}
+.chip:hover{border-color:var(--teal)}
+.chip.pre{border-color:var(--orange)}
+.readout{border-radius:10px; padding:10px 12px; margin-top:6px}
+.readout.good{background:var(--teal-soft)} .readout.bad{background:var(--orange-soft)} .readout.mid{background:var(--amber-soft)}
+.readout p{margin:4px 0}
+.outrow{font-weight:700}
+.why{font-size:15px}
+.vff{border-left:4px solid var(--amber); background:var(--amber-soft); padding:8px 12px; border-radius:6px; margin-top:8px; font-size:15px}
+.vff b{color:var(--amber)}
+.predict{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px}
+.result{font-weight:700}
+.result.ok{color:var(--teal)} .result.no{color:var(--orange)}
+.slots{display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:40px; padding:8px; border:1px dashed var(--line); border-radius:10px}
+.slot{font-size:13.5px; padding:5px 10px; border-radius:8px; background:var(--teal-soft); border:1px solid var(--teal)}
+.slot.wrong{background:var(--orange-soft); border-color:var(--orange)}
+.arrow{color:var(--muted)}
+.note{font-size:13px; color:var(--muted); margin-top:10px}
+.three{position:relative; width:100%; min-height:360px; border-radius:12px; background:radial-gradient(ellipse at 50% 30%, var(--surface), var(--bg)); touch-action:none}
+.three canvas{display:block; width:100%!important; border-radius:12px; cursor:grab}
+.hint3d{position:absolute; left:10px; bottom:6px; margin:0; font-size:12px; color:var(--muted); font-family:var(--f-mono); pointer-events:none}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">MBB 322 · Midterm 2 · interactive</p>
+  <h1>Pathway Lab</h1>
+  <p>Pick a pathway, then break it. Tap any box to remove it or lock it ON, flip the signal on and off, or apply a real drug, toxin or mutation from lecture. The board shows what happens downstream, and the readout explains it the way Nancy marks: verdict, then the molecular reason.</p>
+</header>
+
+<nav class="tabs" id="tabs" aria-label="Pathways"></nav>
+
+<div class="grid">
+  <section class="card" aria-label="Pathway board">
+    <h2 id="pwTitle"></h2>
+    <p class="sub" id="pwSub"></p>
+    <div class="modes" role="group" aria-label="Mode">
+      <button type="button" id="mExplore" aria-pressed="true">Explore and break it</button>
+      <button type="button" id="mBuild" aria-pressed="false">Build it from memory</button>
+    </div>
+    <div class="modes" role="group" aria-label="View" style="margin-top:8px">
+      <button type="button" id="v3d" aria-pressed="true">3D model</button>
+      <button type="button" id="v2d" aria-pressed="false">Flat diagram</button>
+      <button type="button" class="btn" id="resetAll">Reset pathway</button>
+    </div>
+    <div class="stage" id="stage">
+      <div class="three" id="three"><p class="hint3d" id="hint3d">Drag to rotate · scroll or pinch to zoom · tap a shape to break it</p></div>
+      <div class="board" id="board" hidden></div>
+    </div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--teal-soft);border-color:var(--teal)"></i>active</span>
+      <span><i class="sw" style="background:var(--slate)"></i>inactive</span>
+      <span><i class="sw" style="border-style:dashed"></i>removed</span>
+      <span><i class="sw" style="border-color:var(--orange);border-width:3px"></i>locked ON</span>
+      <span><i class="sw" style="border-color:var(--amber);border-width:3px"></i>stays on longer (off switch gone)</span>
+      <span><svg width="28" height="10" aria-hidden="true"><line x1="0" y1="5" x2="22" y2="5" stroke="var(--orange)" stroke-width="2"/><line x1="24" y1="0" x2="24" y2="10" stroke="var(--orange)" stroke-width="2.5"/></svg>blocks / destroys</span>
+    </div>
+    <p class="note">3D model: membrane on top, nucleus at the bottom, glowing beads show where the signal is flowing. Flat diagram: swipe sideways on a phone. Tap a part (either view): normal → removed → locked ON → normal. Signals (ligand, light, oxygen) toggle present/absent. This is a teaching model: each part is either on or off, so read the readout for the real nuance.</p>
+  </section>
+
+  <aside class="card" aria-label="Controls and readout" id="side">
+    <div id="explorePanel">
+      <h3>Readout</h3>
+      <div id="readout" class="readout"></div>
+      <h3>Try a real scenario</h3>
+      <label style="font-size:14px;display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="checkbox" id="predictToggle" checked> Predict before you see it</label>
+      <div class="chips" id="presets"></div>
+      <div id="predictBox"></div>
+      <div id="vff"></div>
+    </div>
+    <div id="buildPanel" hidden>
+      <h3>Build it from memory</h3>
+      <p class="sub">Tap the parts in the order the signal travels, from the first messenger to the final effect. Then check.</p>
+      <div class="slots" id="slots" aria-live="polite"></div>
+      <h3>Parts</h3>
+      <div class="chips" id="parts"></div>
+      <div class="predict" style="margin-top:10px">
+        <button type="button" class="btn" id="check">Check order</button>
+        <button type="button" class="btn" id="undo">Undo</button>
+        <button type="button" class="btn" id="clear">Start over</button>
+      </div>
+      <p id="buildResult" class="result" aria-live="polite"></p>
+    </div>
+  </aside>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+/* ---------- pathway data ----------
+ node: id, l (label, \n allowed), x,y (center), band, src (made constantly), ins [[id,+1|-1]], any (OR of positives),
+ sig (toggle signal), on (default signal state), off (off-switch target id), out {on,off}, def ('ko' default) */
+const P = [
+{ id:'camp', name:'Gs / cAMP', lec:'Lecture 5', sub:'Epinephrine raises cAMP, PKA breaks down glycogen. Gαi and PDE pull the other way.',
+  bands:['outside','membrane','cytosol','nucleus'],
+  nodes:[
+   {id:'epi',l:'Epinephrine',x:110,y:50,sig:1,on:1},
+   {id:'pge',l:'PGE1 / adenosine',x:570,y:50,sig:1,on:0},
+   {id:'bar',l:'β-adrenergic\nreceptor',x:110,y:128,ins:[['epi',1]]},
+   {id:'rai',l:'inhibitory\nreceptor',x:570,y:128,ins:[['pge',1]]},
+   {id:'ac',l:'Adenylyl\ncyclase',x:340,y:128,ins:[['gas',1],['gai',-1]]},
+   {id:'gas',l:'Gαs-GTP',x:150,y:220,ins:[['bar',1]]},
+   {id:'gai',l:'Gαi-GTP',x:530,y:220,ins:[['rai',1]]},
+   {id:'camp',l:'cAMP',x:340,y:240,ins:[['ac',1]]},
+   {id:'pde',l:'PDE\n(cAMP → 5\'-AMP)',x:560,y:310,src:1,off:'camp'},
+   {id:'pka',l:'PKA\n(C subunits freed)',x:340,y:320,ins:[['camp',1]]},
+   {id:'gly',l:'Glycogen\nbreakdown',x:170,y:392,ins:[['pka',1]],out:{on:'Glycogen is broken down for fuel (and glycogen synthase is switched off).',off:'No breakdown; glycogen stays stored.'}},
+   {id:'creb',l:'CREB → CRE genes',x:420,y:462,ins:[['pka',1]]}],
+  chain:['epi','bar','gas','ac','camp','pka','gly'],
+  presets:[
+   {n:'Cholera toxin',mods:{gas:'on'},sig:{epi:0},ans:'on',v:'cAMP stays high even with no hormone. Cholera toxin ADP-ribosylates Gαs, so it can\'t hydrolyze its GTP and keeps adenylyl cyclase on.'},
+   {n:'Non-hydrolyzable GTP analog',mods:{gas:'on'},sig:{epi:0},ans:'on',v:'The pathway stays on. Gαs bound to a GTP it can\'t split never returns to the GDP state (your MT1 question 21).'},
+   {n:'PDE inhibitor',mods:{pde:'ko'},sig:{epi:1},ans:'prol',v:'Glycogen breakdown lasts longer. PDE is the off switch for cAMP; blocking it doesn\'t start the signal, it keeps cAMP high after it starts.'},
+   {n:'Beta-blocker (antagonist)',mods:{bar:'ko'},sig:{epi:1},ans:'off',v:'No response to epinephrine. The antagonist occupies the receptor, so Gαs is never activated.'},
+   {n:'Add an inhibitory hormone',mods:{},sig:{epi:1,pge:1},ans:'off',v:'cAMP falls. PGE1 acts through Gαi, which inhibits adenylyl cyclase. (In this model the inhibitory input wins; in a real cell the inputs are summed.)'}]},
+
+{ id:'plc', name:'Gq / PLC / Ca2+', lec:'Lecture 5', sub:'PLC-β cuts PIP2: IP3 frees ER calcium, DAG stays in the membrane, both turn on PKC.',
+  bands:['outside','membrane','cytosol','ER / nucleus'],
+  nodes:[
+   {id:'ang',l:'Hormone\n(angiotensin)',x:110,y:50,sig:1,on:1},
+   {id:'rq',l:'GPCR',x:110,y:128,ins:[['ang',1]]},
+   {id:'plcb',l:'PLC-β\n(the effector)',x:330,y:128,ins:[['gq',1]]},
+   {id:'dag',l:'DAG\n(stays in membrane)',x:560,y:128,ins:[['plcb',1]]},
+   {id:'gq',l:'Gαq-GTP',x:150,y:220,ins:[['rq',1]]},
+   {id:'ip3',l:'IP3',x:330,y:225,ins:[['plcb',1]]},
+   {id:'ip3p',l:'IP3 phosphatase\n(IP3 → IP2)',x:140,y:320,src:1,off:'ip3'},
+   {id:'pkc',l:'PKC',x:580,y:240,ins:[['dag',1],['ca',1]],out:{on:'PKC is active (in liver it phosphorylates and inhibits glycogen synthase).',off:'PKC stays off.'}},
+   {id:'ca',l:'Ca2+ in cytosol',x:430,y:330,ins:[['er',1]]},
+   {id:'pump',l:'Ca2+ pumps',x:610,y:330,src:1,off:'ca'},
+   {id:'cam',l:'Calmodulin\n→ CaMKII etc.',x:470,y:420,ins:[['ca',1]],out:{on:'Ca2+/calmodulin switches on CaMKII and other targets.',off:'No calmodulin response.'}},
+   {id:'er',l:'ER IP3-gated\nCa2+ channel',x:280,y:440,ins:[['ip3',1]]}],
+  chain:['ang','rq','gq','plcb','ip3','er','ca','cam'],
+  presets:[
+   {n:'Phorbol ester (TPA)',mods:{pkc:'on'},sig:{ang:0},ans:'on',v:'PKC stays on with no hormone. TPA mimics DAG and permanently switches on PKC (a non-genotoxic tumor promoter, Lecture 10).'},
+   {n:'Block the IP3 phosphatase',mods:{ip3p:'ko'},sig:{ang:1},ans:'prol',v:'The Ca2+ signal lasts longer. IP3 can\'t be dephosphorylated to IP2, so the ER channels stay open.'},
+   {n:'Knock out PLC-β',mods:{plcb:'ko'},sig:{ang:1},ans:'off',v:'No IP3 and no DAG, so no Ca2+ rise and no PKC. PLC-β is the effector, not a second messenger.'},
+   {n:'Block Ca2+ pumps',mods:{pump:'ko'},sig:{ang:1},ans:'prol',v:'Cytosolic Ca2+ stays high longer. The pumps are one of the off switches that return Ca2+ to the ER and outside.'}]},
+
+{ id:'rod', name:'Rod vision', lec:'Lecture 5', sub:'Backwards on purpose: light lowers cGMP, closes channels and quiets the rod.',
+  bands:['light','disc / membrane','cytosol','synapse'],
+  nodes:[
+   {id:'light',l:'Light (photon)',x:120,y:50,sig:1,on:0},
+   {id:'rho',l:'Rhodopsin\n11-cis → all-trans',x:120,y:128,ins:[['light',1]]},
+   {id:'cng',l:'cGMP-gated\ncation channel open',x:520,y:128,ins:[['cgmp',1]]},
+   {id:'gt',l:'Transducin (Gαt)',x:130,y:225,ins:[['rho',1]]},
+   {id:'pde',l:'cGMP PDE',x:330,y:225,ins:[['gt',1]]},
+   {id:'cgmp',l:'cGMP',x:520,y:240,src:1,ins:[['pde',-1]]},
+   {id:'dep',l:'Rod depolarized\n(about -30 mV)',x:520,y:340,ins:[['cng',1]]},
+   {id:'rel',l:'Transmitter release',x:420,y:450,ins:[['dep',1]],out:{on:'The rod keeps releasing transmitter (the brain reads: dark).',off:'Release drops (the brain reads: light).'}}],
+  chain:['light','rho','gt','pde','cgmp','cng','dep','rel'],
+  presets:[
+   {n:'Lights on (normal)',mods:{},sig:{light:1},ans:'off',v:'Release drops. Transducin activates cGMP PDE, cGMP falls, the channels close and the rod hyperpolarizes.'},
+   {n:'PDE knocked out, lights on',mods:{pde:'ko'},sig:{light:1},ans:'on',v:'The rod acts like it\'s dark. Without PDE, light can\'t lower cGMP, so the channels stay open.'},
+   {n:'Vitamin A deficiency',mods:{rho:'ko'},sig:{light:1},ans:'on',v:'No light response (night blindness). No retinal means no working rhodopsin.'}]},
+
+{ id:'nmj', name:'Nerve to muscle', lec:'Lecture 6', sub:'Five channels in a row, from the nerve terminal to the SR calcium store.',
+  bands:['nerve terminal / cleft','membranes','muscle cytosol','contraction'],
+  nodes:[
+   {id:'ap',l:'Action potential\narrives',x:100,y:50,sig:1,on:1},
+   {id:'vca',l:'1. Voltage-gated\nCa2+ channel',x:280,y:50,ins:[['ap',1]]},
+   {id:'sn',l:'SNAREs +\nsynaptotagmin',x:460,y:50,ins:[['vca',1]]},
+   {id:'ach',l:'ACh in cleft',x:620,y:128,ins:[['sn',1]]},
+   {id:'ache',l:'Acetylcholin-\nesterase',x:620,y:220,src:1,off:'ach'},
+   {id:'nr',l:'2. Nicotinic\nAChR',x:430,y:128,ins:[['ach',1]]},
+   {id:'nav',l:'3. Muscle Na+\nchannels (AP)',x:240,y:128,ins:[['nr',1]]},
+   {id:'tt',l:'4. T-tubule\nCa2+ sensor',x:100,y:220,ins:[['nav',1]]},
+   {id:'sr',l:'5. SR Ca2+\nrelease channel',x:260,y:300,ins:[['tt',1]]},
+   {id:'tro',l:'Ca2+ binds troponin,\ntropomyosin moves',x:460,y:330,ins:[['sr',1]]},
+   {id:'con',l:'Contraction',x:330,y:450,ins:[['tro',1]],out:{on:'The muscle contracts.',off:'No contraction (paralysis).'}}],
+  chain:['ap','vca','sn','ach','nr','nav','tt','sr','tro','con'],
+  presets:[
+   {n:'Botulinum toxin',mods:{sn:'ko'},sig:{ap:1},ans:'off',v:'Paralysis. Botulinum toxin cuts SNARE proteins, so vesicles can\'t fuse and no ACh is released.'},
+   {n:'Curare',mods:{nr:'ko'},sig:{ap:1},ans:'off',v:'Paralysis. Curare blocks the nicotinic ACh receptor, so ACh is released but can\'t open the channel.'},
+   {n:'Sarin (nerve gas)',mods:{ache:'ko'},sig:{ap:1},ans:'prol',v:'Too much signaling. Sarin blocks acetylcholinesterase, so ACh isn\'t cleared and keeps stimulating the muscle.'}]},
+
+{ id:'rtk', name:'RTK / Ras / MAPK', lec:'Lecture 8 + 10', sub:'Growth factor to c-fos. The most mutated relay in cancer.',
+  bands:['outside','membrane','cytosol','nucleus'],
+  nodes:[
+   {id:'egf',l:'EGF',x:100,y:50,sig:1,on:1},
+   {id:'egfr',l:'EGF receptor\n(dimer, P-Tyr)',x:100,y:128,ins:[['egf',1]]},
+   {id:'ras',l:'Ras-GTP',x:440,y:128,ins:[['sos',1]]},
+   {id:'gap',l:'GAP (NF1)\noff switch',x:620,y:128,src:1,off:'ras'},
+   {id:'grb',l:'GRB2\n(SH2 + SH3)',x:110,y:220,ins:[['egfr',1]]},
+   {id:'sos',l:'Sos (Ras-GEF)',x:290,y:220,ins:[['grb',1]]},
+   {id:'raf',l:'Raf (MAPKKK)',x:470,y:230,ins:[['ras',1]]},
+   {id:'mek',l:'MEK (MAPKK)',x:470,y:300,ins:[['raf',1]]},
+   {id:'erk',l:'ERK (MAPK)',x:470,y:370,ins:[['mek',1]]},
+   {id:'tcf',l:'TCF + SRF on SRE',x:250,y:455,ins:[['erk',1]]},
+   {id:'fos',l:'c-fos ON:\ncell divides',x:530,y:455,ins:[['tcf',1]],out:{on:'c-fos is on and the cell moves through the cycle (divides).',off:'No c-fos; the cell stays quiet.'}}],
+  chain:['egf','egfr','grb','sos','ras','raf','mek','erk','tcf','fos'],
+  presets:[
+   {n:'RasD (Gly12 mutant)',mods:{ras:'on'},sig:{egf:0},ans:'on',v:'The cell divides with no growth factor. Gly12 mutant Ras can\'t be helped by GAP to hydrolyze GTP, so it\'s stuck ON.'},
+   {n:'neu / erbB receptor',mods:{egfr:'on'},sig:{egf:0},ans:'on',v:'Ligand-independent signaling. The mutant receptor dimerizes (neu) or lacks its ligand domain (erbB), so it fires with no EGF.'},
+   {n:'Gefitinib (RTK inhibitor)',mods:{egfr:'ko'},sig:{egf:1},ans:'off',v:'Signaling stops at the receptor. A -nib drug blocks the kinase, so GRB2 has no P-Tyr to dock on.'},
+   {n:'RasD + MEK inhibitor',mods:{ras:'on',mek:'ko'},sig:{egf:0},ans:'off',v:'No division. MEK is downstream of Ras, so blocking it beats RasD. This is epistasis: the downstream block wins.'},
+   {n:'Lose NF1 (Ras-GAP)',mods:{gap:'ko'},sig:{egf:1},ans:'prol',v:'Ras stays on longer. NF1 is the GAP that turns Ras off, so it\'s a tumor suppressor even though its loss activates an oncogene pathway.'},
+   {n:'Vemurafenib (B-Raf inhibitor)',mods:{raf:'ko'},sig:{egf:1},ans:'off',v:'The relay stops at Raf, so MEK and ERK never activate.'}]},
+
+{ id:'jak', name:'JAK-STAT and Bcr-Abl', lec:'Lecture 10', sub:'Epo to red cells, and the fusion kinase that hijacks it in CML.',
+  bands:['outside','membrane','cytosol','nucleus'],
+  nodes:[
+   {id:'epo',l:'Epo (cytokine)',x:120,y:50,sig:1,on:1},
+   {id:'epor',l:'Epo receptor',x:120,y:128,ins:[['epo',1]]},
+   {id:'jak',l:'JAK2\n(stuck to receptor)',x:150,y:225,any:1,ins:[['epor',1],['bcr',1]]},
+   {id:'bcr',l:'Bcr-Abl fusion\n(not in normal cells)',x:500,y:200,def:'ko'},
+   {id:'stat',l:'STAT5\n(P-Tyr, dimer)',x:330,y:320,any:1,ins:[['jak',1],['bcr',1]]},
+   {id:'snuc',l:'STAT5 dimer\nin nucleus',x:220,y:455,ins:[['stat',1]]},
+   {id:'tg',l:'Target genes:\nred cells / growth',x:500,y:455,ins:[['snuc',1]],out:{on:'Target genes are on (red cell production, proliferation).',off:'Target genes stay off.'}}],
+  chain:['epo','epor','jak','stat','snuc','tg'],
+  presets:[
+   {n:'CML: Bcr-Abl present',mods:{bcr:'on'},sig:{epo:0},ans:'on',v:'Growth signaling with no cytokine. Bcr-Abl is a constitutively active kinase that phosphorylates JAK2 and STAT5.'},
+   {n:'CML + Gleevec',mods:{bcr:'ko'},sig:{epo:0},ans:'off',v:'Signaling stops. Gleevec sits in the ATP pocket of Bcr-Abl. (The Philadelphia chromosome is still there; the protein just can\'t work.)'},
+   {n:'The skier\'s EpoR',mods:{epor:'on'},sig:{epo:0},ans:'on',v:'Extra red cells without extra Epo. His truncated receptor was constitutively active: gain-of-function, but not cancer.'},
+   {n:'Knock out JAK2',mods:{jak:'ko'},sig:{epo:1},ans:'off',v:'Epo can\'t signal. Cytokine receptors have no kinase of their own; JAK is that kinase.'}]},
+
+{ id:'hif', name:'HIF / VHL / VEGF', lec:'Lecture 9', sub:'Oxygen marks HIF for destruction. No oxygen, or no VHL, and VEGF turns on.',
+  bands:['environment','oxygen sensing','cytosol','nucleus'],
+  nodes:[
+   {id:'o2',l:'Normal oxygen',x:130,y:50,sig:1,on:1},
+   {id:'hyd',l:'HIF hydroxylated\n(-OH added)',x:130,y:140,ins:[['o2',1]]},
+   {id:'vhl',l:'VHL\n(E3 ligase)',x:380,y:140,src:1},
+   {id:'des',l:'Ubiquitin +\nproteasome destroy HIF',x:250,y:240,ins:[['hyd',1],['vhl',1]]},
+   {id:'hif',l:'HIF',x:520,y:240,src:1,ins:[['des',-1]]},
+   {id:'hnuc',l:'HIF in nucleus',x:520,y:340,ins:[['hif',1]]},
+   {id:'vegf',l:'VEGF →\nangiogenesis',x:330,y:450,ins:[['hnuc',1]],out:{on:'VEGF is made and new blood vessels grow.',off:'No VEGF; no new vessels.'}}],
+  chain:['o2','hyd','vhl','des','hif','hnuc','vegf'],
+  presets:[
+   {n:'Hypoxia (low oxygen)',mods:{},sig:{o2:0},ans:'on',v:'VEGF turns on. Without oxygen HIF isn\'t hydroxylated, VHL can\'t recognize it, and it survives to enter the nucleus.'},
+   {n:'VHL syndrome',mods:{vhl:'ko'},sig:{o2:1},ans:'on',v:'VEGF on even with oxygen. HIF isn\'t overmade; it just isn\'t destroyed. Result: hemangioblastomas.'}]},
+
+{ id:'wnt', name:'Wnt / β-catenin', lec:'Lecture 11', sub:'The pathway works by stopping destruction. APC is a brake; β-catenin is the pedal.',
+  bands:['outside','membrane','cytosol','nucleus'],
+  nodes:[
+   {id:'wnt',l:'Wnt (palmitoylated)',x:110,y:50,sig:1,on:0},
+   {id:'fz',l:'Frizzled + LRP',x:110,y:128,ins:[['wnt',1]]},
+   {id:'dvl',l:'Dishevelled\n(pulls axin away)',x:110,y:225,ins:[['fz',1]]},
+   {id:'axin',l:'Axin (scaffold)',x:330,y:128,src:1},
+   {id:'apc',l:'APC',x:480,y:128,src:1},
+   {id:'gsk',l:'GSK-3 + CK1',x:620,y:128,src:1},
+   {id:'dc',l:'Destruction complex\nphosphorylates β-cat',x:400,y:225,ins:[['axin',1],['apc',1],['gsk',1],['dvl',-1]]},
+   {id:'bcat',l:'β-catenin',x:400,y:330,src:1,ins:[['dc',-1]]},
+   {id:'tcf',l:'β-catenin + TCF\n(Groucho displaced)',x:240,y:455,ins:[['bcat',1]]},
+   {id:'myc',l:'Myc and Wnt\ntargets ON',x:520,y:455,ins:[['tcf',1]],out:{on:'Wnt target genes (like Myc) are on: growth.',off:'Groucho keeps TCF\'s genes off.'}}],
+  chain:['wnt','fz','dvl','dc','bcat','tcf','myc'],
+  presets:[
+   {n:'Add Wnt',mods:{},sig:{wnt:1},ans:'on',v:'Myc turns on. Dishevelled pulls axin away, the destruction complex falls apart, and β-catenin survives to reach TCF.'},
+   {n:'Lose APC (FAP / colon)',mods:{apc:'ko'},sig:{wnt:0},ans:'on',v:'Wnt targets on with no Wnt. Without APC the destruction complex can\'t work, so β-catenin is never destroyed. APC is a tumor suppressor.'},
+   {n:'β-catenin that can\'t be phosphorylated',mods:{bcat:'on'},sig:{wnt:0},ans:'on',v:'Same outcome as losing APC. A stabilized β-catenin escapes the complex: β-catenin is acting as an oncogene.'},
+   {n:'Knock out GSK-3',mods:{gsk:'ko'},sig:{wnt:0},ans:'on',v:'β-catenin builds up. GSK-3 (with CK1) adds the phosphates that mark β-catenin for the proteasome.'}]},
+
+{ id:'tgf', name:'TGFβ / Smads', lec:'Lecture 11', sub:'A brake: TGFβ makes cells stop dividing. Lose a Smad or a receptor and the brake is gone.',
+  bands:['outside','membrane','cytosol','nucleus'],
+  nodes:[
+   {id:'tgf',l:'TGFβ (dimer)',x:200,y:50,sig:1,on:1},
+   {id:'r2',l:'Type II receptor\n(Ser/Thr kinase)',x:120,y:128,ins:[['tgf',1]]},
+   {id:'r1',l:'Type I receptor',x:330,y:128,ins:[['r2',1]]},
+   {id:'s23',l:'Smad2/3 (R-Smad)\nNLS unmasked',x:330,y:235,ins:[['r1',1]]},
+   {id:'s4',l:'Smad4 (co-Smad)',x:560,y:235,src:1},
+   {id:'cx',l:'Smad complex +\nimportin → nucleus',x:450,y:335,ins:[['s23',1],['s4',1]]},
+   {id:'p15',l:'p15 and other\nCDK inhibitors',x:220,y:455,ins:[['cx',1]]},
+   {id:'stop',l:'Division stopped\n(brake ON)',x:520,y:455,ins:[['p15',1]],out:{on:'The cell stops dividing: the TGFβ brake works.',off:'The cell keeps dividing: the brake is gone.'}}],
+  chain:['tgf','r2','r1','s23','s4','cx','p15','stop'],
+  presets:[
+   {n:'Lose Smad4 (DPC, 18q)',mods:{s4:'ko'},sig:{tgf:1},ans:'off',v:'Cells keep dividing despite TGFβ. Without Smad4 the R-Smads can\'t form the complex that induces p15. Common in pancreatic and colon cancer.'},
+   {n:'Lose the type II receptor',mods:{r2:'ko'},sig:{tgf:1},ans:'off',v:'No signal. Type II is the kinase that activates type I, so nothing downstream gets phosphorylated.'},
+   {n:'Remove TGFβ',mods:{},sig:{tgf:0},ans:'off',v:'No brake signal, so no p15. Normal cells rely on this signal to stop growing.'}]}
+];
+
+/* ---------- state ---------- */
+const $ = id => document.getElementById(id);
+let cur = 0, mods = {}, sigs = {}, mode = 'explore', seq = [], pendingPreset = null, activePreset = null;
+function pw(){ return P[cur]; }
+function nodeById(id){ return pw().nodes.find(n=>n.id===id); }
+
+function resetState(){
+  mods = {}; sigs = {}; activePreset = null; pendingPreset = null;
+  pw().nodes.forEach(n=>{ if(n.def) mods[n.id]=n.def; if(n.sig) sigs[n.id]=n.on; });
+}
+
+/* ---------- logic ---------- */
+function evaluate(m, s){
+  const nodes = pw().nodes, st = {};
+  for(let pass=0; pass<20; pass++){
+    let changed=false;
+    nodes.forEach(n=>{
+      let v;
+      const md = m[n.id];
+      if(md==='ko') v=false;
+      else if(md==='on') v=true;
+      else if(n.sig) v=!!s[n.id];
+      else {
+        const pos=(n.ins||[]).filter(i=>i[1]>0), neg=(n.ins||[]).filter(i=>i[1]<0);
+        let p = pos.length ? (n.any ? pos.some(i=>st[i[0]]) : pos.every(i=>st[i[0]])) : !!n.src;
+        v = p && !neg.some(i=>st[i[0]]);
+      }
+      if(st[n.id]!==v){ st[n.id]=v; changed=true; }
+    });
+    if(!changed) break;
+  }
+  // prolonged: an off switch removed while its target is active spreads downstream
+  const prol = {};
+  nodes.forEach(n=>{ if(n.off && m[n.id]==='ko' && st[n.off]) prol[n.off]=true; });
+  for(let pass=0; pass<20; pass++){
+    let ch=false;
+    nodes.forEach(n=>{ if(!prol[n.id] && st[n.id] && (n.ins||[]).some(i=>i[1]>0 && prol[i[0]])){ prol[n.id]=true; ch=true; } });
+    if(!ch) break;
+  }
+  return {st, prol};
+}
+
+/* ---------- drawing ---------- */
+const W=720, H=510;
+function lines(t){ return String(t).split('\n'); }
+function boxSize(n){ const ls=lines(n.l); const w=Math.max(...ls.map(x=>x.length))*7.2+26; return {w:Math.min(Math.max(w,96),200), h:ls.length*15+18}; }
+function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+function draw(){
+  const p=pw(), {st,prol}=evaluate(mods,sigs);
+  const bands=[[0,92,'band-out'],[92,74,'band-mem'],[166,226,'band-cyt'],[392,118,'band-nuc']];
+  let s=`<svg class="pw" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(p.name)} pathway board"><defs>
+   <marker id="aP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ahP"/></marker>
+   <marker id="aT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ahT"/></marker>
+   <marker id="aO" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M5 0L5 10" stroke="var(--orange)" stroke-width="2.5"/></marker></defs>`;
+  bands.forEach((b,i)=>{ s+=`<rect x="0" y="${b[0]}" width="${W}" height="${b[1]}" class="${b[2]}"/>`; s+=`<text x="${W-8}" y="${b[0]+12}" text-anchor="end" class="bandlab">${esc(p.bands[i])}</text>`; });
+  // edges
+  p.nodes.forEach(n=>{ (n.ins||[]).forEach(([fid,sign])=>{
+    const f=nodeById(fid), a=boxSize(f), b=boxSize(n);
+    const [x1,y1,x2,y2]=clip(f,a,n,b);
+    const live = st[fid] && sign>0 && mods[n.id]!=='ko';
+    const cls = sign>0 ? `edge pos${live?' live flow':''}` : 'edge neg';
+    const mk = sign>0 ? (live?'aT':'aP') : 'aO';
+    s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${cls.replace(' flow','')}" marker-end="url(#${mk})"/>`;
+    if(live) s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="flow"/>`;
+  });
+   if(n.off){ const t=nodeById(n.off), a=boxSize(n), b=boxSize(t); const [x1,y1,x2,y2]=clip(n,a,t,b);
+     s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="edge neg" stroke-dasharray="4 4" marker-end="url(#aO)"/>`; }
+  });
+  // nodes
+  p.nodes.forEach(n=>{
+    const {w,h}=boxSize(n), md=mods[n.id];
+    let c = md==='ko' ? 'ko' : (st[n.id] ? 'on' : 'off');
+    if(md==='on') c+=' locked'; if(prol[n.id]) c+=' prol'; if(n.out) c+=' output';
+    const tag = md==='ko' ? (n.def==='ko'?'absent':'removed') : md==='on' ? 'locked ON' : prol[n.id] ? 'stays on longer' : (n.sig ? (sigs[n.id]?'present':'absent') : '');
+    const ls=lines(n.l), y0=n.y-(ls.length-1)*7.5;
+    s+=`<g class="node ${c}" tabindex="0" role="button" data-id="${n.id}" aria-label="${esc(n.l.replace(/\n/g,' '))}: ${tag||(st[n.id]?'active':'inactive')}">`;
+    s+=`<rect x="${n.x-w/2}" y="${n.y-h/2}" width="${w}" height="${h}"/>`;
+    ls.forEach((t,i)=>{ s+=`<text x="${n.x}" y="${y0+i*15}" text-anchor="middle" dominant-baseline="middle">${esc(t)}</text>`; });
+    if(tag) s+=`<text x="${n.x}" y="${n.y+h/2+11}" text-anchor="middle" class="${prol[n.id]&&md!=='ko'&&md!=='on'?'tagA':'tag'}">${tag}</text>`;
+    if(md==='ko' && n.def!=='ko'){ s+=`<path d="M${n.x-w/2+6} ${n.y-h/2+6} L${n.x+w/2-6} ${n.y+h/2-6}" stroke="var(--muted)" stroke-width="1.5"/>`; }
+    s+=`</g>`;
+  });
+  s+='</svg>';
+  $('board').innerHTML=s;
+  $('board').querySelectorAll('.node').forEach(g=>{
+    const act=()=>clickNode(g.dataset.id);
+    g.addEventListener('click',act);
+    g.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); }});
+  });
+  readout(st,prol);
+  if(R3){ if(R3.pw!==cur) build3D(); update3D(st,prol); }
+}
+function clip(f,a,n,b){
+  // line from edge of box f to edge of box n
+  const dx=n.x-f.x, dy=n.y-f.y;
+  const t1=Math.min(Math.abs((a.w/2+2)/(dx||1e-6)), Math.abs((a.h/2+2)/(dy||1e-6)));
+  const t2=Math.min(Math.abs((b.w/2+8)/(dx||1e-6)), Math.abs((b.h/2+8)/(dy||1e-6)));
+  return [ (f.x+dx*t1).toFixed(1), (f.y+dy*t1).toFixed(1), (n.x-dx*t2).toFixed(1), (n.y-dy*t2).toFixed(1) ];
+}
+
+function clickNode(id){
+  const n=nodeById(id);
+  activePreset=null; $('vff').innerHTML=''; $('predictBox').innerHTML='';
+  if(n.sig){ sigs[id]=sigs[id]?0:1; }
+  else if(n.def==='ko'){ mods[id] = mods[id]==='on' ? 'ko' : 'on'; }
+  else { const m=mods[id]; const nx = m===undefined ? 'ko' : m==='ko' ? 'on' : undefined; if(nx) mods[id]=nx; else delete mods[id]; }
+  draw();
+}
+
+/* ---------- readout ---------- */
+function outState(st,prol,o){ return prol[o.id] ? 'prol' : st[o.id] ? 'on' : 'off'; }
+function readout(st,prol){
+  const p=pw(), outs=p.nodes.filter(n=>n.out);
+  const base=evaluate(baseMods(), sigs);
+  let cls='good', html='';
+  outs.forEach(o=>{
+    const now=outState(st,prol,o), was=outState(base.st,base.prol,o);
+    const txt = now==='prol' ? o.out.on+' It stays on longer because an off switch is gone.' : (now==='on'? o.out.on : o.out.off);
+    html+=`<p class="outrow">${esc(o.l.replace(/\n/g,' '))}: ${now==='prol'?'ON, prolonged':now.toUpperCase()}</p><p>${esc(txt)}</p>`;
+    if(now!==was) cls = now==='prol' ? 'mid' : 'bad';
+  });
+  const changes=Object.keys(mods).filter(k=>mods[k] && !(nodeById(k).def===mods[k]));
+  if(changes.length){
+    html+=`<p class="why"><b>What you changed:</b> ${changes.map(k=>explainMod(k,mods[k],base.st)).join(' ')}</p>`;
+  } else if(cls==='good'){ html+=`<p class="why">Normal pathway with the current signals. Tap a box to break it, or try a scenario below.</p>`; }
+  const r=$('readout'); r.className='readout '+cls; r.innerHTML=html;
+}
+function baseMods(){ const m={}; pw().nodes.forEach(n=>{ if(n.def) m[n.id]=n.def; }); return m; }
+function explainMod(id,md,baseSt){
+  const n=nodeById(id), name=n.l.replace(/\n/g,' ');
+  const neg = pw().nodes.some(x=>(x.ins||[]).some(i=>i[0]===id && i[1]<0));
+  if(md==='ko'){
+    if(n.off) return `Removed ${name}, an off switch, so whatever it shuts down stays on longer.`;
+    if(neg) return `Removed ${name}, which normally blocks the next step, so the step it blocks is freed.`;
+    return `Removed ${name}, so everything that needs it downstream loses its input.`;
+  }
+  if(neg) return `Locked ${name} ON, so the step it blocks stays blocked.`;
+  return `Locked ${name} ON, so it drives everything downstream even without the signal.`;
+}
+
+/* ---------- presets with prediction ---------- */
+function renderPresets(){
+  $('presets').innerHTML = pw().presets.map((pr,i)=>`<button type="button" class="chip pre" data-i="${i}">${esc(pr.n)}</button>`).join('');
+  $('presets').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>choosePreset(+b.dataset.i)));
+}
+function applyPreset(pr){
+  mods=baseMods(); Object.assign(mods, pr.mods); sigs={...sigs, ...pr.sig}; activePreset=pr; draw();
+  $('vff').innerHTML=`<div class="vff"><b>How she'd mark it:</b> ${esc(pr.v)}</div>`;
+}
+function choosePreset(i){
+  const pr=pw().presets[i];
+  if(!$('predictToggle').checked){ $('predictBox').innerHTML=''; applyPreset(pr); return; }
+  resetSignalsOnly();
+  const out=pw().nodes.find(n=>n.out);
+  $('vff').innerHTML='';
+  $('predictBox').innerHTML=`<p style="margin:10px 0 4px"><b>${esc(pr.n)}.</b> Predict what happens to <i>${esc(out.l.replace(/\n/g,' '))}</i>:</p>
+    <div class="predict"><button type="button" class="btn" data-a="on">ON</button><button type="button" class="btn" data-a="off">OFF</button><button type="button" class="btn" data-a="prol">ON, but lasts longer</button></div><p class="result" id="pres"></p>`;
+  $('predictBox').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    const ok=b.dataset.a===pr.ans; const r=$('pres');
+    r.textContent= ok ? 'Correct.' : 'Not quite. Watch the board.'; r.className='result '+(ok?'ok':'no');
+    applyPreset(pr);
+  }));
+}
+function resetSignalsOnly(){ pw().nodes.forEach(n=>{ if(n.sig) sigs[n.id]=n.on; }); mods=baseMods(); draw(); }
+
+/* ---------- build mode ---------- */
+function shuffled(a){ const b=a.slice(); for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]]; } return b; }
+function renderBuild(){
+  const p=pw(); const used=new Set(seq);
+  const pool=shuffledPool || (shuffledPool=shuffled(p.chain));
+  $('parts').innerHTML = pool.filter(id=>!used.has(id)).map(id=>`<button type="button" class="chip" data-id="${id}">${esc(nodeById(id).l.replace(/\n/g,' '))}</button>`).join('') || '<span class="sub">All parts placed. Check your order.</span>';
+  $('parts').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ seq.push(b.dataset.id); renderBuild(); }));
+  $('slots').innerHTML = seq.length ? seq.map((id,i)=>`<span class="slot" data-i="${i}">${esc(nodeById(id).l.replace(/\n/g,' '))}</span>${i<seq.length-1?'<span class="arrow">→</span>':''}`).join('') : '<span class="sub">Tap parts below to place them here.</span>';
+}
+let shuffledPool=null;
+function checkBuild(){
+  const p=pw(); let right=0;
+  $('slots').querySelectorAll('.slot').forEach((el,i)=>{ const ok=seq[i]===p.chain[i]; el.classList.toggle('wrong',!ok); if(ok) right++; });
+  const done=seq.length===p.chain.length;
+  $('buildResult').textContent = done && right===p.chain.length ? 'Perfect order. That is the full relay.' : `${right} of ${p.chain.length} in the right place${done?'':' so far'}. Orange ones are out of order.`;
+  $('buildResult').className='result '+(done&&right===p.chain.length?'ok':'no');
+}
+
+/* ---------- tabs, modes, tilt ---------- */
+function renderTabs(){
+  $('tabs').innerHTML=P.map((p,i)=>`<button type="button" aria-pressed="${i===cur}" data-i="${i}">${esc(p.name)}</button>`).join('');
+  $('tabs').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>select(+b.dataset.i)));
+}
+function select(i){
+  cur=i; resetState(); seq=[]; shuffledPool=null;
+  try{ localStorage.setItem('pwlab-cur', String(i)); }catch(e){}
+  renderTabs(); $('pwTitle').textContent=pw().name; $('pwSub').textContent=pw().lec+'. '+pw().sub;
+  $('vff').innerHTML=''; $('predictBox').innerHTML=''; $('buildResult').textContent='';
+  renderPresets(); renderBuild(); draw();
+}
+function setMode(m){
+  mode=m; $('mExplore').setAttribute('aria-pressed', m==='explore'); $('mBuild').setAttribute('aria-pressed', m==='build');
+  $('explorePanel').hidden = m!=='explore'; $('buildPanel').hidden = m!=='build';
+  $('stage').hidden = m==='build';
+}
+
+$('mExplore').addEventListener('click',()=>setMode('explore'));
+$('mBuild').addEventListener('click',()=>setMode('build'));
+$('resetAll').addEventListener('click',()=>select(cur));
+$('check').addEventListener('click',checkBuild);
+$('undo').addEventListener('click',()=>{ seq.pop(); renderBuild(); $('buildResult').textContent=''; });
+$('clear').addEventListener('click',()=>{ seq=[]; shuffledPool=null; renderBuild(); $('buildResult').textContent=''; });
+
+/* ---------- real 3D view (three.js) ---------- */
+let R3=null;
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#888';
+const to3=(x,y)=>[(x-360)/38,-(y-255)/38];
+function label3(text){
+  const c=document.createElement('canvas'), g=c.getContext('2d'), f=30, pad=14, ls=String(text).split('\n');
+  g.font=`600 ${f}px Atkinson Hyperlegible, Segoe UI, sans-serif`;
+  const w=Math.ceil(Math.max(...ls.map(l=>g.measureText(l).width)))+pad*2, h=ls.length*(f+6)+pad*1.4;
+  c.width=w; c.height=h; g.font=`600 ${f}px Atkinson Hyperlegible, Segoe UI, sans-serif`;
+  g.fillStyle=css('--surface'); g.strokeStyle=css('--line'); g.lineWidth=3;
+  g.beginPath(); g.roundRect ? g.roundRect(2,2,w-4,h-4,14) : g.rect(2,2,w-4,h-4); g.fill(); g.stroke();
+  g.fillStyle=css('--ink'); g.textAlign='center'; g.textBaseline='middle';
+  ls.forEach((l,i)=>g.fillText(l,w/2,pad*0.7+(f+6)*(i+0.5)));
+  const t=new THREE.CanvasTexture(c); t.anisotropy=4;
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false,transparent:true}));
+  sp.scale.set(w/85,h/85,1); sp.renderOrder=10; return sp;
+}
+function init3D(){
+  if(!window.THREE || !THREE.OrbitControls) return false;
+  try{
+    const host=$('three'), renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2)); host.prepend(renderer.domElement);
+    const scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(42,1.4,0.1,300);
+    cam.position.set(5,3.5,22);
+    const ctl=new THREE.OrbitControls(cam,renderer.domElement); ctl.enableDamping=true; ctl.target.set(0,-0.8,-0.5); ctl.minDistance=7; ctl.maxDistance=40;
+    scene.add(new THREE.HemisphereLight(0xffffff,0x888888,0.8)); const dl=new THREE.DirectionalLight(0xffffff,0.55); dl.position.set(6,12,10); scene.add(dl);
+    R3={renderer,scene,cam,ctl,host,group:null,nodes:{},edges:[],pw:-1,ray:new THREE.Raycaster(),still:matchMedia('(prefers-reduced-motion: reduce)').matches};
+    const rs=()=>{ const w=host.clientWidth||600, h=Math.round(Math.max(360,Math.min(600,w*0.75))); renderer.setSize(w,h); cam.aspect=w/h; cam.updateProjectionMatrix(); };
+    new ResizeObserver(rs).observe(host); rs();
+    let down=null;
+    renderer.domElement.addEventListener('pointerdown',e=>{ down=[e.clientX,e.clientY]; renderer.domElement.style.cursor='grabbing'; });
+    renderer.domElement.addEventListener('pointerup',e=>{ renderer.domElement.style.cursor='grab'; if(!down) return; const moved=Math.hypot(e.clientX-down[0],e.clientY-down[1]); down=null; if(moved<6) pick(e); });
+    const clock=new THREE.Clock();
+    (function loop(){ requestAnimationFrame(loop); const dt=clock.getDelta();
+      R3.edges.forEach(ed=>ed.beads.forEach(b=>{ if(!b.visible) return; if(!R3.still){ b.userData.t=(b.userData.t+dt*0.45)%1; } b.position.copy(ed.curve.getPoint(b.userData.t)); }));
+      ctl.update(); renderer.render(scene,cam); })();
+    return true;
+  }catch(e){ console.log('3D unavailable', e); return false; }
+}
+function pick(e){
+  const r=R3.renderer.domElement.getBoundingClientRect();
+  const v=new THREE.Vector2(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
+  R3.ray.setFromCamera(v,R3.cam);
+  const hit=R3.ray.intersectObjects(Object.values(R3.nodes).map(n=>n.mesh))[0];
+  if(hit) clickNode(hit.object.userData.id);
+}
+function build3D(){
+  const p=pw(); R3.pw=cur;
+  if(R3.group) R3.scene.remove(R3.group);
+  const G=new THREE.Group(); R3.group=G; R3.scene.add(G); R3.nodes={}; R3.edges=[];
+  const mat=(c,o=1)=>new THREE.MeshStandardMaterial({color:c,transparent:o<1,opacity:o,depthWrite:o>=1,roughness:.55,metalness:.05});
+  // cell layers
+  const [,ym]=to3(0,129);
+  const mem=new THREE.Mesh(new THREE.BoxGeometry(20,1.3,9), mat(css('--amber'),0.12)); mem.position.y=ym; G.add(mem);
+  [ym+0.65,ym-0.65].forEach(y=>{ const s=new THREE.Mesh(new THREE.BoxGeometry(20,0.06,9), mat(css('--amber'),0.55)); s.position.y=y; G.add(s); });
+  const [,yn]=to3(0,455);
+  const nuc=new THREE.Mesh(new THREE.SphereGeometry(1,40,24), mat('#8b7fb8',0.16)); nuc.scale.set(9.5,1.6,4.2); nuc.position.y=yn; G.add(nuc);
+  [[p.bands[0],50],[p.bands[1],129],[p.bands[2],280],[p.bands[3],455]].forEach(([t,y])=>{ const l=label3(t.toUpperCase()); l.material.opacity=.7; const [,yy]=to3(0,y); l.position.set(-10.6,yy,-3.8); l.scale.multiplyScalar(.75); G.add(l); });
+  const chain=new Set(p.chain);
+  const pos={}; p.nodes.forEach(n=>{ const [x,y]=to3(n.x,n.y); pos[n.id]=new THREE.Vector3(x,y,chain.has(n.id)?0.4:-2.2); });
+  // edges
+  const addEdge=(a,b,sign,offSw)=>{
+    const A=pos[a], B=pos[b], mid=A.clone().add(B).multiplyScalar(.5); mid.z+=1.1;
+    const curve=new THREE.QuadraticBezierCurve3(A,mid,B);
+    const tube=new THREE.Mesh(new THREE.TubeGeometry(curve,24,sign>0?0.05:0.045,6,false), mat(sign>0?css('--muted'):css('--orange'),sign>0?0.8:0.9)); G.add(tube);
+    const beads=[];
+    if(sign>0) for(let k=0;k<3;k++){ const b=new THREE.Mesh(new THREE.SphereGeometry(0.13,12,8), new THREE.MeshBasicMaterial({color:css('--teal')})); b.userData.t=k/3; b.visible=false; G.add(b); beads.push(b); }
+    else { const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.32,0.32,0.07,20), mat(css('--orange'))); const end=curve.getPoint(0.86), tan=curve.getTangent(0.86); cap.position.copy(end); cap.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),tan.normalize()); G.add(cap); }
+    R3.edges.push({from:a,to:b,sign,tube,beads,curve});
+  };
+  p.nodes.forEach(n=>{ (n.ins||[]).forEach(([f,sg])=>addEdge(f,n.id,sg)); if(n.off) addEdge(n.id,n.off,-1,true); });
+  // nodes
+  p.nodes.forEach(n=>{
+    let geo, inMem = n.y>92 && n.y<166;
+    if(n.sig) geo=new THREE.IcosahedronGeometry(0.5,1);
+    else if(inMem) geo=new THREE.CylinderGeometry(0.42,0.42,2.1,24);
+    else if(n.out) geo=new THREE.TorusKnotGeometry(0.42,0.16,64,10);
+    else geo=new THREE.SphereGeometry(0.62,32,20);
+    const m=new THREE.Mesh(geo, mat(css('--teal-soft'))); m.position.copy(pos[n.id]); if(!n.sig && !inMem && !n.out) m.scale.set(1.25,0.85,0.85);
+    m.userData.id=n.id; G.add(m);
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(0.95,0.07,10,40), new THREE.MeshBasicMaterial({color:css('--orange')})); ring.position.copy(pos[n.id]); ring.visible=false; G.add(ring);
+    const lab=label3(n.l); lab.position.copy(pos[n.id]).add(new THREE.Vector3(0, inMem?1.75:1.2, 0.3)); G.add(lab);
+    R3.nodes[n.id]={mesh:m,ring,lab};
+  });
+}
+function update3D(st,prol){
+  const teal=css('--teal'), slate=css('--slate'), muted=css('--muted');
+  pwNodesEach(n=>{
+    const o=R3.nodes[n.id]; if(!o) return; const md=mods[n.id], m=o.mesh.material;
+    m.wireframe = md==='ko'; m.transparent=true;
+    if(md==='ko'){ m.color.set(muted); m.opacity=.35; m.emissive.set('#000'); }
+    else if(st[n.id]){ m.color.set(teal); m.opacity=1; m.emissive.set(teal); m.emissiveIntensity=.25; }
+    else { m.color.set(slate); m.opacity=.9; m.emissive.set('#000'); }
+    o.ring.visible = md==='on' || (!!prol[n.id] && md!=='ko');
+    o.ring.material.color.set(md==='on'?css('--orange'):css('--amber'));
+    o.lab.material.opacity = md==='ko' ? .45 : 1;
+  });
+  R3.edges.forEach(ed=>{ const live = ed.sign>0 && st[ed.from] && mods[ed.to]!=='ko';
+    if(ed.sign>0) ed.tube.material.color.set(live?teal:muted); ed.beads.forEach(b=>b.visible=live); });
+}
+function pwNodesEach(f){ pw().nodes.forEach(f); }
+function setView(v){
+  const three = v==='3d' && R3;
+  $('three').hidden=!three; $('board').hidden=!!three;
+  $('v3d').setAttribute('aria-pressed', !!three); $('v2d').setAttribute('aria-pressed', !three);
+  try{ localStorage.setItem('pwlab-view', three?'3d':'2d'); }catch(e){}
+}
+$('v3d').addEventListener('click',()=>setView('3d'));
+$('v2d').addEventListener('click',()=>setView('2d'));
+const ok3=init3D();
+if(!ok3){ $('v3d').disabled=true; $('v3d').textContent='3D model (not supported on this device)'; }
+
+let start=0; try{ const v=+localStorage.getItem('pwlab-cur'); if(v>=0 && v<P.length) start=v; }catch(e){}
+const hashIdx=()=>P.findIndex(p=>p.id===location.hash.slice(1));
+if(hashIdx()>=0) start=hashIdx();
+window.addEventListener('hashchange',()=>{ const i=hashIdx(); if(i>=0) select(i); });
+select(start);
+let v0='3d'; try{ v0=localStorage.getItem('pwlab-view')||'3d'; }catch(e){}
+setView(ok3 ? v0 : '2d');
+</script>

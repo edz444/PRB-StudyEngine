@@ -1,0 +1,12 @@
+{
+  "name": "study-engine",
+  "private": true,
+  "description": "Browser scripts for the study engine: diagram PNGs, image-occlusion label boxes, NotebookLM PDFs and smoke tests.",
+  "scripts": {
+    "check": "node engine/tools/check.js",
+    "notebooklm": "node engine/tools/notebooklm_pdf.js"
+  },
+  "dependencies": {
+    "playwright": "^1.47.0"
+  }
+}

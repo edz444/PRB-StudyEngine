@@ -1,0 +1,14 @@
+# Built files: regenerate with `make all`
+courses/*/out/
+courses/*/build/
+*.apkg
+
+# Instructor materials stay private: slide PDFs, extracted slide text and rendered slide images
+courses/*/source/
+courses/*/slides/*
+!courses/*/slides/.gitkeep
+courses/*/io/*.png
+
+__pycache__/
+node_modules/
+.DS_Store
