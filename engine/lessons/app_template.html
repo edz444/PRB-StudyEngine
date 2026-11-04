@@ -122,6 +122,8 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 .chk input:checked::after{content:""; width:7px; height:13px; border:solid var(--go-ink); border-width:0 3px 3px 0; transform:rotate(45deg) translate(-1px,-1px)}
 .chk input:disabled{opacity:.7; cursor:default}
 .skimnote{font-size:14px; color:var(--soft); margin:6px 0 4px}
+.nt .hot{font-style:normal; font-weight:700; color:var(--rose); background:var(--rose-soft); border-radius:999px; padding:0 7px; margin-left:4px; white-space:nowrap}
+.bd-exam{border-left:3px solid currentColor; padding-left:8px}
 .skimnote b{color:var(--ink2)}
 
 /* cloze check */
@@ -347,7 +349,7 @@ function renderHome(){
     L.lessons.forEach((Ls,i)=>{
       if(Ls.group && Ls.group!==lastGroup){ h += `<li class="grouplab">${esc(Ls.group.replace(/^Part \d+: /,''))}</li>`; lastGroup = Ls.group; }
       const st = S.done[lkey(L.id,i)];
-      h += `<li><button class="node ${st?'done':''} ${nxt===i?'next':''}" data-l="${L.id}" data-i="${i}"><span class="dot">${st?ICON.check.replace('<svg','<svg width="22" height="22"'):i+1}</span><span class="nt"><b>${esc(Ls.title)}</b><span>${Ls.cards.length} screens · ${Ls.checks.length} quick check${Ls.checks.length===1?'':'s'}</span></span>${S.saved[skey(L.id,i)]?`<span class="mark" title="Saved to revisit">${ICON.mark}</span>`:''}${st?`<span class="stars">${'★'.repeat(st.stars)}${'☆'.repeat(3-st.stars)}</span>`:''}</button></li>`;
+      h += `<li><button class="node ${st?'done':''} ${nxt===i?'next':''}" data-l="${L.id}" data-i="${i}"><span class="dot">${st?ICON.check.replace('<svg','<svg width="22" height="22"'):i+1}</span><span class="nt"><b>${esc(Ls.title)}</b><span>${Ls.cards.length} screens · ${Ls.checks.length} quick check${Ls.checks.length===1?'':'s'}${Ls.cards.some(c=>c.k==='exam')?' <i class="hot" title="On her practice set">◎ tested</i>':''}</span></span>${S.saved[skey(L.id,i)]?`<span class="mark" title="Saved to revisit">${ICON.mark}</span>`:''}${st?`<span class="stars">${'★'.repeat(st.stars)}${'☆'.repeat(3-st.stars)}</span>`:''}</button></li>`;
     });
     const bd = S.boss[L.id];
     h += `<li><button class="node boss ${bd?'done':''} ${nxt==='boss'?'next':''}" data-l="${L.id}" data-i="boss"><span class="dot">${ICON.crown.replace('<svg','<svg width="24" height="24"')}</span><span class="nt"><b>Boss level: ${esc(L.badge)}</b><span>Her question styles, practice questions, then your badge</span></span></button></li></ol></section>`;
@@ -632,7 +634,7 @@ function pwHTML(b){
 function lessonBoard(L, Ls){
   const pws = boardsFor(L.id, Ls.title);
   const hooks = Ls.cards.filter(c=>c.k==='hook').slice(0,3).map(c=>plain(c.h));
-  const traps = Ls.cards.filter(c=>c.k==='trap'||c.k==='easy').slice(0,3).map(c=>plain(c.h));
+  const traps = Ls.cards.filter(c=>c.k==='exam'||c.k==='trap'||c.k==='easy').slice(0,3).map(c=>plain(c.h));
   const left = `<p class="bd-h">Must know</p><ul>${Ls.obj.map(o=>`<li>${esc(o)}</li>`).join('')}</ul>` +
     (hooks.length?`<p class="bd-h g">Tricks</p><ul class="bd-g">${hooks.map(h=>`<li>${esc(h)}</li>`).join('')}</ul>`:'') +
     (traps.length?`<p class="bd-h r">Traps</p><ul class="bd-r">${traps.map(h=>`<li>${esc(h)}</li>`).join('')}</ul>`:'');
@@ -644,6 +646,18 @@ function lessonBoard(L, Ls){
 
 /* ---------- multi-page board notes ---------- */
 function cap1(h){ return h.trim().replace(/^([a-z])/, m=>m.toUpperCase()); }
+function examBoard(html){
+  const d=document.createElement('div'); d.innerHTML=html; d.querySelectorAll('.co-lab').forEach(x=>x.remove()); d.querySelectorAll('button.term').forEach(x=>x.replaceWith(x.textContent));
+  let out='', li=[];
+  const flush=()=>{ if(li.length){ out+=`<ul class="bd-notes">${li.map(x=>`<li>${x}</li>`).join('')}</ul>`; li=[]; } };
+  [...d.querySelector('aside')?.children||d.children].forEach(el=>{
+    if(el.tagName==='P') el.innerHTML.split(/(?<=[.!?])\s+(?=[A-Z("])/).forEach(x=>{ x=x.trim(); if(x) li.push(x); });
+    else if(el.tagName==='UL'||el.tagName==='OL') el.querySelectorAll('li').forEach(x=>li.push(x.innerHTML));
+    else if(el.querySelector&&el.querySelector('table')||el.tagName==='TABLE'){ flush(); out+=boardTable(el.outerHTML); }
+  });
+  flush();
+  return `<div class="bd-r bd-exam"><p class="bd-line"><b>◎ On her practice set</b></p>${out}</div>`;
+}
 function sentBullets(html){
   const d=document.createElement('div'); d.innerHTML=html; const out=[];
   d.querySelectorAll('p').forEach(p=>{ p.querySelectorAll('button.term').forEach(b=>b.replaceWith(b.textContent));
@@ -665,6 +679,7 @@ function blockHTML(c){
     case 'table': return kick + boardTable(c.h);
     case 'hook': return kick + `<p class="bd-g bd-line">★ ${esc(plain(c.h))}</p>`;
     case 'trap': case 'easy': return kick + `<p class="bd-r bd-line">✗ Trap: ${esc(plain(c.h))}</p>`;
+    case 'exam': return kick + examBoard(c.h);
     case 'nancy': return kick + `<div class="bd-b bd-line bd-nancy">${esc(plain(c.h)).replace(/(Plain version)/,'<br><b>$1</b>')}</div>`;
     case 'she': return kick + `<p class="bd-b bd-line">? She asks: ${esc(plain(c.h))}</p>`;
     case 'conn': return kick + `<p class="bd-b bd-line">↔ Link: ${esc(plain(c.h))}</p>`;

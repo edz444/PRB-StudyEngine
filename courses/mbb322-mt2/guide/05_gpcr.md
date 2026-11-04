@@ -399,6 +399,17 @@ Both-boxes trap: PLC-β is an enzyme (the effector), so it is NOT a second messe
 
 {{slide:L5-19|Yellow means low Ca2+, green and blue mean high. Same cell before and after angiotensin.}}
 
+:::exam
+Her Q10 and Q11 both test one idea: PLC-β makes two messengers at once, and then they go separate ways.
+
+- IP3 floats to the ER and lets Ca2+ out.
+- DAG stays in the membrane, and PKC needs DAG plus Ca2+ to switch on fully.
+
+So you can break one branch and leave the other alone. Remove DAG (her Q11: a drug that chelates it) and IP3 is still made, so Ca2+ rises normally, but PKC never fully turns on. Stop Gαq from hydrolyzing its GTP (her Q10) and PLC-β never turns off, so DAG stays high and Ca2+ stays high.
+
+Think of PKC as a door with two locks. Ca2+ is one key and DAG is the other. Take away one key and the door stays shut even though the other key works fine.
+:::
+
 #### What calcium does
 
 :::key
@@ -639,6 +650,26 @@ She writes that rods are "active in the dark" and that retinal "isomerizes to th
 Plain version: "active" means releasing neurotransmitter, and light is what quiets them. "Isomerizes to trans" means the bent molecule straightens out (cis = bent, trans = straight).
 :::
 
+:::exam
+Her Q1: "Both rhodopsin in vision and the muscarinic acetylcholine receptor in cardiac muscle are coupled to ion channels via G proteins. Describe the similarities and differences." Have this table ready.
+
+| | Rod rhodopsin (vision) | Muscarinic ACh receptor (heart) |
+|---|---|---|
+| Signal | light | acetylcholine from the vagus nerve |
+| Receptor | 7-pass GPCR | 7-pass GPCR |
+| G protein | transducin (Gt) | Gi |
+| Which piece carries the signal | Gα-GTP | Gβγ |
+| Path to the channel | indirect: Gα-GTP turns on cGMP PDE, cGMP falls | direct: Gβγ binds the K+ channel itself, no second messenger |
+| Channel | cGMP-gated cation channel | K+ channel |
+| Channel change | closes | opens |
+| Voltage | hyperpolarizes | hyperpolarizes |
+| What the body sees | rod releases less glutamate, which is how light gets reported | heart cell reaches threshold later, so the heart slows |
+
+Same: GPCR, trimeric G protein, ends at an ion channel, and both cells hyperpolarize. Different: the signal, the G protein, the subunit that does the work, whether a second messenger sits in between, the ion, and whether the channel opens or closes.
+
+A two-mark answer names at least two of each. The strongest difference to lead with is direct vs indirect: Gβγ touches the heart's K+ channel, while the rod needs PDE and a drop in cGMP.
+:::
+
 ### Smell
 
 :::key
@@ -726,6 +757,15 @@ Practice:
 - A rod cell's PDE is knocked out. Light can't lower cGMP. The cGMP-gated channels stay open, the rod stays depolarized and keeps releasing neurotransmitter as if it were dark. Those rods can't detect light.
 - A cell has a drug that blocks the phosphatase that removes IP3's phosphate. IP3 hangs around, the ER Ca2+ channels stay open longer, and the calcium signal lasts longer.
 - (Extra practice, not on her slides.) Pertussis toxin (whooping cough) locks Gαi in its OFF (GDP) form. Gαi is normally a brake on adenylyl cyclase. Removing a brake means cAMP goes UP. Two negatives make a positive; watch for that.
+- (Her Q10) Gαq can't hydrolyze GTP. That's a broken off switch on the PLC branch. PLC-β stays on, so DAG stays high in the membrane and IP3 keeps Ca2+ high in the cytosol. Answer: sustained DAG and sustained Ca2+.
+- (Her Q11) A drug chelates all the DAG. The break is on one branch only. IP3 is still made, so Ca2+ rises normally. PKC needs DAG at the membrane, so PKC isn't fully activated. Answer: Ca2+ normal, PKC fails.
+- (Her Q8) A non-hydrolyzable GTP analog in a rod. Transducin can't switch itself off, so cGMP PDE stays on, cGMP stays low, the cGMP-gated channels stay closed and the rod stays hyperpolarized for much longer than one flash should cause.
+
+:::exam
+About half of her practice set is this exact style: something is blocked, locked open or can't turn off, and you predict what happens next. That includes Q3, Q7, Q8, Q10, Q11, Q12, Q16, Q17 and Q22. Use the four steps every time: write the chain, find the break, decide stuck ON or stuck OFF, then say what the cell does.
+
+Watch for split pathways. If the chain forks (like IP3 and DAG), a break on one fork leaves the other fork working.
+:::
 
 ### Reading her questions on this lecture {#read-l5}
 
@@ -740,6 +780,10 @@ Practice:
 | "acetylcholine slows the heart" | Muscarinic GPCR, Gβγ opens K+ | Naming Gα-GTP as the subunit |
 | "light hits a rod" | cGMP down, channels close, hyperpolarize | Assuming the second messenger rises |
 | "open a K+ (or Cl-) channel" | Hyperpolarization | Forgetting which side each ion is high on |
+| "chelates DAG" or "DAG can't act" | IP3 branch still works; only PKC fails | Saying Ca2+ won't rise |
+| "what effector does transducin activate" | cGMP phosphodiesterase | Picking guanylyl cyclase, which makes cGMP instead of destroying it |
+| "second messenger produced by PLC-β" with an "A and B" option | IP3 and DAG are both made | Stopping at the first true option |
+| "compare rhodopsin and the muscarinic receptor" | Gα-GTP via PDE vs Gβγ straight to the K+ channel; both hyperpolarize | Listing only differences, or saying the rod depolarizes |
 
 ### Lecture 5 on one page
 

@@ -46,7 +46,7 @@ TAGS = ['MBB322', 'midterm2']
 MODEL_ID, IO_MODEL_ID = 1607392320, 1607392330
 DECK_ID_BASE, IO_DECK_ID_BASE = 2059400200, 2059400300
 GUID_TAG, IO_GUID_TAG = 'mbb322-mt2-v2', 'mbb322-io'
-WORDING_FILES = ['v3_l5', 'v3_l6', 'v3_l7', 'v3_l8', 'v3_l9', 'v3_l10', 'v3_l11']   # plain back + instructor wording per card
+WORDING_FILES = ['v3_l5', 'v3_l6', 'v3_l7', 'v3_l8', 'v3_l9', 'v3_l10', 'v3_l11', 'v3_prac']   # plain back + instructor wording per card
 TRAP_CARDS = (126, 139)       # card numbers tagged nancy_trap
 REVIEW_CARDS = (140, 145)     # card numbers tagged MT1_review (no lecture deck)
 
@@ -56,3 +56,5 @@ NOTEBOOKLM = [('toolkit', 'L00_Background_toolkit', 'Background toolkit (read be
               ('l7', 'L07_Optogenetics', 'Lecture 7: Optogenetics'), ('l8', 'L08_RTKs', 'Lecture 8: Receptor tyrosine kinases'),
               ('l9', 'L09_Cancer_I', 'Lecture 9: Cancer I'), ('l10', 'L10_Cancer_II', 'Lecture 10: Cancer II'), ('l11', 'L11_Cancer_III', 'Lecture 11: Cancer III')]
 LEC_TAGS = {5: 'L5_GPCRs', 6: 'L6_Synapses', 7: 'L7_Optogenetics', 8: 'L8_RTKs', 9: 'L9_Cancer_I', 10: 'L10_Cancer_II', 11: 'L11_Cancer_III'}
+
+PRACTICE_TAG = 'her_practice_set'   # Anki tag for cards written from her practice set (wording entries with a 'lec' key)

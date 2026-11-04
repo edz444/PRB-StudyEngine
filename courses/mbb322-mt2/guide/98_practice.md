@@ -1,6 +1,155 @@
 ## Practice in her style {#practice}
 
-These copy the question styles from midterm 1. Answer in your head (or on paper with the VFF formula) before opening each answer. Short-answer marks assume one point for the verdict and one for the reason.
+Answer in your head (or on paper with the VFF formula) before opening each answer. Short-answer marks assume one point for the verdict and one for the reason.
+
+### Her Midterm 2 practice set {#practice-hers}
+
+These are her own practice questions for this midterm, with model answers. The tag after each number says which lecture it belongs to. They also show up in that lecture's boss level in the Lesson Path.
+
+:::exam
+How she tests, from this set:
+
+- About half are "something is blocked, locked open or can't turn off, so predict what happens." Write the chain, find the break, decide stuck ON or stuck OFF.
+- Short answers ask you to compare two systems, "rationalize" a rule from first principles, or "define, then explain the rationale" for a drug. Each wants a mechanism, not a restated question.
+- Multiple-choice wrong options are real facts from a different pathway (STAT, SMAD, Cbl, Sos, ryanodine receptor). If an option is true somewhere else in the course, it's probably the trap.
+- "Which is INCORRECT" questions have four true statements. Mark each one T or F first.
+:::
+
+:::q
+1\. (Her Q1, L5) Both rhodopsin in vision and the muscarinic acetylcholine receptor in cardiac muscle are coupled to ion channels via G proteins. Describe the similarities and differences between these two systems.
+???
+Similar: both are 7-pass GPCRs that act through a trimeric G protein, both end at an ion channel, and both hyperpolarize their cell. Different: rhodopsin responds to light and uses transducin, and its Gα-GTP works indirectly (it turns on cGMP PDE, cGMP falls, and cGMP-gated cation channels close). The muscarinic receptor responds to acetylcholine and uses Gi, and its Gβγ binds the K+ channel directly and opens it, with no second messenger. Result: the rod releases less glutamate; the heart slows.
+:::
+
+:::q
+2\. (Her Q2, L6) Excitatory neurotransmitters open Na+ channels, while inhibitory neurotransmitters open either Cl- or K+ channels. Rationalize this observation in terms of the effects of these ions on the firing of an action potential.
+???
+An action potential fires only when the membrane reaches threshold, which is less negative than rest. Na+ is high outside, so opening Na+ channels lets plus charge in and depolarizes the membrane toward threshold, making firing more likely (excitatory). K+ is high inside, so opening K+ channels lets plus charge out; Cl- is high outside, so opening Cl- channels lets minus charge in. Both make the membrane more negative or hold it at rest, away from threshold, so firing is less likely (inhibitory).
+:::
+
+:::q
+3\. (Her Q3, L6) Normally an action potential travels in one direction along an axon until the axon terminus. What would you predict would be the effect of artificially depolarizing an axon in the middle of its length?
+???
+Two action potentials travel out from that point, one in each direction. In a resting axon the Na+ channels on both sides are closed and ready, with none inactivated, so both sides reach threshold and fire. Normally the spike goes one way only because it starts at one end and the Na+ channels behind it are inactivated (refractory).
+:::
+
+:::q
+4\. (Her Q4, L9) 90% of cancer deaths are caused by metastasis. Define metastasis. Explain the rationale for batimastat, an inhibitor of matrix metalloproteinases.
+???
+Metastasis is the spread of cancer cells from the primary tumor through the blood or lymph to distant sites, where they form secondary tumors. Matrix metalloproteinases (MMPs) are zinc-dependent enzymes that cut the extracellular matrix, including the basal lamina. Cancer cells need them to break through the basal lamina and to get into and out of blood vessels. Blocking MMPs stops invasion, so cells stay at the primary site and can't metastasize.
+:::
+
+:::q
+5\. (Her Q5, L9) Normal cells slow their division after filling a dish as a monolayer. If a circle of cells is removed from the middle, edge cells divide to fill the "wound" and then stop. How does the behavior of transformed cells differ?
+???
+Transformed cells have lost contact inhibition. They fill the wound but don't stop when they touch: they keep dividing, pile on top of each other into multiple layers and form foci. They also need much less growth factor.
+:::
+
+:::q
+6\. (Her Q6, L10) A gene involved in tumors is mutated in one copy in the affected cells, and the allele on the homologous chromosome is normal. When the gene is inserted into normal cells, the cells are transformed. What type of gene is this?
+???
+An oncogene (a mutated proto-oncogene). One mutant copy is enough, so it's dominant gain-of-function, and transferring it into normal cells (like NIH 3T3 transfection) transforms them. A tumor suppressor needs both copies lost, and adding one can't remove a working brake.
+:::
+
+:::q
+7\. (Her Q7, L6) Botulinum toxin paralyzes the nervous system by blocking neurotransmitter release. Biochemically, how does the toxin achieve this blocking effect at the molecular level?
+???
+Botulinum toxin is a protease that cuts SNARE proteins (such as VAMP on the vesicle) in the nerve terminal. Without intact SNAREs, synaptic vesicles can't dock and fuse with the plasma membrane, so acetylcholine isn't released even when Ca2+ enters. The muscle gets no signal, so the paralysis is flaccid.
+:::
+
+:::q
+8\. (Her Q8, L5) Predict the effect of a non-hydrolyzable analog of GTP on a rod cell exposed to light.
+???
+Transducin stays active because it can't hydrolyze the analog. cGMP phosphodiesterase stays on, cGMP stays low for a long time, the cGMP-gated channels stay closed, and the membrane stays hyperpolarized much longer than normal.
+:::
+
+:::q
+9\. (Her Q10, L5) A mutation in Gαq prevents it from hydrolyzing GTP. After stimulating a Gq-coupled receptor, which profile would you see over time? A. Sustained low Ca2+ because PLC can't be activated B. A brief IP3 spike that quickly returns to baseline C. Continuously elevated DAG at the membrane and sustained high cytoplasmic Ca2+ D. Massive accumulation of PIP2 E. Hyperactivation of PKA by cross-talk
+???
+C. Gαq can't turn itself off, so PLC-β keeps cutting PIP2. DAG stays high, IP3 keeps the ER Ca2+ channels open, and Ca2+ stays high. A is backwards, B assumes the off switch works, D is backwards (PIP2 gets used up), and PKA belongs to the Gαs branch.
+:::
+
+:::q
+10\. (Her Q11, L5) A drug chelates all DAG in the plasma membrane of smooth muscle cells. You then add a hormone that activates a Gq-coupled GPCR. What happens downstream? A. IP3 isn't made and Ca2+ stays locked in the ER B. Cytosolic Ca2+ rises normally, but PKC fails to be fully activated at the membrane C. PKC is constantly active and goes to the nucleus without Ca2+ D. The GPCR is immediately desensitized and endocytosed E. PLC reverses and makes PIP2
+???
+B. PLC-β still makes IP3, so the Ca2+ branch works. PKC needs both Ca2+ and DAG at the membrane, so with DAG gone it can't fully activate.
+:::
+
+:::q
+11\. (Her Q12, L6) A drug locks the sarcoplasmic reticulum Ca2+ release channels permanently open. What is the immediate state of the muscle? A. Permanently relaxed, because the SR pulls all Ca2+ out of the cytoplasm B. Continuous, sustained contraction, because cytosolic Ca2+ stays high and can't be pumped away C. T-tubules become ordinary membrane and action potentials stop D. ACh receptors upregulate 500% E. The cell switches to Mg2+ to power shortening
+???
+B. With the release channels stuck open, Ca2+ leaks out of the SR as fast as the pumps return it, so Ca2+ stays bound to troponin, tropomyosin stays moved, and myosin keeps pulling. A has the direction backwards.
+:::
+
+:::q
+12\. (Her Q13, L5) What effector is activated by an activated transducin after rhodopsin absorbs light? A. adenylyl cyclase B. guanylyl cyclase C. cGMP phosphodiesterase D. cAMP phosphodiesterase E. B and C
+???
+C. Transducin's Gα-GTP turns on cGMP PDE, which destroys cGMP. Guanylyl cyclase makes cGMP, the opposite job, so E is wrong too.
+:::
+
+:::q
+13\. (Her Q14, L5) Which is a second messenger produced by phosphatidylinositol-specific phospholipase C-β? A. diacylglycerol B. inositol 1,4,5-trisphosphate C. calcium ions D. cAMP E. A and B
+???
+E. PLC-β cuts PIP2 into two messengers at once, DAG and IP3. Ca2+ is a second messenger too, but PLC doesn't make it; IP3 releases it from the ER.
+:::
+
+:::q
+14\. (Her Q15, L7) What type of protein is channelrhodopsin-2, and how does it respond to light? A. A GPCR that activates adenylyl cyclase under UV light B. A light-gated ion channel that opens with blue light, letting cations rush in C. An active pump that uses green light to push Na+ out D. A light-sensitive protease activated by infrared E. A nuclear receptor that binds DNA under red light
+???
+B. ChR2 is itself the channel. Blue light (about 470 nm) flips its retinal and opens the pore. A describes a GPCR and C describes a pump, which are the other light tools.
+:::
+
+:::q
+15\. (Her Q16, L7) When blue light hits a neuron expressing ChR2, what ionic movement happens and how does it affect the resting potential? A. K+ diffuses in and hyperpolarizes the membrane B. Cations (mainly Na+) rush in and depolarize the membrane toward threshold C. Cl- diffuses in, moving the membrane away from threshold D. Na+ is pumped out using ATP E. The channel locks closed
+???
+B. Na+ and other cations flow in down their gradient, the membrane depolarizes, and the neuron fires. C is what halorhodopsin does.
+:::
+
+:::q
+16\. (Her second Q16, L10) What property of a substance is the Ames test designed to detect and measure directly? A. Disrupting the lipid bilayer B. Acting as a mutagen by inducing reverse mutations in a specialized bacterial strain C. Speeding entry into S phase D. Activating ryanodine receptors E. Toxicity toward the nuclear pore
+???
+B. The Ames test measures mutagenicity by counting bacteria that regain the ability to make histidine (revertants). Her option says E. coli; the classic strain is his- Salmonella, but it's still the right answer.
+:::
+
+:::q
+17\. (Her Q17, L6) What happens to an action potential if the delayed K+ channels are blocked while Na+ and leak channels work normally? A. It fails to depolarize at threshold B. The cell bursts from osmotic imbalance C. It depolarizes normally but takes much longer to return to rest D. Na+ channels lock open E. Rest shifts to +60 mV
+???
+C. The rise depends on Na+ channels, which still work. The fall needs K+ to leave, so with only inactivation and leak bringing it down, repolarization is much slower and there's no undershoot. A is what a Na+ channel blocker does.
+:::
+
+:::q
+18\. (Her Q18, L11) Which fact about tumor-suppressor mutations is INCORRECT? A. They allow unregulated proliferation and survival B. Both copies must be knocked out to show a phenotype C. They commonly arise by chromosomal translocation or gene amplification D. Some code for proteins that promote apoptosis E. They act as cellular brakes that get broken or removed
+???
+C. Translocation and amplification make more or new protein, which is how proto-oncogenes become oncogenes. Tumor suppressors are lost by deletion, point mutation or methylation.
+:::
+
+:::q
+19\. (Her Q19, L10) Which statement about cytokine receptors is incorrect? A. They bind tightly to JAK kinases B. The Epo receptor is an example C. The intracellular domain has a tyrosine kinase domain D. They can bind interleukins E. They can lead to activation of transcription factors
+???
+C. Cytokine receptors have no kinase of their own. They borrow JAK, which is permanently attached, and JAK activates STATs.
+:::
+
+:::q
+20\. (Her Q20, L8) Once an RTK dimerizes, how do the intracellular kinase domains become activated? A. They recruit a tyrosine phosphatase to remove inhibitory phosphates B. They cross-phosphorylate specific tyrosines on their partner's intracellular domain C. They use SH2 domains to bind and activate Ras D. They release GDP so GTP can bind E. They bind the E3 ligase Cbl, which activates them
+???
+B. Each kinase phosphorylates the other's activation lip. D is how G proteins and Ras switch on, and Cbl tags RTKs for shutdown.
+:::
+
+:::q
+21\. (Her Q21, L11) Once β-catenin escapes degradation and enters the nucleus, how does it drive transcription? A. It phosphorylates transcription factors directly B. It binds TCF/LEF, displaces co-repressors like Groucho and recruits co-activators C. It binds STAT proteins D. It binds SMAD proteins E. It binds APC in the nucleus
+???
+B. β-catenin is a co-activator, not a kinase or a DNA-binding protein. STAT is JAK-STAT, SMADs are TGFβ, and APC is part of the destruction complex in the cytoplasm.
+:::
+
+:::q
+22\. (Her Q22, L8) A FRET biosensor has CFP fused to Ras and YFP fused to the Ras-binding domain of Raf. What happens to the FRET signal when a growth factor stimulates the cell? A. It drops to zero because Ras moves to the nucleus B. It increases because Ras-GTP binds Raf, bringing CFP and YFP close together C. It stays the same D. It drops because Sos makes Ras hydrolyze GTP
+???
+B. The growth factor activates Ras through GRB2 and Sos, and only Ras-GTP binds Raf's Ras-binding domain, so the two labels come close and FRET rises. Sos is a GEF that turns Ras on; hydrolysis is GAP's job.
+:::
+
+### More practice in her style {#practice-more}
+
+These copy the question styles from midterm 1.
 
 :::q
 1\. A cell expresses a GPCR coupled to Gαs. You add a non-hydrolyzable GTP analog. What happens to cAMP and why? (2 pts)

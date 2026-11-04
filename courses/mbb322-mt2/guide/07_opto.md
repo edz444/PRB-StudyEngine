@@ -131,6 +131,15 @@ She writes: "covalently linked to the chromophore all trans-retinal. Upon absorp
 Plain version: "chromophore" is the light-catching part. Watch the direction: in ChR2 it goes all-trans TO 13-cis, the reverse of the rod in Lecture 5 (11-cis to all-trans).
 :::
 
+:::exam
+Her Q15 and Q16 are the two basic ChR2 facts, each surrounded by distractors borrowed from other proteins in the unit.
+
+- What it is: a light-gated ion channel that opens with blue light (about 470 nm).
+- What it does: cations, mainly Na+, rush in, the membrane depolarizes toward threshold, and the neuron fires.
+
+How to clear the distractors fast. "G protein coupled receptor" describes rod rhodopsin or OptoXR. "Pump" describes halorhodopsin or bacteriorhodopsin. "Chloride rushes in" is halorhodopsin. "K+ in and hyperpolarize" doesn't happen with any of these tools. Wrong colors (UV, green, red, infrared) are out too, since ChR2 is the blue one.
+:::
+
 ### 2005: the birth of optogenetics
 
 :::key
@@ -281,6 +290,8 @@ Plain version: they swapped the inside loops so light switches on a G protein of
 | "how did they get it into the brain" | Virus + cell-specific promoter; fiber optic for light | Saying "injected the protein" |
 | "control group" in an experiment | Non-infected mice + light | Ignoring that light alone could cause the effect |
 | "retinal isomer" | ChR2: all-trans to 13-cis; rod: 11-cis to all-trans | Using the rod direction for ChR2 |
+| "what type of protein is ChR2" | Light-gated cation channel, blue light | Picking GPCR (7 helices and retinal fool you) or pump |
+| "blue light hits a ChR2 neuron" | Na+ and other cations in, depolarize toward threshold | Picking Cl- in or K+ in (those are other tools or nothing) |
 
 ### Lecture 7 on one page
 

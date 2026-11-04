@@ -3,7 +3,7 @@
   --bg:#f7f3ec; --surface:#fffdf9; --ink:#1f2a33; --muted:#5b6670; --line:#ded6c9;
   --teal:#0e7490; --teal-soft:#d5edf2; --orange:#c2410c; --orange-soft:#fbe3d6;
   --amber:#b45309; --amber-soft:#f8ead2; --slate-soft:#e6e3dd; --blue:#2563eb;
-  --mem:#efe3c8; --indigo:#4338ca; --indigo-soft:#eef0ff; --green:#15803d; --green-soft:#e3f4e8;
+  --mem:#efe3c8; --indigo:#4338ca; --indigo-soft:#eef0ff; --green:#15803d; --green-soft:#e3f4e8; --rose:#be123c; --rose-soft:#fdecef;
   --f-display:"Literata", Georgia, "Times New Roman", serif;
   --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
@@ -11,12 +11,12 @@
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#141b22; --surface:#1b242d; --ink:#e7e2d8; --muted:#a2acb5; --line:#2e3a45;
   --teal:#38b2cc; --teal-soft:#123843; --orange:#f08a5d; --orange-soft:#4a2617;
-  --amber:#e6a23c; --amber-soft:#3f2e12; --slate-soft:#28323c; --blue:#7aa7ff; --mem:#3a3324; --indigo:#a5b4fc; --indigo-soft:#262a4a; --green:#6ee7a0; --green-soft:#16302a;
+  --amber:#e6a23c; --amber-soft:#3f2e12; --slate-soft:#28323c; --blue:#7aa7ff; --mem:#3a3324; --indigo:#a5b4fc; --indigo-soft:#262a4a; --green:#6ee7a0; --green-soft:#16302a; --rose:#fb7185; --rose-soft:#3a1720;
   color-scheme:dark }}
 :root[data-theme="dark"]{
   --bg:#141b22; --surface:#1b242d; --ink:#e7e2d8; --muted:#a2acb5; --line:#2e3a45;
   --teal:#38b2cc; --teal-soft:#123843; --orange:#f08a5d; --orange-soft:#4a2617;
-  --amber:#e6a23c; --amber-soft:#3f2e12; --slate-soft:#28323c; --blue:#7aa7ff; --mem:#3a3324; --indigo:#a5b4fc; --indigo-soft:#262a4a; --green:#6ee7a0; --green-soft:#16302a;
+  --amber:#e6a23c; --amber-soft:#3f2e12; --slate-soft:#28323c; --blue:#7aa7ff; --mem:#3a3324; --indigo:#a5b4fc; --indigo-soft:#262a4a; --green:#6ee7a0; --green-soft:#16302a; --rose:#fb7185; --rose-soft:#3a1720;
   color-scheme:dark }
 
 html{scroll-behavior:smooth; scroll-padding-top:64px}
@@ -69,6 +69,9 @@ tr:last-child td{border-bottom:none}
 .co-she{background:var(--teal-soft); border-color:transparent}
 .co-nancy{background:var(--indigo-soft); border-color:transparent; border-left:5px solid var(--indigo)}
 .co-nancy .co-lab{color:var(--indigo)}
+.co-exam{background:var(--rose-soft); border:2px solid var(--rose); border-left-width:6px}
+.co-exam .co-lab{color:var(--rose); font-weight:700}
+.co-exam .co-lab::before{content:"\25CE  "}
 .co-she .co-lab{color:var(--teal)}
 .co-note{background:var(--slate-soft); border-color:transparent}
 .co-note .co-lab{color:var(--muted)}

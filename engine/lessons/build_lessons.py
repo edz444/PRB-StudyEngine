@@ -32,7 +32,7 @@ def split_para(p):
 def card_kind(el):
     c = el.get('class') or []
     if el.name == 'aside':
-        for k in ('hook', 'trap', 'nancy', 'easy', 'she', 'conn', 'story', 'note'):
+        for k in ('exam', 'hook', 'trap', 'nancy', 'easy', 'she', 'conn', 'story', 'note'):
             if f'co-{k}' in c: return k
         return 'note'
     if el.name == 'figure' or 'slide' in c or 'fig' in c: return 'fig'
@@ -122,6 +122,9 @@ for m in re.finditer(r':::q\n(.*?)\n\?\?\?\n(.*?)\n:::', ptxt, re.S):
     q = re.sub(r'^\d+\\?\.\s*', '', q)
     opts = re.split(r'\s(?=[A-E]\.\s)', q)
     item = {'q': opts[0], 'a': a}
+    mt = re.match(r'\((Her [^,]+), L(\d+)\)\s*', item['q'])
+    if mt:
+        item['lec'] = 'l' + mt.group(2); item['q'] = mt.group(1) + ': ' + item['q'][mt.end():]; item['hers'] = True
     if len(opts) >= 3:
         item['opts'] = [re.sub(r'^[A-E]\.\s*', '', o) for o in opts[1:]]
         mm = re.match(r'([A-E])\.', a)
@@ -193,10 +196,11 @@ for lid, code, name, tag in LECS:
                  'lessons': out_lessons, 'boss_cards': build_cards(boss_nodes), 'onepage': onepage})
 # give each practice question to its best lecture
 for q in prac:
-    best = max(q['_s'], key=lambda k: q['_s'][k])
+    best = q.get('lec') or max(q['_s'], key=lambda k: q['_s'][k])
     for D in DATA:
-        if D['id'] == best: D.setdefault('boss_q', []).append({k: v for k, v in q.items() if k != '_s'})
+        if D['id'] == best: D.setdefault('boss_q', []).append({k: v for k, v in q.items() if k not in ('_s', 'lec')})
 for D in DATA: D.setdefault('boss_q', [])
+for D in DATA: D['boss_q'].sort(key=lambda q: not q.get('hers'))
 
 # cloze → simple structure
 for D in DATA:

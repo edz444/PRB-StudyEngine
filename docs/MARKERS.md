@@ -21,11 +21,16 @@ The guide is plain Markdown plus a few markers. `engine/guide/build.py` turns th
 :::easy         easy marks: "both boxes", order and swap traps
 :::she          a question the instructor wrote on her slide (never invent quotes)
 :::nancy        her exact wording, then "Plain version: ..." (label set in build.py LABEL)
+:::exam         how her practice set or past exams test this spot, with a model answer
 :::note         note about the guide itself
 :::q            practice question, then a line with ???, then the answer
 ```
 
 Each box starts with `:::type` on its own line and ends with `:::` on its own line.
+
+## Instructor practice questions
+
+In `98_practice.md`, start a question with `(Her Q10, L5)` to send it to that lecture's boss level. Tagged questions go first in the boss level. Anki cards written from her practice set get `lec=N` in their wording entry, which picks the subdeck and adds the `PRACTICE_TAG` tag.
 
 ## Paragraph conventions
 

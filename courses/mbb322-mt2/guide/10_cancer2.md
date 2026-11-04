@@ -113,6 +113,10 @@ Some chemicals mutate bacteria very well but are neutralized in mammals by DNA r
 **Ames = "Asks Microbes about Errors in Sequence."** It tests mutation, not cancer. Think of it as fixing a flat tire by accident: only a new mutation can patch the his- hole.
 :::
 
+:::exam
+Her practice version of this question says the Ames test uses "a specialized strain of E. coli." Her slide only says "bacteria," and the classic strain is his- *Salmonella*. Don't throw out the right option over the species name. Pick the option that says the test detects mutagens by counting reverse mutations in a bacterial strain. The other options test things the Ames test never measures, like membrane damage, entry into S phase, ryanodine receptors or toxicity.
+:::
+
 ### Indirect carcinogens and cytochrome P450
 
 :::key
@@ -266,6 +270,15 @@ A **proto-oncogene** is a normal gene, usually involved in controlling cell divi
 
 :::hook
 "**Proto**" means "first" or "original": the proto-oncogene is the original, normal version. The oncogene is the broken one.
+:::
+
+:::exam
+Her Q6 gives you three clues and asks what kind of gene it is. The mutant gene is present once, the other copy is normal, and putting the mutant gene into normal cells transforms them. That's an oncogene, for two reasons.
+
+- One bad copy is enough, so the change is dominant (gain of function).
+- Adding it to normal cells transforms them. That's the NIH 3T3 transfection test from this lecture, which is how mutant Ras was found.
+
+A tumor suppressor fails both clues: it needs both copies lost, and adding a gene can't remove a brake the cell already has.
 :::
 
 Four ways to turn a proto-oncogene into an oncogene (her Fig 20-22):
@@ -474,6 +487,10 @@ The pathway:
 
 :::hook
 **JAK is "Janus,"** the Roman god with two faces: one face on the receptor, one on STAT. **STAT** is also the doctor word for "right now": it's the fastest road to the nucleus.
+:::
+
+:::exam
+Her Q19 asks which statement about cytokine receptors is incorrect. The false one is "the intracellular domain has a tyrosine kinase domain." That's the whole point of cytokine receptors: they have no kinase of their own and borrow JAK. The true options are that they bind JAK tightly, the Epo receptor is one, they bind interleukins, and they end in transcription factors (STATs).
 :::
 
 | | RTK (L8) | Cytokine receptor + JAK (L10) |

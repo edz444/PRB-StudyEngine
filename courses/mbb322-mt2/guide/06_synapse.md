@@ -185,6 +185,14 @@ Two things happen together to bring the voltage back down (repolarize):
 "**Sodium first, potassium late.**" Na+ is the sprinter who starts the spike, K+ is the slowpoke who ends it and overshoots the finish line.
 :::
 
+:::exam
+Her Q17: block the delayed K+ channels and leave the Na+ and leak channels alone. Predict the spike.
+
+The rise is normal, because Na+ channels still open at threshold. The fall is the part that needs K+ to leave. With the delayed K+ channels blocked, only Na+ inactivation and the slow leak channels bring the voltage down, so the cell takes much longer to return to rest, and there's no undershoot.
+
+Her wrong options are worth knowing. "Fails to depolarize" is what a Na+ channel blocker would do. "Na+ channels lock open" and "rest jumps to +60 mV" don't follow from blocking K+.
+:::
+
 ### Why action potentials only travel forward
 
 :::key
@@ -225,6 +233,16 @@ The PET scan slide (seeing, thinking and hearing light up visual cortex, prefron
 She asks: "How is an action potential propagated unidirectionally??"
 
 Plain version: "Why does the spike only go one way?" The answer she wants is the inactivated Na+ channels behind the spike, not myelin.
+:::
+
+:::exam
+Her Q3 flips this question around: "What would you predict would be the effect of artificially depolarizing an axon in the middle of its length?"
+
+Answer: two spikes travel out from that point, one in each direction. In the middle of a resting axon, the Na+ channels on both sides are closed and ready, and none of them are inactivated yet. The Na+ spreading sideways from the poke reaches threshold on both sides, so both sides fire.
+
+Then say why that's different from normal. A natural spike starts at one end (near the cell body), so the stretch behind it is always on cooldown and it can only go forward. One direction is a result of where the spike starts plus inactivation behind it. The axon itself can conduct either way.
+
+Picture dropping a stone in the middle of a pond. The ripple goes out both ways because there's no "used" water on either side.
 :::
 
 ### Myelin and saltatory conduction
@@ -365,6 +383,12 @@ Two ways her figure breaks this cycle:
 "**Botox Breaks the zipper**" (SNAREs). "**Shibire**" sounds like "shivering" and the flies freeze up when warm because their recycling stops.
 :::
 
+:::exam
+Her Q7: "Biochemically, how does this toxin achieve this blocking effect at the molecular level?" The word "biochemically" means she wants the molecule and what is done to it. "It blocks release" is the question restated and won't earn the marks.
+
+Model answer: botulinum toxin is a protease that enters the nerve terminal and cuts SNARE proteins (VAMP on the vesicle, or its partner SNAREs on the membrane, depending on the toxin type). Without intact SNAREs, the vesicle can't zip onto the membrane and fuse, so even when Ca2+ comes in, no acetylcholine is released. The muscle never gets the signal, which is why the paralysis is limp.
+:::
+
 :::trap
 The Ca2+ channel at the nerve ending is voltage-gated (opened by the action potential), not ligand-gated. And the vesicle is loaded by an H+ antiporter, not by ATP directly.
 :::
@@ -388,6 +412,16 @@ The short version: excitatory signals push the next cell toward firing, inhibito
 
 :::hook
 Excitatory = "plus charges come in, the cell gets excited." Inhibitory = "plus goes out or minus comes in, the cell calms down." **GABA = "Gotta Always Be Asleep."**
+:::
+
+:::exam
+Her Q2 asks you to "rationalize" this table in terms of firing. "Rationalize" means explain it from first principles. Build the answer from three facts.
+
+1. A neuron fires an action potential only when its membrane reaches threshold, which is less negative than rest.
+2. Na+ is high outside and the inside is negative, so opening Na+ channels lets plus charge rush in. The membrane depolarizes toward threshold, so firing becomes more likely. That's excitatory.
+3. K+ is high inside, so opening K+ channels lets plus charge leave. Cl- is high outside, so opening Cl- channels lets minus charge come in. Both push the membrane more negative or hold it at rest, away from threshold, so firing becomes less likely. That's inhibitory.
+
+One-line version: excitatory transmitters move the voltage toward threshold, inhibitory ones move it away or pin it at rest. Which way each ion moves comes from which side it's crowded on.
 :::
 
 ### The neuromuscular junction (NMJ)
@@ -517,6 +551,12 @@ Tropomyosin is a "Do Not Touch" rope over the actin. Ca2+ talks to the security 
 Ca2+ is the trigger twice in the same story: it releases neurotransmitter at the nerve ending, and it uncovers actin in the muscle. In Lecture 5, calcium was released from the ER by IP3. Here it's released from the SR by voltage-sensing channels in the T tubule. Different door, same calcium-vault idea.
 :::
 
+:::exam
+Her Q12: a drug locks the SR Ca2+ release channels permanently open. Use the chain: SR channel opens, Ca2+ floods the cytosol, Ca2+ binds troponin, tropomyosin moves, myosin grabs actin. Relaxing needs the pumps to win and pull Ca2+ back into the SR. With the door jammed open, Ca2+ leaks out as fast as it's pumped in, so cytosolic Ca2+ stays high and the muscle stays contracted (sustained contraction, tetany or rigor).
+
+Option A ("the SR sucks all the calcium out and the muscle goes limp") has the direction backwards. An open release channel lets Ca2+ out of the SR.
+:::
+
 ### Drugs and toxins at the synapse
 
 :::key
@@ -595,6 +635,11 @@ Practice:
 | "Ca2+ binds..." in muscle | Troponin, which moves tropomyosin | Saying Ca2+ binds tropomyosin or myosin |
 | "five channels" at the NMJ | The exact order nerve to SR | Skipping the T-tubule voltage sensor |
 | "Valium" | Helps GABA open Cl- channels, hyperpolarizes | Saying it blocks GABA |
+| "depolarize the middle of an axon" | Spikes go both ways; one-way is normal only because the spike starts at one end | Saying it can only go toward the terminal |
+| "delayed K+ channels blocked" | Normal rise, very slow return to rest, no undershoot | Picking "fails to depolarize" (that's a Na+ blocker) |
+| "biochemically, how does botulinum toxin block release" | It's a protease that cuts SNAREs, so vesicles can't fuse | Restating "blocks release" with no molecule |
+| "SR Ca2+ release channels locked open" | Ca2+ stays high, sustained contraction | Saying the muscle relaxes |
+| "rationalize excitatory vs inhibitory" | Na+ in moves toward threshold; K+ out or Cl- in moves away | Listing ions with no link to threshold |
 
 ### Lecture 6 on one page
 

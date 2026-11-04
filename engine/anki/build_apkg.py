@@ -65,7 +65,8 @@ for line in open(COURSE / 'anki' / 'cards.txt', encoding='utf-8'):
     if lo <= n <= hi: tags = [CFG.TAGS[0], 'MT1_review']
     if trap: tags.append('has_trap')
     if B[n]['hu']: tags.append(f'{ITAG}_wording_harder')
-    decks[img[0] if img else 0].add_note(genanki.Note(model=model, fields=[cloze, back], tags=tags, guid=genanki.guid_for(CFG.GUID_TAG, cloze)))
+    if 'lec' in B[n]: tags.append(getattr(CFG, 'PRACTICE_TAG', 'practice_set'))
+    decks[img[0] if img else B[n].get('lec', 0)].add_note(genanki.Note(model=model, fields=[cloze, back], tags=tags, guid=genanki.guid_for(CFG.GUID_TAG, cloze)))
 # ---------- image occlusion notes ----------
 import json as _json
 _iof = BUILD / 'io_out' / 'cards.json'

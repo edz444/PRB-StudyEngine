@@ -91,6 +91,12 @@ The short version: pair up, tag each other, put out landing pads.
 "**Pair up, poke each other, put out landing pads.**" Two people who each can't reach their own back, so they scratch each other's.
 :::
 
+:::exam
+Her Q20: "how do the intracellular kinase domains become activated?" The answer is cross-phosphorylation: each kinase phosphorylates tyrosines on its partner's activation lip.
+
+Her other options each borrow a different part of the unit. A phosphatase removes phosphates, so it would switch things off. SH2 domains belong to adaptors like GRB2, and Ras doesn't need to be grabbed by the RTK. Swapping GDP for GTP is what G proteins and Ras do. Cbl is the E3 ubiquitin ligase that tags RTKs for shutdown.
+:::
+
 Two variations she showed:
 
 - FGF receptor: two FGF molecules plus **heparan sulfate** (a long sugar chain sticking off the cell surface) bind together with two receptors. FGF holds on tightly to heparan sulfate, and heparan sulfate is needed for the receptor to switch on well. Many RTKs pair up this way.
@@ -370,6 +376,18 @@ Her experiment:
 FRET only gives a signal when the two labeled molecules are very close (bound). So FRET = "they're interacting." No FRET = "they're apart." It doesn't measure how much protein there is.
 :::
 
+:::exam
+Her Q22 uses a different pair of labels than her slide: CFP (cyan) on Ras and YFP (yellow) on the Ras-binding domain of Raf. The labels change between versions of this experiment, but the logic stays the same.
+
+1. Growth factor binds the RTK, GRB2 brings Sos, and Sos (a GEF) loads Ras with GTP.
+2. Only Ras-GTP binds Raf's Ras-binding domain.
+3. Binding brings CFP and YFP within a few nanometers, so energy jumps from CFP to YFP.
+
+So the FRET signal increases after the growth factor. You shine the light that excites CFP and you see YFP's yellow come out.
+
+Why her wrong options fail: Ras stays anchored at the membrane and doesn't go to the nucleus. Sos swaps GDP for GTP and turns Ras on. Hydrolyzing GTP to GDP is GAP's job.
+:::
+
 :::hook
 "**Yellow = alone, Red = Ras is Ready.**"
 :::
@@ -645,6 +663,8 @@ Dominant-negative is a loss-of-function tool even though "dominant" sounds stron
 | "double mutant" | Epistasis: looks like the downstream gene | Picking the upstream gene |
 | "no R7 cell" | sev or boss mutant; becomes a cone cell | Thinking the cell dies |
 | "FRET signal increases" | The two labeled proteins bound | Thinking it measures amount, not contact |
+| "CFP-Ras and YFP-Raf RBD, add growth factor" | Ras-GTP binds Raf, FRET goes up | Thinking Sos turns Ras off, or Ras leaves for the nucleus |
+| "how do the kinase domains become activated" | Cross-phosphorylation of each other's activation lip | Picking the GDP/GTP swap (that's Ras) or a phosphatase |
 | "posterior retinal axons" | Repelled by high ephrinA in posterior tectum | Saying anterior tectum attracts them |
 | "ephrinA vs ephrinB" | GPI-anchored vs transmembrane (reverse signaling) | Swapping them |
 

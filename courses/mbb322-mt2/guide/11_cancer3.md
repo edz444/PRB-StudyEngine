@@ -283,6 +283,14 @@ Signal-in-reverse trap: in Wnt, phosphorylation of β-catenin means DESTRUCTION 
 Name trap: the TCF in Wnt (T-cell factor, also LEF) is a different transcription factor from the TCF in Lecture 8 (ternary complex factor, which sits with SRF on the c-fos SRE). Same three letters, different pathways.
 :::
 
+:::exam
+Her Q21: how does β-catenin turn genes on once it's in the nucleus? It binds TCF/LEF, displaces the co-repressor Groucho, and recruits co-activators. β-catenin isn't a kinase and doesn't bind DNA itself. It works by changing which partner sits on TCF.
+
+Her distractors pull from other pathways. STAT belongs to JAK-STAT (Lecture 10), SMADs belong to TGFβ, and APC works in the cytoplasm as part of the destruction complex.
+
+Her practice question calls Groucho a "co-repressor," which settles the "co-receptor" wording on her slide.
+:::
+
 :::easy
 Both-boxes trap: APC is a tumor suppressor, but β-catenin (in the same pathway) is an oncogene. Losing APC and over-activating β-catenin do the same thing: β-catenin stays high. In her colon table (Table 20-1) they share a footnote because a tumor usually has one or the other, rarely both.
 :::
@@ -644,6 +652,14 @@ Notice "methylation" appears for tumor suppressors and caretakers but not for pr
 
 :::hook
 "**You can't tape a pedal down by covering it.**" Methylation only silences, so it only breaks brakes and mechanics. Amplification and translocation make more or new protein, so they only make pedals.
+:::
+
+:::exam
+Her Q18: "Which fact about tumor-suppressor mutations is INCORRECT?" The false one is "they commonly arise through chromosomal translocation or gene amplification." Those are gas-pedal (oncogene) mechanisms, since they make more or new protein. Tumor suppressors are lost by deletion, point mutation or methylation.
+
+The true options are worth reading as a summary. Tumor suppressors are brakes, both copies have to go before you see a phenotype, losing them allows unregulated growth and survival, and some of them promote apoptosis (like p53).
+
+For any "which is INCORRECT" question, mark each option T or F before choosing. These questions have four true statements, so the false one is often the one that belongs to the opposite category.
 :::
 
 ### How to figure it out: oncogene or tumor suppressor from data {#howto-ts}

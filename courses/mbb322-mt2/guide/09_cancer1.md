@@ -183,6 +183,12 @@ Under the microscope, cancer cells look like cells in a rush:
 
 {{slide:L9-5|Normal cells stop at one layer; transformed cells pile into foci.}}
 
+:::exam
+Her Q5 describes a "wound" test: scrape a circle of cells out of a full monolayer. Normal cells at the edge divide to fill the gap and then stop when they touch again, because of contact inhibition.
+
+Model answer for transformed cells: they fill the gap too, but they don't stop when they meet. They've lost contact inhibition, so they keep dividing, pile on top of each other into a multilayer and form clumps (foci). They also need much less growth factor to keep going.
+:::
+
 :::hook
 Normal cells are people on a crowded bus who stop pushing once they touch. Cancer cells keep climbing on each other's shoulders.
 :::
@@ -418,6 +424,22 @@ Very few cells succeed at starting a new tumor, but metastasis causes about **90
 She uses "basement membrane" on the metastasis slides and "basal lamina" elsewhere.
 
 Plain version: they're the same thin floor mat under the epithelium.
+:::
+
+:::exam
+Her Q4: "Define metastasis. Explain the rationale for batimastat, an inhibitor of matrix metalloproteinases."
+
+Definition, in one sentence: metastasis is the spread of cancer cells from the original (primary) tumor through the blood or lymph to distant sites, where they form new (secondary) tumors.
+
+New term she expects you to reason through: **matrix metalloproteinases (MMPs)** are enzymes that cut up the extracellular matrix, including the basal lamina. "Metallo" means they need a metal (zinc) to work, and "proteinase" means they cut proteins.
+
+Rationale: to metastasize, a cell has to cut its way through the basal lamina (step 2, "break out") and through more matrix to get into and out of blood vessels (steps 3 and 5). Cancer cells use MMPs for that cutting. Block the MMPs and the cells can't invade, so they stay put. Batimastat isn't meant to kill tumor cells. It keeps them from leaving home, which is the step that causes about 90% of cancer deaths.
+
+Think of MMPs as the cell's bolt cutters for the fence. Batimastat takes away the bolt cutters.
+:::
+
+:::conn
+Lecture 11 has the body's own version of this guard. PAI-1, switched on by TGFβ, blocks the enzymes that chew up the matrix. Lose Smad4 and you lose PAI-1, so the matrix gets chewed and metastasis gets easier. Batimastat is the drug version of the same idea.
 :::
 
 ### The tumor microenvironment
