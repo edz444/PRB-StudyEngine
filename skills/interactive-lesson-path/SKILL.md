@@ -45,6 +45,7 @@ He asked for the app to be as ADHD-friendly as possible. He keeps time with his 
 - A streak counter on the lesson-name line ("7 in a row"), counting Got it and right multiple-choice answers in a row; a miss resets it. Every 5 in a row shows a toast, and every 10 adds confetti.
 - Resume at the exact screen: the app saves the current lesson and screen on every screen, and the home button becomes "Pick up where you left off" with the lesson and screen number until that lesson is finished.
 - A Park button in the lesson top bar opens a small box to type a stray thought (Enter saves, Escape cancels) without leaving the lesson. Parked thoughts wait on home with a Done button each.
+- Blue shooting stars on must-memorize facts. Every flashcard (cloze) answer is something to memorize, so the lesson builder finds where each answer is taught, first in the lesson holding that quick check and then anywhere in the lecture, and wraps that exact phrase in a blue highlight with a small shooting-star icon (at most 7 per lesson; skip generic answers like "both" or "high"). The board view shows them as a blue underline with the star. Each mission screen carries the one-line legend: "Blue shooting star = memorize this exact fact."
 On phones (under about 440 px) the top-bar buttons go icon-only so the progress bar keeps its width.
 
 ## Step 1: write the content as a plain-English guide first
