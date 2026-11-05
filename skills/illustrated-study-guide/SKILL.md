@@ -5,7 +5,9 @@ description: "Build Ethan's illustrated course study guide (HTML artifact with r
 
 # Illustrated study guide
 
-Use this when Ethan uploads lecture slides (PDF or PPTX) and maybe transcripts and wants a study package for an exam. Apply the humanizer skill to all prose. If he also wants the game-style app, the interactive-lesson-path skill cuts it from this guide, so follow the marker structure there.
+Use this when Ethan uploads lecture slides (PDF or PPTX) and maybe transcripts and wants a study package for an exam. Apply the humanizer skill to all prose.
+
+The guide is built by his PRB-StudyEngine repo, the same engine that makes the Lesson Path app and the Anki deck. Follow the "Start from PRB-StudyEngine" and "When he asks for a change" sections of the interactive-lesson-path skill: clone the repo, write only course content, build with `make`, republish to the same links, commit and push.
 
 ## Content rules
 - Slides are authoritative. Transcripts add emphasis and "she/he flagged this" moments. Skip course logistics.

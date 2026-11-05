@@ -85,6 +85,21 @@ One self-contained HTML page with the lesson JSON inline. Slide images and any c
 - Review pile: replays missed checks; "Got it" removes a card from the pile.
 - Save progress in localStorage under keys like `l9-3` (lecture id plus lesson index), wrapping every access in try/catch, and say on the page that it lives in this browser. Use the URL hash only for plain names like `#l5-3`.
 
+## When he asks for a change
+He studies in the app and sends quick, casual messages, often a screenshot of the one spot that bothered him ("seeing some weird explanations", "when i clicked this it opened a page", "should be able to go back"). Handle every request the same way:
+
+1. Read the screenshot as an example, not the whole job. Find the cause and fix it everywhere it applies. One confusing table cell means checking every table in that lecture and the ones after it; one missing back button means back on every screen.
+2. Fix it in the live build and in `engine/` (or the course folder) in PRB-StudyEngine, so the next course gets it too.
+3. Keep his progress: never reorder or rename lessons (see below).
+4. Re-test the exact thing he reported with Playwright, plus `make check`.
+5. Republish to the same artifact URLs he already has. Never hand him a new link for an update.
+6. Commit and push, and refresh any other outputs the change touches (Anki deck, NotebookLM PDFs, DeepTutor Markdown).
+7. Reply in one or two plain sentences: what changed and where to see it. No recap of steps.
+
+When he says "update the skill", "fix all of these in the skill" or similar, fold every fix from the session into all three skills that share this method (this one, illustrated-study-guide and anki-slide-deck), propose them together, and copy the same text into the repo's `skills/` folder.
+
+Every feature he has asked for so far is listed in this file. Never drop one while adding another.
+
 ## Rewriting later without losing progress
 Progress, stars and saved lessons are keyed by lesson position. When he asks for clearer explanations mid-course, rewrite the text inside sections but keep every lesson heading, its `:::key` pairing and the order the same. Snapshot the lesson title list before and confirm lesson counts match after.
 
