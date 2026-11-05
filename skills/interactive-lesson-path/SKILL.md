@@ -39,7 +39,7 @@ He judges every lesson by one test: could he follow it without opening ChatGPT? 
 8. Self-check before publishing: read each table row, key bullet and lesson card alone, out of context. If any one would make him stop and ask what it means, rewrite it.
 
 ## Staying locked in (ADHD-friendly by design)
-He asked for the app to be as ADHD-friendly as possible. He keeps time with his own physical timer, so the app's job is to keep him moving and never make him re-find his place. These five features are core, not extras:
+He asked for the app to be as ADHD-friendly as possible. He keeps time with his own physical timer, so the app's job is to keep him moving and never make him re-find his place. These features are core, not extras:
 - Quick checks mixed into the lesson: each check sits two screens after the card it best matches (by shared words), at most one check per card where possible, so he answers something every minute or so instead of reading a long run first.
 - A rose "Cram path: only what she tests" button on home. It strings together, lecture by lecture, every lesson with a practice-set box (its big idea, the `exam` box and its traps, each labelled with the lecture and lesson) followed by that lecture's practice questions. It remembers its place and the home button says which stop it picks up at.
 - A streak counter on the lesson-name line ("7 in a row"), counting Got it and right multiple-choice answers in a row; a miss resets it. Every 5 in a row shows a toast, and every 10 adds confetti.
