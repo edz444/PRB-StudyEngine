@@ -485,23 +485,28 @@ This prevents **crosstalk** (one pathway accidentally switching on another).
 ### RTKs and the actin skeleton: Rho GTPases
 
 :::key
-- Some RTKs activate Rho family GTPases → actin → axon guidance
-- Cdc42 filopodia, Rac lamellipodia, Rho stress fibers
+- Some RTKs don't switch on genes. They reshape the cell's skeleton instead
+- They do it through three small switches: Cdc42, Rac and Rho
+- Cdc42 makes finger spikes, Rac makes flat sheets, Rho makes thick cables
 :::
 
-The short version: some RTKs reshape the cell instead of switching on genes, using Rho family switches.
+The short version: so far, RTKs told the nucleus "divide." Some RTKs instead tell the cell's skeleton "change shape." That's how a growing nerve fiber steers.
 
-Some RTKs switch on **Rho family GTPases** (Rho, Rac, Cdc42). These rebuild the actin skeleton. In her figure:
+First, the word you need. **Actin** is the cell's skeleton: long protein strands that can be built up, torn down or squeezed to change the cell's shape.
 
-| GTPase | Shape it makes |
-|---|---|
-| **Cdc42** | **filopodia**: thin finger-like spikes |
-| **Rac** | **lamellipodia**: flat sheets, "ruffles" at the edge |
-| **Rho** | **stress fibers**: thick actin bundles across the cell |
+Some RTKs switch on the **Rho family GTPases**. These are small on/off switches, just like Ras (GDP = off, GTP = on). The difference is what they control. Ras sends a message to the nucleus. The Rho family rebuilds actin.
 
-Growing axons use these to steer (**axon guidance**).
+There are three to know, and each one builds a different shape:
 
-{{slide:L8-21|Same cell type, four looks: quiescent, Cdc42 (filopodia), Rac (lamellipodia), Rho (stress fibers).}}
+| Switch | What it builds | What it looks like |
+|---|---|---|
+| **Cdc42** | **filopodia** | thin finger-like spikes poking out of the edge |
+| **Rac** | **lamellipodia** | a flat, wide sheet at the edge, with ruffles |
+| **Rho** | **stress fibers** | thick ropes of actin stretched across the cell |
+
+Growing nerve fibers use these shapes to steer toward the right target. That steering is called **axon guidance**, and it's where the rest of this lecture goes.
+
+{{slide:L8-21|Same cell type, four looks: resting, then with active Cdc42 (finger spikes), Rac (flat sheets) and Rho (thick cables).}}
 
 :::hook
 "**C**dc42 = **C**rawling fingers (filopodia). **R**ac = **R**uffles (lamellipodia). **R**ho = **R**opes (stress fibers)."
@@ -510,39 +515,64 @@ Growing axons use these to steer (**axon guidance**).
 #### Growth cones
 
 :::key
-- Filopodia: bundled actin spikes. Lamellipodia: actin mesh sheets
+- The growth cone is the moving tip of a growing axon, like the neuron's GPS
+- Its fingers (filopodia) feel around; its palm (lamellipodia) spreads out
 :::
 
-While the nervous system develops, axons must grow out and find their right targets. The tip of a growing axon is the **growth cone**, like a hand feeling its way in the dark. It has:
+The short version: the tip of a growing nerve fiber is a little hand that feels its way to the right place.
 
-- filopodia: thin spikes with long bundled actin filaments, the "fingers" that feel around
-- lamellipodia: flat sheets with a criss-crossed mesh of actin, the "palm"
-- **microtubules** running up the axon into the center of the cone
+The words you need:
+
+- A **neuron** is a nerve cell.
+- Its **axon** is the long wire that grows out of it to reach another cell.
+- The **growth cone** is the moving tip at the end of a growing axon. It explores the area around it and decides which way to grow, like a GPS.
+
+While the nervous system is being built, every axon has to grow out and find its correct target. The growth cone does the finding. It's built like a hand feeling around in the dark:
+
+- **filopodia**, the fingers: thin spikes filled with long, bundled actin strands
+- **lamellipodia**, the palm: flat sheets filled with a criss-crossed mesh of actin
+- **microtubules**, the wrist: stiffer tubes running up the axon into the middle of the cone
+
+If the growth cone touches something it likes, it keeps going. If it touches a "go away" signal, it pulls back and the axon turns. The next three lessons are about one "go away" signal.
 
 #### The retinotopic map
 
 :::key
-- Retina → tectum in an orderly, flipped map
-- Posterior axons avoid posterior tectum because it REPELS them (not attraction)
+- Eye neurons connect to the brain's tectum in an orderly, flipped map
+- Front of the eye goes to the back of the tectum, and back goes to front
+- The back of the tectum PUSHES certain axons away. Nothing pulls them to the front
 :::
 
-In zebrafish, **retinal ganglion cells (RGCs)**, the output neurons of the retina, send axons along the optic nerve to the **optic tectum** in the brain. They land in an orderly, flipped pattern:
+The short version: eye neurons wire up to the brain in a neat, flipped map, and they find their spots because some areas push them away.
 
-- neurons from the **front (anterior)** of the retina go to the **back (posterior)** of the tectum
-- neurons from the **back (posterior)** of the retina go to the **front (anterior)** of the tectum
+The words you need:
 
-This point-to-point layout is the **retinotopic map**.
+- **Retinal ganglion cells (RGCs)** are the neurons in the retina (the back of the eye) that send the picture to the brain. Their axons form the optic nerve.
+- The **optic tectum** is the part of a fish's brain where those axons land.
+- **Anterior** means front. **Posterior** means back.
 
-Experiments showed the neurons have a built-in preference. Given stripes of tectum membrane to grow on, **posterior** retinal neurons avoided growing on **posterior** tectum membrane, while anterior neurons grew on both.
+The axons don't land randomly. They form a flipped map:
 
-{{slide:L8-26|Posterior axons stop at the posterior stripes (top); anterior axons grow over both (bottom).}}
+- Neurons from the **front** of the retina connect to the **back** of the tectum.
+- Neurons from the **back** of the retina connect to the **front** of the tectum.
+
+Because each spot on the retina connects to a matching spot on the tectum, the picture stays in order. That point-to-point wiring is the **retinotopic map** ("retina-place map").
+
+How did scientists figure out what guides them? They grew eye neurons on alternating stripes of membrane taken from the front and back of the tectum.
+
+- Neurons from the **back** of the retina avoided the stripes from the **back** of the tectum.
+- Neurons from the **front** of the retina grew happily on both kinds of stripe.
+
+So something on the back of the tectum pushes back-of-the-eye axons away.
+
+{{slide:L8-26|Top: axons from the back of the eye stop at the stripes from the back of the tectum. Bottom: axons from the front of the eye grow over both.}}
 
 :::trap
-Posterior neurons' choice isn't because the front of the tectum attracts them. It's because the back of the tectum pushes them away. She put this sentence on the slide.
+The front of the tectum does not attract these axons. The back of the tectum repels them. She put this on the slide, so expect it as a true/false or "which is correct" option.
 :::
 
 :::hook
-The map is **crossed**: "back goes front, front goes back." And it works by **pushing away**, not pulling in.
+The map is **crossed**: "back goes front, front goes back." And it works by **pushing away**, like a "keep out" sign, not like a magnet.
 :::
 
 :::nancy
@@ -554,73 +584,90 @@ Plain version: the back of the tectum pushes these axons away. Nothing is pullin
 #### Ephrin and Eph receptors
 
 :::key
-- Posterior RGCs: high EphA; tectum: ephrinA gradient, high at the back
-- ephrinA = GPI-anchored → EphA; ephrinB = transmembrane → EphB, reverse signaling
-- Eph = largest RTK family (13)
+- The "keep out" sign is ephrinA on the tectum, highest at the back
+- The axon reads it with the EphA receptor (an RTK); axons from the back of the eye have lots of EphA
+- ephrinA is GPI-anchored and binds EphA; ephrinB crosses the membrane, binds EphB and can signal backwards
+- Eph receptors are the biggest RTK family (13 in humans)
 :::
 
-The short version: Eph receptors on axons sense ephrin on the target and get pushed away. The more receptor and the more ephrin, the bigger the push.
+The short version: the tectum holds up a "keep out" sign called ephrin. Axons read the sign with a receptor called Eph. The more receptor an axon has, the sooner it gets pushed away.
 
-The push is done by **ephrin-Eph signaling**:
+Meet the two players:
 
-- Posterior RGCs carry lots of the **EphA receptor**.
-- The tectum has a **gradient** of the ligand **ephrinA**: low at the front, high at the back.
-- In animals missing the receptor, the neurons aren't pushed away from the back of the tectum anymore.
+- **ephrinA** is the "keep out" sign. It's a protein stuck on the surface of the tectum cells. There's a little at the front of the tectum and a lot at the back. That uneven spread is called a **gradient**.
+- **EphA** is the receptor on the axon that reads the sign. It's an RTK, so it's built like the receptors from the start of this lecture.
 
-So axons with lots of EphA stop as soon as ephrinA gets high, which is near the front. Axons with little EphA can keep going to the back.
+Now put them together:
 
-**Eph receptors** are the largest RTK family (13 in humans). There are two ligand classes:
+1. Axons from the **back** of the retina carry **lots** of EphA, so they're very sensitive to the sign.
+2. As they grow into the tectum, ephrinA gets stronger the further back they go.
+3. They hit their "too much, stop" point early, near the **front** of the tectum.
+4. Axons from the **front** of the retina carry **little** EphA. They barely notice the sign, so they keep growing to the **back**.
 
-| | ephrinA | ephrinB |
-|---|---|---|
-| How it's attached | **GPI anchor** (a lipid tether on the outside face) | **transmembrane**, with a tail inside the cell |
-| Binds | **EphA** receptors (8 members) | **EphB** receptors (5 members) |
-| Can signal back into its own cell? | not the one she uses for reverse signaling | yes, reverse signaling through its tail |
-
-:::easy
-Swap trap: ephrinA = GPI-Anchored, binds EphA. ephrinB = goes through the membrane (transmembrane), binds EphB, and can signal Back into its own cell.
-:::
-
-What Eph/ephrin signaling does: shapes blood vessel growth, forms borders between tissues, guides cell movement, and steers axons. Most of its downstream paths end at the cytoskeleton.
-
-Because both ligand and receptor sit in cell membranes, signals can go both ways:
-
-- Forward signaling: into the cell with the Eph receptor.
-- Reverse signaling: into the cell with the ephrin (the ephrinB tail gets phosphorylated and collects signaling proteins).
+That's how the map gets flipped. Proof: in animals missing the EphA receptor, back-of-the-eye axons are no longer pushed away from the back of the tectum.
 
 {{fig:ephrin_map}}
 
+Some facts about the family she lists:
+
+- **Eph receptors** are the largest family of RTKs, with 13 in humans.
+- There are two kinds of ephrin, and each binds its own kind of receptor. They differ in how they're attached to the membrane.
+
+| | ephrinA | ephrinB |
+|---|---|---|
+| How it's attached | by a **GPI anchor**, a fatty tether that holds it on the outer surface only | it's **transmembrane**, meaning it goes all the way through the membrane and has a tail inside the cell |
+| Which receptor it binds | **EphA** (8 kinds) | **EphB** (5 kinds) |
+| Can it send a signal into its own cell? | not in her slides | yes, through its inside tail (this is **reverse signaling**) |
+
+Because the sign and the receptor are both stuck in cell membranes, the two cells have to touch, and the message can go either way:
+
+- **Forward signaling**: the message goes into the cell that has the Eph receptor. That's the axon getting pushed away.
+- **Reverse signaling**: the message goes into the cell that has the ephrin. Only ephrinB can do this, because only it has a tail inside the cell for signaling proteins to grab.
+
+Beyond axons, Eph and ephrin also shape how blood vessels grow, draw borders between tissues and guide moving cells. Most of these jobs end the same way: by changing the actin skeleton.
+
+:::easy
+Swap trap: ephrin**A** = GPI-**A**nchored, binds Eph**A**. ephrin**B** = goes all the way through (transmembrane), binds Eph**B**, and can signal **B**ack into its own cell.
+:::
+
 :::hook
-**Eph = "Eww, Push away."** High-EphA axons hate high ephrinA, so they stop early, at the front of the tectum.
+**Eph = "Eww, push away."** The more EphA an axon has, the more it hates ephrinA, so it stops early, at the front.
 :::
 
 :::nancy
-This slide is a figure pasted from a review article, and the text from the article runs into her labels, so it reads as a jumble.
+This slide is a figure pasted from a review article, and the article's text runs into her labels, so it reads as a jumble.
 
-Plain version, all you need from it: ephrinA = GPI-anchored, binds EphA (8 members). EphrinB = transmembrane with a tail inside, binds EphB (5 members), and can signal back into its own cell (reverse signaling). 13 Eph receptors in humans.
+Plain version, all you need from it: ephrinA is GPI-anchored and binds EphA (8 kinds). ephrinB goes through the membrane, binds EphB (5 kinds) and can signal back into its own cell (reverse signaling). There are 13 Eph receptors in humans.
 :::
 
 #### Growth cone collapse through Ephexin and RhoA
 
 :::key
-- EphA4 → Ephexin (Rho-GEF) → RhoA → actomyosin contraction → collapse
-- Dominant negative Ephexin blocks collapse
+- Whole message: "Axon, don't grow this way. Turn away!"
+- ephrinA1 (stop sign) → EphA4 (receptor) → Ephexin (GEF) → RhoA (switch) → actin squeezes → growth cone collapses
+- A dominant negative Ephexin blocks the collapse, which proves Ephexin is needed
 :::
 
-The short version: Eph switches on a Rho-GEF, Rho makes the actin contract, the growth cone shrinks back and the axon turns away.
+The short version: the whole chain passes one message along: "Axon, don't grow this way. Turn away!"
 
-When **ephrinA1** activates **EphA4**, the receptor switches on **Ephexin**, which is a **Rho-GEF** (the "on" helper for Rho). Ephexin turns on **RhoA**, which makes myosin squeeze the actin filaments, and the growth cone **collapses** (shrinks back). The axon turns away.
+Last lesson explained where the stop sign is. This one explains how the axon actually backs off. There are a lot of protein names, but each one just hands the message to the next.
 
-Experiment: putting a **dominant negative Ephexin** into retinal ganglion cells blocked ephrinA's collapse. So Ephexin is needed to pass on the "go away" signal.
+1. **ephrinA1 is the stop sign.** It sits on the tectum cell and touches the growth cone.
+2. **EphA4 is the receptor.** It reads the stop sign and switches on.
+3. **Ephexin is the GEF.** A GEF is the "on" helper for a small switch: it lets the switch drop GDP and pick up GTP. Ephexin does this for RhoA.
+4. **RhoA is the switch.** Once it holds GTP, it's on, and it makes myosin (the motor protein) squeeze the actin skeleton.
+5. **The growth cone collapses.** The squeezed tip shrinks back, and the axon turns away.
 
-{{slide:L8-29|EphA4 activates Ephexin, Ephexin activates RhoA, and actomyosin contraction collapses the growth cone.}}
+{{slide:L8-29|Follow the chain down: EphA4 switches on Ephexin, Ephexin switches on RhoA, and actin-myosin squeezing collapses the growth cone.}}
+
+How do we know Ephexin is needed? Researchers put a **dominant negative Ephexin** into eye neurons. A dominant negative is a broken copy that jams the pathway even when the normal copy is there. With it, ephrinA could no longer collapse the growth cones. Remove Ephexin and the message stops, so Ephexin must be part of the chain.
 
 :::conn
-Here an RTK is wired to the skeleton instead of to genes. Same tricks (RTK → GEF → small GTPase), different result. The Ras-GEF Sos makes cells divide; the Rho-GEF Ephexin makes growth cones collapse.
+This is the same wiring you learned with Ras, pointed at a different target. Before: RTK → Sos (a GEF) → Ras (a switch) → the cell divides. Here: RTK → Ephexin (a GEF) → RhoA (a switch) → the growth cone collapses. Same pattern of receptor, then GEF, then GTPase. Different job at the end.
 :::
 
 :::hook
-"**Ephexin = Eph's EXit sign.**" It flips Rho, and Rho pulls the hand back.
+"**Ephexin = Eph's EXit sign.**" It flips RhoA on, and RhoA pulls the hand back.
 :::
 
 ### How to figure it out: ordering genes in a pathway (epistasis) {#howto-epistasis}

@@ -382,8 +382,9 @@ const W = 'A-Za-z0-9Ͱ-Ͽ';
 const gre = new RegExp(`(?<![${W}-])(${keys.map(reEsc).join('|')})(?![${W}])`, 'g');
 let seen = new Set();
 function linkTerms(root){
+  seen = new Set();
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){
-    const p = n.parentElement; if(!p || p.closest('svg,button,a,.term,code,table,.kick,.ltitle')) return NodeFilter.FILTER_REJECT; return NodeFilter.FILTER_ACCEPT; }});
+    const p = n.parentElement; if(!p || p.closest('svg,button,a,.term,code,.kick,.ltitle')) return NodeFilter.FILTER_REJECT; return NodeFilter.FILTER_ACCEPT; }});
   const nodes = []; while(walker.nextNode()) nodes.push(walker.currentNode);
   nodes.forEach(n=>{
     const t = n.nodeValue; gre.lastIndex = 0; let m, last = 0, frag = null;

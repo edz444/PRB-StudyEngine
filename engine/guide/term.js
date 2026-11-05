@@ -10,6 +10,7 @@
   [...main.children].forEach(el=>{
     if(el.tagName==='H2'){ seen=new Set(); inGloss = el.id==='glossary'; return; }
     if(inGloss || el.matches(SKIP)) return;
+    seen=new Set();
     const tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode:n=>(n.parentElement.closest(SKIP)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT)});
     const nodes=[]; while(tw.nextNode()) nodes.push(tw.currentNode);
     nodes.forEach(n=>{
