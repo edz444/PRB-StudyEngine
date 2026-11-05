@@ -1,0 +1,12 @@
+B = {
+    12: dict(e="Myocardin should push the cells toward a contractile smooth muscle phenotype, seen as more organized actin and more contractile-gene mRNA.", nw="", hu=""),
+    13: dict(e="Lyse breaks cells and shears DNA; bind sticks RNA to silica; wash rinses off junk; elute releases RNA.", nw="", hu=""),
+    14: dict(e="\"Know where your RNA is at all times.\" Tossing the final flow-through tosses your sample.", nw="", hu=""),
+    15: dict(e="rRNA is about 80 percent of total RNA. You want mRNA of genes myocardin affects, which is only a few percent.", nw="", hu=""),
+    16: dict(e="Nucleic acids absorb at 260 nm, proteins at 280 nm. A low ratio means protein or phenol contamination.", nw="", hu=""),
+    17: dict(e="Without denaturing, folded RNA migrates by shape as well as size, so bands look wrong.", nw="", hu=""),
+    18: dict(e="Primers anneal around 25 C, then the enzyme extends at 46 C.", nw="", hu=""),
+    19: dict(e="Random primers help capture long mRNAs fully but also copy tRNA and rRNA.", nw="", hu=""),
+    20: dict(e="Otherwise a condition could look like it has more of every transcript just because more RNA went in.", nw="", hu=""),
+    21: dict(e="So a green (GFP) cell is also a myocardin-expressing cell. IRES is internal ribosome entry site.", nw="", hu=""),
+}

@@ -12,7 +12,8 @@ NAV = [('story', 'Story'), ('threads', 'Threads'), ('toolkit', 'Ch 0 Toolkit'), 
        ('l9', 'L9 Cancer I'), ('l10', 'L10 Cancer II'), ('l11', 'L11 Cancer III'),
        ('glossary', 'Glossary'), ('practice', 'Practice'), ('cheat', 'Cheat sheet')]
 LAB_URL = 'https://claude.ai/artifact/3bbKhgTJsos4CqwyVsvP52'   # standalone Pathway Lab, optional
-GUIDE_URL = 'https://claude.ai/artifact/384TtCv1LYaSUgLPE1eHD5' # published guide, linked from the app
+GUIDE_URL = 'https://claude.ai/artifact/384TtCv1LYaSUgLPE1eHD5'
+GUIDE_SUB = '3D models and Pathway Lab' # published guide, linked from the app
 M3D_NAMES = {'na': 'Na+ channel: three states', 'axon': 'Action potential and myelin', 'syn': 'Synapse: calcium is the send button',
              'sarc': 'Sarcomere: Ca2+, troponin, tropomyosin', 'gp': 'G protein switch', 'opto': 'ChR2 vs halorhodopsin',
              'met': 'Benign vs malignant: the basal lamina'}
