@@ -107,6 +107,7 @@ B = {}
 for mname in CFG.WORDING_FILES:
     B.update(__import__(mname).B)
 for c in cloze:
+    if c['n'] in B and B[c['n']].get('lec'): c['lec'] = 'l' + str(B[c['n']]['lec'])   # practice-set cards name their lecture
     if c['n'] in B: c['e'] = B[c['n']]['e']
     else: c['e'] = ''
 def lec_of(n): return cloze[n - 1]['lec']
