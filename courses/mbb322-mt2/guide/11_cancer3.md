@@ -17,8 +17,8 @@ Lecture 11 in four words: "**Two hits, Wnt, TGFβ, map.**"
 ### Part 1: brakes vs gas pedals
 
 :::key
-- Tumor suppressor: loss-of-function, BOTH copies
-- Oncogene: gain-of-function, ONE copy
+- A tumor suppressor is a brake gene. Cancer needs it broken (loss of function), and BOTH copies have to go
+- An oncogene is a stuck gas pedal (gain of function). ONE bad copy is enough
 :::
 
 The short version: gas pedals need one bad copy. Brakes need both copies broken.
@@ -31,9 +31,9 @@ Compare that with Lecture 10. A proto-oncogene becomes an oncogene with a gain-o
 
 | | Oncogene (gas pedal) | Tumor suppressor (brake) |
 |---|---|---|
-| Kind of change | gain of function | loss of function |
-| Copies that must be hit | one | both |
-| In the cell it acts | dominant | recessive |
+| What the mutation does | the protein does more than it should (gain of function) | the protein stops working (loss of function) |
+| How many of the two copies must break | one is enough | both |
+| Inside one cell, it behaves as | dominant (one copy shows its effect) | recessive (only shows once both copies are gone) |
 
 :::hook
 Gas pedal: one bad copy is enough (dominant at the cell level). Brakes: you have two brake lines, and the car only crashes when both are cut (recessive at the cell level).
@@ -42,10 +42,10 @@ Gas pedal: one bad copy is enough (dominant at the cell level). Brakes: you have
 ### Part 2: retinoblastoma and the two-hit idea
 
 :::key
-- Rb (chr 13) = first tumor suppressor; brakes the cell cycle
-- Hereditary: one bad copy inherited → many tumors, both eyes
-- Sporadic: two hits in one cell → one tumor, one eye (~1/30,000)
-- Family pattern looks dominant; at the cell level it's recessive
+- Rb, on chromosome 13, was the first tumor suppressor found. It's a brake on the cell cycle
+- Kids who inherit one broken Rb copy get many tumors, in both eyes
+- Kids born with two good copies need two hits in the same cell, so it's rare (about 1 in 30,000) and gives one tumor in one eye
+- It runs in families like a dominant trait, but inside each cell it's recessive
 :::
 
 The short version: kids born with one broken Rb copy get many tumors in both eyes; kids born with two good copies rarely get one tumor. That difference proved you need two hits.
@@ -58,9 +58,9 @@ Retinoblastoma comes in two forms, and comparing them is what proved the two-hit
 
 | | Hereditary retinoblastoma | Sporadic (non-hereditary) retinoblastoma |
 |---|---|---|
-| Starting point | child inherits one broken Rb copy in **every** cell | child starts with two good copies |
-| What has to happen | **one** more hit in any retina cell | **two** separate hits in the **same** cell |
-| Result on her slide | most get multiple tumors in **both** eyes | about **1 in 30,000** people, **one** tumor in **one** eye |
+| What the child starts with | one broken Rb copy, already in **every** cell of the body | two good Rb copies |
+| What has to go wrong to get a tumor | **one** more hit, in any one of the millions of retina cells | **two** separate hits, both landing in the **same** cell |
+| What her slide says happens | most get several tumors, in **both** eyes | it's rare (about **1 in 30,000** people), and they get **one** tumor in **one** eye |
 
 Why the difference? Every retina cell in the hereditary child already has hit number one. With millions of cells, a second hit somewhere is almost certain, and it happens in several places. In the sporadic case, two rare events have to land in the same cell, which almost never happens, so it's one tumor at most.
 
@@ -79,21 +79,22 @@ Family pattern vs cell behavior. The hereditary form runs in families like a dom
 ### Part 3: how the second copy gets lost
 
 :::key
-- Six ways: chromosome loss, mitotic recombination, gene conversion, deletion, point mutation, epigenetic silencing
+- The second hit doesn't have to be a new mutation in the good copy
+- There are six ways to lose it: lose the chromosome, swap chromosome arms, copy the bad version over the good one, cut it out, change one letter, or silence it with methyl tags
 :::
 
 The short version: there are six ways to lose the good copy, and only some of them are a new mutation.
 
 Hit two doesn't have to be a fresh mutation in the remaining gene. Her figure (Fig. 20-25) shows six ways a cell with one good Rb copy can lose it:
 
-| # | Way | What happens |
+| # | Name | What happens to the good copy |
 |---|---|---|
-| 1 | **Aneuploidy** | the whole chromosome carrying the good copy is lost during division (aneuploidy = the wrong number of chromosomes) |
-| 2 | **Mitotic recombination** | the chromosomes swap arms during division, and one daughter cell ends up with two bad copies |
-| 3 | **Gene conversion** | during that swapping, the good copy gets "corrected" to match the bad one |
-| 4 | **Deletion** | the good copy is cut out |
-| 5 | **Point mutation** | a single letter change breaks the good copy |
-| 6 | **Epigenetic silencing** | the good copy is still there and its letters are fine, but it's switched off |
+| 1 | **Aneuploidy** | The whole chromosome carrying it is lost when the cell divides. (Aneuploidy means having the wrong number of chromosomes.) |
+| 2 | **Mitotic recombination** | While the cell divides, the two chromosomes swap arms. One daughter cell ends up with two bad copies and no good one. |
+| 3 | **Gene conversion** | During that swapping, the good copy gets overwritten to match the bad one. |
+| 4 | **Deletion** | The piece of DNA holding it is cut out. |
+| 5 | **Point mutation** | One DNA letter changes and breaks it. |
+| 6 | **Epigenetic silencing** | It's still there with perfect letters, but chemical tags switch it off. |
 
 {{slide:L11-3|Six columns, one result each time: no working Rb left.}}
 
@@ -104,10 +105,10 @@ Hit two doesn't have to be a fresh mutation in the remaining gene. Her figure (F
 #### Epigenetic silencing
 
 :::key
-- Epigenetic = inherited change in expression, NO sequence change
-- Heterochromatin silences genes
-- DNMTs move a methyl from SAM onto C5 of cytosine in CpG islands → 5mC → gene off
-- Silencing still counts as a hit
+- Epigenetic means a change in which genes are on that gets passed to daughter cells, with NO change to the DNA letters
+- Tightly packed DNA (heterochromatin) keeps genes off
+- Enzymes called DNMTs stick methyl tags on the C's in a gene's on-switch (CpG islands), which turns the gene off
+- A silenced brake gene still counts as a hit
 :::
 
 The short version: the gene's letters are perfect, but chemical tags stop the cell from reading it, and those tags get passed on.
