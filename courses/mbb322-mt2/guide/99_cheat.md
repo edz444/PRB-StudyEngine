@@ -13,8 +13,8 @@
 | Synapse | AP → voltage-gated Ca2+ → synaptotagmin/SNARE → exocytosis → receptor | Reuptake, enzymes (AChE), endocytosis of vesicles |
 | NMJ | Ca2+ channel → nicotinic AChR → Na+ channel → T-tubule Ca2+ channel → SR release → troponin → tropomyosin moves | Ca2+ pumped back into SR |
 | RTK / MAPK | GF → RTK dimer → P-Tyr → GRB2 (SH2) → Sos (GEF) → Ras-GTP → Raf → MEK → ERK → TCF/SRF → c-fos | Ras GAP, receptor endocytosis (c-Cbl ubiquitin) |
-| Eph / Rho | EphrinA → EphA → Ephexin (Rho GEF) → RhoA → actomyosin contraction → growth cone collapse | |
-| JAK / STAT | Cytokine → receptor + JAK → P-Tyr → STAT (SH2) → STAT dimer → nucleus | |
+| Eph / Rho | EphrinA → EphA → Ephexin (Rho GEF) → RhoA → actomyosin contraction → growth cone collapse | not covered on her slides |
+| JAK / STAT | Cytokine → receptor + JAK → P-Tyr → STAT (SH2) → STAT dimer → nucleus | not covered on her slides |
 | Wnt (off) | No Wnt: destruction complex (axin, APC, GSK-3, CK1) phosphorylates β-catenin, proteasome destroys it; TCF + Groucho keep genes off | (this is the off state) |
 | Wnt (on) | Wnt → Frizzled + LRP → Dishevelled pulls axin → complex falls apart → β-catenin into nucleus → displaces Groucho, binds TCF → Myc | β-catenin destruction resumes when Wnt leaves |
 | TGFβ | TGFβ dimer → type II phosphorylates type I (Ser/Thr) → R-Smad (Smad2/3) phosphorylated, NLS unmasked → + Smad4 + importin → nucleus → p15, PAI-1 | Phosphatase on R-Smad, export by exportins |

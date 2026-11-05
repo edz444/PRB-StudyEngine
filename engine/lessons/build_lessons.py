@@ -49,9 +49,12 @@ def lecture_nodes(lid):
     return h2, nodes
 
 def build_cards(nodes):
-    cards, buf, pend = [], [], None
+    cards, buf, pend, lead = [], [], None, None
     def add(k, h):
-        nonlocal pend
+        nonlocal pend, lead
+        if lead and k == 'list': h = lead + h     # "Three words first:" stays on the same screen as its list
+        elif lead: cards.append({'k': 'text', 'h': lead, 'kick': pend}); pend = None
+        lead = None
         cards.append({'k': k, 'h': h, 'kick': pend}); pend = None
     def flush():
         nonlocal buf
@@ -67,6 +70,12 @@ def build_cards(nodes):
             t = txt(el)
             if t.startswith('The short version:'):
                 flush(); add('big', el.decode_contents().replace('The short version:', '', 1)); continue
+            kids = [c for c in el.contents if not (isinstance(c, str) and not c.strip())]
+            if len(kids) == 1 and getattr(kids[0], 'name', None) in ('strong', 'b'):
+                flush(); pend = t.rstrip('.:'); continue          # a bold-only line labels the next screen
+            nxt = el.find_next_sibling()
+            if t.endswith(':') and nxt is not None and nxt.name in ('ul', 'ol') and words(t) <= 12:
+                flush(); lead = str(el); continue                # a short lead-in line rides with its list
             for piece in split_para(el):
                 pw = words(BeautifulSoup(piece, 'html.parser').get_text())
                 cur = words(BeautifulSoup(''.join(buf), 'html.parser').get_text()) if buf else 0

@@ -111,12 +111,34 @@ Hit two doesn't have to be a fresh mutation in the remaining gene. Her figure (F
 - A silenced brake gene still counts as a hit
 :::
 
-The short version: the gene's letters are perfect, but chemical tags stop the cell from reading it, and those tags get passed on.
+The short version: the gene's DNA letters are perfect, but the cell can't read it. There are two ways to do that: pack the DNA away, or stick chemical tags on the gene's on-switch.
 
-**Epigenetics** means a change in which genes are switched on that gets passed to daughter cells but does **not** change the DNA letters. ("Epi" means "on top of": the change sits on top of the genes.) Cancer cells do this two ways:
+Think of DNA as a book of instructions. An open book can be read. A book locked in a box can't, even though every word inside is still correct. Epigenetic silencing locks the book in the box.
 
-- Heterochromatin. DNA in the nucleus is wrapped around proteins called histones; together they're called chromatin. **Heterochromatin** is the tightly packed form that keeps genes silent, like a rolled-up, rubber-banded map you can't read. It forms when certain chemical marks on histones are bound by proteins that pack chromatin. Some cancer cells have an unusually large amount of it, so more genes get silenced.
-- DNA methylation of CpG islands. In front of many genes is a **promoter**, the "on switch" region. Many promoters have stretches rich in C followed by G, called **CpG islands**. In an active promoter, those Cs are bare (unmethylated). Enzymes called **DNA methyltransferases** take a methyl group (-CH3) from a donor molecule called **SAM** and stick it onto carbon 5 of the cytosine ring, making **5-methylcytosine (5mC)**. That makes the chromatin pack up and shuts the gene off.
+**Epigenetics** means a change in which genes are switched on that gets passed down to daughter cells but does **not** change the DNA letters. "Epi" means "on top of": the change sits on top of the genes.
+
+**Way 1: packing the DNA away (heterochromatin)**
+
+Three words first:
+
+- **Histones** are the proteins DNA wraps around, like thread around spools.
+- **Chromatin** is DNA plus its histones.
+- **Heterochromatin** is chromatin packed very tightly.
+
+Loosely packed chromatin is the open book: the cell's gene-reading machinery can get to the genes. Heterochromatin is the locked box: the genes inside can't be read, so they stay silent.
+
+Heterochromatin forms when certain chemical marks on the histones get grabbed by proteins that pack the chromatin tight. Some cancer cells have an unusually large amount of heterochromatin, so more genes get silenced, and that can include brake genes.
+
+**Way 2: methyl tags on the on-switch (DNA methylation)**
+
+1. **The gene has an on-switch.** The **promoter** is the stretch of DNA just in front of a gene that controls whether the gene gets read.
+2. **Many promoters have CpG islands.** A **CpG island** is a stretch where C is followed by G over and over (C is cytosine and G is guanine, two of the DNA letters). In a gene that's switched on, those Cs are bare.
+3. **An enzyme adds a tag.** Enzymes called **DNA methyltransferases (DNMTs)** take a **methyl group** (-CH3, a tiny chemical tag) from a donor molecule called **SAM** (S-adenosylmethionine) and stick it onto carbon 5 of the cytosine. The tagged C is called **5-methylcytosine (5mC)**.
+4. **The gene goes silent.** A heavily tagged promoter makes the chromatin around it pack up, so the gene can't be **transcribed** (copied into RNA, the first step of reading it). The gene is off.
+
+The whole chain in one line: tags on the promoter, tighter packing, no reading, gene off.
+
+**How the two ways connect.** They aren't separate. Methyl tags on a promoter pull in the proteins that pack chromatin, so methylation (way 2) leads to heterochromatin (way 1). Both end the same way: the book is locked in the box.
 
 {{fig:methylation}}
 
@@ -352,11 +374,11 @@ The **TGFβ superfamily** has **33 members** in humans, named after the first on
 
 | Branch | First found as... | Other jobs |
 |---|---|---|
-| **TGFβ** (TGFβ1, 2, 3) | (see the discovery paradox below) | |
+| **TGFβ** (TGFβ1, 2, 3) | a factor (TGFβ1) that made normal fibroblasts grow aggressively in a dish, like cancer cells, in the late 1970s and early 1980s | in most normal cells it actually stops division, by making proteins that block the cell cycle (that's the discovery paradox, next lesson) |
 | **Activin** | a protein that makes the pituitary make and release **FSH** (follicle-stimulating hormone, which controls development, growth and puberty); also makes mesoderm in frog embryos | many roles from embryo to adult |
 | **Inhibin** | a hormone that **blocks** FSH production | many roles from embryo to adult |
 | **BMPs** (bone morphogenetic proteins) | extracts of demineralized bone that, mixed with collagen and injected under a rat's skin, made **new bone** | set the back-belly (dorsal-ventral) axis in flies; organ development; making neurons |
-| **GDFs** (growth differentiation factors) | | many roles in development |
+| **GDFs** (growth differentiation factors) | her slides don't say what they were first found doing | many different jobs while the embryo develops |
 
 :::hook
 "**Activin Activates FSH, Inhibin Inhibits it, BMPs Build Bone.**"

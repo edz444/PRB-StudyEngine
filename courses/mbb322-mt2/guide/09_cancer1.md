@@ -156,8 +156,8 @@ The short version: a cancer's name tells you which tissue it came from and wheth
 | Name | Where it starts | Note |
 |---|---|---|
 | **Carcinoma** | epithelial cells, the cells that line surfaces and organs (skin, gut, airways) | the most common kind, about 80% of human cancers |
-| **Sarcoma** | connective tissue (like bone and cartilage) or muscle | |
-| **Leukemia** and **lymphoma** | blood-forming cells (the word for these is **hematopoietic**) | |
+| **Sarcoma** | connective tissue (like bone and cartilage) or muscle | much less common than carcinomas |
+| **Leukemia** and **lymphoma** | blood-forming cells (the word for these is **hematopoietic**) | leukemia shows up in the blood, lymphoma in the lymph nodes |
 
 Why are carcinomas so common? A mutation can only turn into cancer in a cell that divides. Lining cells divide constantly, because your gut lining, skin and airways are always being replaced. More divisions mean more chances for a cancer-causing mistake.
 
@@ -396,7 +396,7 @@ She gives three pieces of evidence:
 | 2 | the oncogene **K-ras** is switched on | 12 | the polyp grows into a benign tumor (an **adenoma**) |
 | 3 | a tumor suppressor near a spot called **DCC** is lost (this is **Smad4**) | 18 | the adenoma gets bigger |
 | 4 | the tumor suppressor **p53** is lost | 17 | it becomes malignant (a **carcinoma**) |
-| 5 | more changes | | it invades and spreads |
+| 5 | more changes (her figure doesn't name the genes) | not named | it invades and spreads |
 
 {{slide:L9-13|Read the blue boxes top to bottom for the mutation order: APC, K-ras, chr18, p53.}}
 
