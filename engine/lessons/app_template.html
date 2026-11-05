@@ -339,7 +339,7 @@ function renderHome(){
   h += `<section class="today"><h2>${P ? "Today's mission: " + P.name : 'Final stretch'}</h2><p class="daydesc">${P ? P.desc : 'Clear anything left on the path, then hit your review pile.'}</p><div class="days">` +
     PLAN.map((p,i)=>`<div class="day ${i===ti?'now':''}"><span class="dn">${p.name}</span>${p.lecs.map(x=>x==='review'?'Review':LECS.find(L=>L.id===x).code).join(' + ')}<div class="bar"><i style="width:${Math.round(dayProg(p)*100)}%"></i></div></div>`).join('') +
     `</div>` + (nl ? `<button class="bigbtn" id="cont">Continue<small>${esc(nl[1]==='boss' ? LECS.find(L=>L.id===nl[0]).code + ' boss level' : LECS.find(L=>L.id===nl[0]).code + ': ' + LECS.find(L=>L.id===nl[0]).lessons[nl[1]].title)}</small></button>` : `<button class="bigbtn" disabled>Every lesson done. You're ready.</button>`) +
-    `<div class="row2"><button class="bigbtn ghost" id="rev">Review pile<small>${S.review.length} card${S.review.length===1?'':'s'} to fix</small></button><a class="bigbtn ghost" href="${esc(CFG.guideUrl)}" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Full guide<small>3D models and Pathway Lab</small></a></div></section>`;
+    `<div class="row2"><button class="bigbtn ghost" id="rev">Review pile<small>${S.review.length} card${S.review.length===1?'':'s'} to fix</small></button><a class="bigbtn ghost" href="${esc(CFG.guideUrl)}" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Full guide<small>${esc(CFG.guideSub||'slide figures and worked questions')}</small></a></div></section>`;
   h += savedHTML();
   LECS.forEach(L=>{
     const p = lecProg(L), color = uc(L.id); let nxt = nl && nl[0]===L.id ? nl[1] : null;

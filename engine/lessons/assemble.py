@@ -12,7 +12,8 @@ except ModuleNotFoundError:
     d['boards'] = {}
 data = json.dumps(d, ensure_ascii=False).replace('</', '<\\/')
 cfg = json.dumps({'slug': CFG.SLUG, 'exam': CFG.EXAM, 'plan': CFG.PLAN, 'eyebrow': CFG.APP_EYEBROW,
-                  'guideUrl': getattr(CFG, 'GUIDE_URL', '')}, ensure_ascii=False).replace('</', '<\\/')
+                  'guideUrl': getattr(CFG, 'GUIDE_URL', ''),
+                  'guideSub': getattr(CFG, 'GUIDE_SUB', 'slide figures and worked questions')}, ensure_ascii=False).replace('</', '<\\/')
 out = (t.replace('/*GUIDECSS*/', css).replace('/*DATA*/', data).replace('/*CFG*/', cfg)
         .replace('/*APP_TITLE*/', CFG.APP_TITLE))
 S = OUT / 'lessons'
