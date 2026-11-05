@@ -9,6 +9,18 @@ Ethan learns best when material is broken into tiny steps he can tick off, with 
 
 Apply the humanizer skill to all prose. Write it so someone with no background in the subject could follow it.
 
+## Start from PRB-StudyEngine, every time
+He wants every course to get this exact app, so never rebuild it from this description when the engine is available. The working code lives in his private GitHub repo **PRB-StudyEngine** (shared engine in `engine/`, one folder per course in `courses/`, plus a working sample course in `courses/_template` and the finished MBB 322 course in `courses/mbb322-mt2`).
+
+1. Get the engine. Look for it with list_repos (query "PRB-StudyEngine"), attach it with add_repo and clone it. If it isn't reachable, ask him to attach it or upload `PRB-StudyEngine.zip`, then unzip it into its own folder. Fall back to rebuilding from the rest of this file only if neither works, and say so.
+2. Read `README.md`, `docs/NEW_COURSE.md`, `docs/MARKERS.md` and `docs/STYLE.md` before writing anything.
+3. `cp -r courses/_template courses/<course>-<exam>`, fill in `course.py` (titles, lectures, badges, exam date, day plan, new Anki IDs), and put the slide PDFs in `source/` (never committed).
+4. Write only course content: the guide Markdown, glossary, diagrams, pathway boards, cards and wording files, following the clarity bar below.
+5. `COURSE=courses/<name> make all check`, then publish `out/index.html` and `out/lessons/<slug>-lesson-path.html` as artifacts with their `slides/` and `lab.html` files, and send the .apkg.
+6. A new feature he asks for goes into `engine/` so every course gets it, then gets described in this skill. Commit with clear messages and push when the repo is attached; otherwise hand him a fresh zip made with `git archive` (never zip the working folder, because the build folders hold instructor slide images).
+
+The rest of this file describes what the engine does and the standard the content must meet.
+
 ## Inputs
 - Lecture slides (PDF or PPTX). Extract text with `pdftotext -layout`; rasterize pages and look at contact sheets so figure-only slides aren't missed. Convert PPTX to PDF with LibreOffice first.
 - Optional: transcripts, past exams with his marks, the instructor's practice questions, the exam date.
@@ -131,4 +143,4 @@ Test it the way the live page is served: page as UTF-8, web fonts blocked so the
 - `[hidden]` needing `!important` on display:block elements
 - sed character classes corrupting UTF-8 arrows and Greek letters (edit in Python instead)
 
-Publish with an icon, then tell him in a few lines how to start (tap Continue), how the board pages and jump menu work, and that progress saves per browser. If the method lives in his PRB-StudyEngine repo, mirror changes there and zip it with `git archive` only, because the build folders hold instructor slide images.
+Publish with an icon, then tell him in a few lines how to start (tap Continue), how the board pages and jump menu work, and that progress saves per browser. Mirror every change into PRB-StudyEngine, run `make check`, and commit.
