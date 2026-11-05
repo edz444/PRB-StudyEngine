@@ -38,6 +38,15 @@ He judges every lesson by one test: could he follow it without opening ChatGPT? 
 7. Short sentences. Tie new ideas to a pattern he already knows ("same wiring as RTK, Sos, Ras, pointed at a different target").
 8. Self-check before publishing: read each table row, key bullet and lesson card alone, out of context. If any one would make him stop and ask what it means, rewrite it.
 
+## Staying locked in (ADHD-friendly by design)
+He has ADHD-style focus and uses his own physical timer, so the app's job is to keep him moving and never make him re-find his place. These five features are core, not extras:
+- Quick checks mixed into the lesson: each check sits two screens after the card it best matches (by shared words), at most one check per card where possible, so he answers something every minute or so instead of reading a long run first.
+- A rose "Cram path: only what she tests" button on home. It strings together, lecture by lecture, every lesson with a practice-set box (its big idea, the `exam` box and its traps, each labelled with the lecture and lesson) followed by that lecture's practice questions. It remembers its place and the home button says which stop it picks up at.
+- A streak counter on the lesson-name line ("7 in a row"), counting Got it and right multiple-choice answers in a row; a miss resets it. Every 5 in a row shows a toast, and every 10 adds confetti.
+- Resume at the exact screen: the app saves the current lesson and screen on every screen, and the home button becomes "Pick up where you left off" with the lesson and screen number until that lesson is finished.
+- A Park button in the lesson top bar opens a small box to type a stray thought (Enter saves, Escape cancels) without leaving the lesson. Parked thoughts wait on home with a Done button each.
+On phones (under about 440 px) the top-bar buttons go icon-only so the progress bar keeps its width.
+
 ## Step 1: write the content as a plain-English guide first
 The app is cut from a structured guide, so the guide comes first. One Markdown file per lecture, with these blocks (each becomes its own screen later):
 - A `:::story` box: where this lecture sits in the course story and what it needs from before.
@@ -65,17 +74,17 @@ Build the guide HTML, then parse it with BeautifulSoup into JSON:
 - Every heading followed by a `:::key` bubble becomes one lesson. Its key bullets become the mission objectives and its skim line becomes "Don't sweat". A parent heading with no key bubble becomes a group label on the path.
 - Each block becomes a card (one screen). Merge short paragraphs up to about 70 words and split long ones at sentence breaks into chunks of about 55 words. Lists longer than 6 items split into chunks of 5. Callouts (including `exam`), figures and tables each get their own card. "The short version" becomes a large "big idea" card. Keep a card's sub-heading as a kicker label.
 - The method, question-wording and one-page sections become the boss level and the badge reward screen.
-- Quick checks: reuse the course's Anki cloze cards (see the anki-slide-deck skill). Load every wording file, including the practice-set one, or the build fails with a KeyError. Assign each card to the lesson whose text shares the most words with it.
+- Quick checks: reuse the course's Anki cloze cards (see the anki-slide-deck skill). Load every wording file, including the practice-set one, or the build fails with a KeyError. Each card belongs to the lecture in its section header, or to its `lec` value for practice-set cards; never guess a card's lecture from its number (that sent Lecture 6 checks into Lecture 11). Within its lecture, assign each card to the lesson whose text shares the most words with it.
 - Boss questions: a `(Her Qn, Lx)` tag routes the question to that lecture's boss level and it goes first; untagged ones go to the lecture with the most shared words. Multiple-choice ones become tappable options.
 - Add a glossary (term, match strings, definition) for tap-to-define popovers.
 
 ## Step 3: the app
 One self-contained HTML page with the lesson JSON inline. Slide images and any companion tools go through `files`. Vanilla JS, no framework needed.
-- Home: days-to-exam countdown, XP, lessons done, today's mission from a day plan (split the lectures over the days left, with the last day for review), a big green Continue button that opens the next unfinished lesson, a review-pile button, and a "Saved to revisit" section. Each lecture is a colored unit card with a progress ring, a locked or unlocked badge, a "Board cheat sheet" button, and a zig-zag path of lesson bubbles (the next one pulses, done ones show stars, saved ones show a bookmark, lessons with an `exam` card show a small rose "◎ tested" chip) ending in a boss node. Each unit's lesson list opens and closes with a chevron; finished units start closed, and the choice is saved.
-- Lesson player, full screen: close button, segmented progress bar (tap to jump), a small line under it naming the lecture, lesson number and lesson title, a Save button, a Board toggle, and a thumb-reach footer with Back and a big Next button.
+- Home: days-to-exam countdown, XP, lessons done, today's mission from a day plan (split the lectures over the days left, with the last day for review), a big green Continue (or "Pick up where you left off") button, the Cram path button, a review-pile button, a "Parked thoughts" section and a "Saved to revisit" section. Each lecture is a colored unit card with a progress ring, a locked or unlocked badge, a "Board cheat sheet" button, and a zig-zag path of lesson bubbles (the next one pulses, done ones show stars, saved ones show a bookmark, lessons with an `exam` card show a small rose "◎ tested" chip) ending in a boss node. Each unit's lesson list opens and closes with a chevron; finished units start closed, and the choice is saved.
+- Lesson player, full screen: close button, segmented progress bar (tap to jump), a small line under it naming the lecture, lesson number and lesson title (with the streak counter at its right end), a Save button, a Park button, a Board toggle, and a thumb-reach footer with Back and a big Next button.
   1. Mission: the objectives as a read-only checklist, plus "Don't sweat".
   2. Cards, one per screen, text cards on a panel at about 19 px. Capitalize the first letter of a big-idea card after stripping "The short version:".
-  3. Quick checks: cloze blanks show "?" pills to tap and reveal, then the explanation and trick, then "Got it" or "Missed it". Misses go into the review pile.
+  3. Quick checks, mixed in between the cards as described above: cloze blanks show "?" pills to tap and reveal, then the explanation and trick, then "Got it" or "Missed it". Misses go into the review pile.
   4. "Tick what you can do now": objectives as checkboxes.
   5. Reward: confetti, 1 to 3 stars from the check score, +XP (10 per lesson plus 5 per check), a random cheer and how many lessons are left.
 - Navigation: Back works on every screen, including the first, where it becomes "Prev lesson" across lessons. Keys: Space, 4 or → for next; 1 or ← for back. Read `e.code` first so number-pad keys work with Num Lock off. Swipe on phones.
@@ -149,13 +158,15 @@ Run Playwright at 1280 px and 390 px, in light and dark:
 - play one lesson end to end: tap the blanks, mark Got it, tick the objectives, finish, confirm the reward and the XP saved
 - go forward several screens, then back, then reopen the lesson, and confirm the number of tappable terms on each screen is the same every time
 - play one boss level and confirm her questions come first with tappable options
+- confirm quick checks are spread between cards, the streak counter climbs and resets, Park saves a thought to home, closing mid-lesson turns Continue into "Pick up where you left off" at the same screen, and the Cram path opens, labels each stop and remembers its place
 - open a board view, flip through every page while checking for sideways overflow, use the jump menu to open a board in another lecture, and open a cheat sheet
 
 Test it the way the live page is served: page as UTF-8, web fonts blocked so the page can't hang. Wait about 300 ms before screenshots, because cards fade in. Known pitfalls:
 - a lightbox class name colliding with button label classes
 - the guide CSS putting borders on h2 and h3, including the board title
 - `.bigbtn` needing box-sizing:border-box
-- `[hidden]` needing `!important` on display:block elements
+- `[hidden]` needing `!important` on display:block and inline-flex elements (top-bar buttons included)
+- a home-screen local variable named `P` shadowing the player state inside home click handlers; open lessons through a top-level helper
 - sed character classes corrupting UTF-8 arrows and Greek letters (edit in Python instead)
 
 Publish with an icon, then tell him in a few lines how to start (tap Continue), how the board pages and jump menu work, and that progress saves per browser. Mirror every change into PRB-StudyEngine, run `make check`, and commit.
