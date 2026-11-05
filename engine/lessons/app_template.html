@@ -122,6 +122,26 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 .chk input:checked::after{content:""; width:7px; height:13px; border:solid var(--go-ink); border-width:0 3px 3px 0; transform:rotate(45deg) translate(-1px,-1px)}
 .chk input:disabled{opacity:.7; cursor:default}
 .skimnote{font-size:14px; color:var(--soft); margin:6px 0 4px}
+/* streak sits on the lesson-name line so the top bar keeps room for the progress bar */
+.plrow{display:flex; align-items:center; gap:8px; max-width:760px; margin:0 auto; padding-left:max(14px, env(safe-area-inset-left,0px)); padding-right:max(14px, env(safe-area-inset-right,0px)); box-sizing:border-box} .plrow .plabel{flex:1; min-width:0; margin:-4px 0 2px; padding:0}
+.ptop .bdtoggle[hidden]{display:none !important}
+.pcombo{flex:none; font:800 13px/1 'Baloo 2',sans-serif; color:#fff; background:var(--uc,#7c3aed); border-radius:999px; padding:5px 9px; white-space:nowrap}
+.pcombo.popc{animation:cpop .35s ease}
+@keyframes cpop{0%{transform:scale(.7)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){ .pcombo.popc{animation:none} }
+.bigbtn.cram{background:var(--rose,#be123c); box-shadow:0 5px 0 color-mix(in srgb, var(--rose,#be123c) 60%, #000); margin-top:10px}
+.parkbox{position:fixed; inset:0; z-index:80; background:rgba(10,14,20,.55); display:flex; align-items:center; justify-content:center; padding:16px}
+.parkbox[hidden]{display:none !important}
+.pk-card{background:var(--card,#fff); color:var(--ink); border-radius:20px; padding:18px; width:min(460px,100%); box-sizing:border-box; box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.pk-h{font:800 20px/1.2 'Baloo 2',sans-serif; margin:0 0 4px} .pk-sub{margin:0 0 10px; color:var(--soft); font-size:14px}
+.pk-card textarea{width:100%; box-sizing:border-box; font:inherit; font-size:16px; padding:10px; border-radius:12px; border:2px solid var(--line,#ccc); background:transparent; color:inherit}
+.pk-btns{display:flex; gap:10px; margin-top:10px} .pk-btns .bigbtn{flex:1; margin:0}
+.pk-list{list-style:none; margin:8px 0 0; padding:0; display:grid; gap:8px}
+.pk-list li{display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:10px 12px; border-radius:14px; border:2px solid var(--line,#ddd)}
+.pk-txt{flex:1 1 200px; font-weight:600} .pk-where{flex:1 1 100%; order:3; font-size:12px; color:var(--soft)}
+.pk-list .pk-done{width:auto; margin:0; padding:6px 14px; font-size:15px}
+@media (max-width:520px){ .pk-t{display:none} .parkbtn{padding-left:9px; padding-right:9px} }
+@media (max-width:440px){ .ptop .bdtoggle{font-size:0; padding-left:9px; padding-right:9px; gap:0} .ptop .bdtoggle .sv-t{display:none} .pcombo{font-size:12px; padding:4px 7px} }
 .nt .hot{font-style:normal; font-weight:700; color:var(--rose); background:var(--rose-soft); border-radius:999px; padding:0 7px; margin-left:4px; white-space:nowrap}
 .bd-exam{border-left:3px solid currentColor; padding-left:8px}
 .skimnote b{color:var(--ink2)}
@@ -245,12 +265,13 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 
 <div class="player" id="player" hidden>
   <div class="ptop"><button class="xbtn" id="pclose" aria-label="Close lesson"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 4l12 12M16 4L4 16"/></svg></button>
-    <div class="pbar"><i id="pfill"></i></div><span class="pcount" id="pcount"></span><button class="bdtoggle savebtn" id="psave" type="button" aria-pressed="false" aria-label="Save this lesson to revisit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span class="sv-t">Save</span></button><button class="bdtoggle" id="pboard" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21l4-4 4 4M7 9h6M7 12h9" stroke-linecap="round"/></svg>Board</button></div>
-  <div class="plabel" id="plabel"></div>
+    <div class="pbar"><i id="pfill"></i></div><span class="pcount" id="pcount"></span><button class="bdtoggle savebtn" id="psave" type="button" aria-pressed="false" aria-label="Save this lesson to revisit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span class="sv-t">Save</span></button><button class="bdtoggle parkbtn" id="ppark" type="button" aria-label="Park a stray thought for later"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 010 5h-3"/></svg><span class="pk-t">Park</span></button><button class="bdtoggle" id="pboard" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21l4-4 4 4M7 9h6M7 12h9" stroke-linecap="round"/></svg>Board</button></div>
+  <div class="plrow"><div class="plabel" id="plabel"></div><span class="pcombo" id="pcombo" hidden></span></div>
   <div class="pbody" id="pbody"><div class="pin" id="pin"></div></div>
   <div class="pfoot"><div class="fin"><button class="bigbtn ghost back" id="pback" type="button">Back</button><button class="bigbtn" id="pnext" type="button">Next</button></div></div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="parkbox" id="parkbox" hidden><div class="pk-card"><p class="pk-h">Park it for your break</p><p class="pk-sub">Type the stray thought and get straight back to the lesson. It waits on the home screen.</p><textarea id="pktext" rows="3" placeholder="e.g. text Josh back, or: what does PAI-1 do again?"></textarea><div class="pk-btns"><button type="button" class="bigbtn" id="pksave">Park it</button><button type="button" class="bigbtn ghost" id="pkcancel">Back to lesson</button></div></div></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
 <div class="lb2" id="lb2" hidden><img alt=""></div>
 
@@ -297,6 +318,17 @@ function todayIdx(){ const t=new Date(); t.setHours(0,0,0,0); for(let i=0;i<PLAN
 function dayProg(P){ let tot=0, d=0; P.lecs.forEach(id=>{ if(id==='review'){ return; } const L=LECS.find(x=>x.id===id); tot += L.lessons.length+1; d += L.lessons.filter((x,i)=>S.done[lkey(id,i)]).length + (S.boss[id]?1:0); }); return tot ? d/tot : 0; }
 
 /* ---------- saved lessons ---------- */
+function parkHTML(){
+  const L = S.park || []; if(!L.length) return '';
+  return `<section class="savedbox parked"><h2>Parked thoughts <span>${L.length}</span></h2><p class="sv-sub">Things you parked mid-lesson. Deal with them on a break, then tap Done.</p><ul class="pk-list">` +
+    L.map(x=>`<li><span class="pk-txt">${esc(x.t)}</span><span class="pk-where">${esc(x.w||'')}</span><button type="button" class="bigbtn ghost pk-done" data-at="${x.at}">Done</button></li>`).join('') + `</ul></section>`;
+}
+function openPark(){ $('#parkbox').hidden = false; const t = $('#pktext'); t.value = ''; setTimeout(()=>t.focus(), 30); }
+function closePark(){ $('#parkbox').hidden = true; }
+$('#ppark').addEventListener('click', openPark);
+$('#pkcancel').addEventListener('click', closePark);
+$('#pksave').addEventListener('click', ()=>{ const t = $('#pktext').value.trim(); if(t){ S.park = S.park || []; S.park.push({t, at: Date.now(), w: $('#plabel').textContent}); save(); toast('Parked. It waits on the home screen.'); } closePark(); });
+$('#pktext').addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); $('#pksave').click(); } if(e.key==='Escape') closePark(); });
 function savedList(){
   return Object.entries(S.saved||{}).map(([k,v])=>{ const m=k.match(/^(l\d+)-(boss|\d+)$/); if(!m) return null; const L=LECS.find(x=>x.id===m[1]); if(!L) return null;
     const i = m[2]==='boss' ? 'boss' : +m[2]; if(i!=='boss' && !L.lessons[i]) return null; return {k, v, L, i}; }).filter(Boolean).sort((a,b)=>b.v.at-a.v.at);
@@ -316,30 +348,39 @@ function openSaved(k){
 }
 function toast(msg){ const el=$('#toast'); el.textContent=msg; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>{ el.hidden=true; }, 2600); }
 $('#psave').addEventListener('click', ()=>{
-  if(!P || P.i==='review' || P.i==='sheet') return;
+  if(!P || P.i==='review' || P.i==='sheet' || P.i==='cram') return;
   const k = skey(P.L.id, P.i); S.saved = S.saved || {};
   if(S.saved[k]){ delete S.saved[k]; toast('Removed from Saved to revisit'); }
   else { S.saved[k] = {k: P.board ? 0 : P.k, at: Date.now(), note: ''}; toast('Saved. It is on the home screen under Saved to revisit.'); }
   save(); syncSave();
 });
-function syncSave(){ const b=$('#psave'); if(!P){ return; } const hide = (P.i==='review'||P.i==='sheet'); b.hidden = hide; if(hide) return;
+function syncSave(){ const b=$('#psave'); if(!P){ return; } const hide = (P.i==='review'||P.i==='sheet'||P.i==='cram'); b.hidden = hide; if(hide) return;
   const on = !!(S.saved && S.saved[skey(P.L.id, P.i)]); b.setAttribute('aria-pressed', on?'true':'false'); b.querySelector('.sv-t').textContent = on ? 'Saved' : 'Save';
   b.setAttribute('aria-label', on ? 'Remove this lesson from Saved to revisit' : 'Save this lesson to revisit'); }
 
 /* ---------- home ---------- */
 function isClosed(L, p){ const o = S.open && S.open[L.id]; if(o === true) return false; if(o === false) return true; return p >= 1; }
+function openAt(lid, i, k){ open(lid, i); P.k = Math.min(k, P.steps.length-1); show(); }
+function resumePoint(){
+  const p = S.pos; if(!p) return null; const L = LECS.find(x=>x.id===p.lid); if(!L) return null;
+  if(p.i==='boss'){ return (!S.boss[L.id] && p.k>0) ? {L, i:'boss', k:p.k} : null; }
+  if(!L.lessons[p.i] || S.done[lkey(L.id,p.i)] || p.k<1) return null; return {L, i:p.i, k:p.k};
+}
 function renderHome(){
   const days = Math.max(0, Math.ceil((EXAM - new Date())/86400000));
   const totalL = LECS.reduce((a,L)=>a+L.lessons.length+1,0), doneL = Object.keys(S.done).length + Object.keys(S.boss).length;
   const ti = todayIdx(), nl = nextLesson();
+  const rp = resumePoint();
   let h = `<p class="tag" style="--uc:var(--u5)">${esc(CFG.eyebrow)}</p>
   <h1 class="app">Lesson Path</h1><p class="sub2">Small lessons, one idea per screen. Finish a lesson, earn stars. Finish a lecture, earn its badge.</p>
   <div class="stats"><span class="pill cd">${ICON.clock}<b>${days}</b>&nbsp;days to the exam</span><span class="pill xp">${ICON.bolt}<b>${S.xp}</b>&nbsp;XP</span><span class="pill done">${ICON.check}<b>${doneL}</b>/${totalL}&nbsp;lessons</span></div>`;
   const P = ti>=0 ? PLAN[ti] : null;
   h += `<section class="today"><h2>${P ? "Today's mission: " + P.name : 'Final stretch'}</h2><p class="daydesc">${P ? P.desc : 'Clear anything left on the path, then hit your review pile.'}</p><div class="days">` +
     PLAN.map((p,i)=>`<div class="day ${i===ti?'now':''}"><span class="dn">${p.name}</span>${p.lecs.map(x=>x==='review'?'Review':LECS.find(L=>L.id===x).code).join(' + ')}<div class="bar"><i style="width:${Math.round(dayProg(p)*100)}%"></i></div></div>`).join('') +
-    `</div>` + (nl ? `<button class="bigbtn" id="cont">Continue<small>${esc(nl[1]==='boss' ? LECS.find(L=>L.id===nl[0]).code + ' boss level' : LECS.find(L=>L.id===nl[0]).code + ': ' + LECS.find(L=>L.id===nl[0]).lessons[nl[1]].title)}</small></button>` : `<button class="bigbtn" disabled>Every lesson done. You're ready.</button>`) +
+    `</div>` + (rp ? `<button class="bigbtn" id="cont">Pick up where you left off<small>${esc(rp.L.code + ': ' + (rp.i==='boss' ? 'boss level' : rp.L.lessons[rp.i].title) + ', screen ' + (rp.k+1))}</small></button>` : nl ? `<button class="bigbtn" id="cont">Continue<small>${esc(nl[1]==='boss' ? LECS.find(L=>L.id===nl[0]).code + ' boss level' : LECS.find(L=>L.id===nl[0]).code + ': ' + LECS.find(L=>L.id===nl[0]).lessons[nl[1]].title)}</small></button>` : `<button class="bigbtn" disabled>Every lesson done. You're ready.</button>`) +
+    `<button class="bigbtn cram" id="cram">Cram path: only what she tests<small>${CRAM_N} stops, every \u25ce tested spot plus her practice questions${S.cramk ? ', picks up at stop ' + (S.cramk+1) : ''}</small></button>` +
     `<div class="row2"><button class="bigbtn ghost" id="rev">Review pile<small>${S.review.length} card${S.review.length===1?'':'s'} to fix</small></button><a class="bigbtn ghost" href="${esc(CFG.guideUrl)}" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Full guide<small>3D models and Pathway Lab</small></a></div></section>`;
+  h += parkHTML();
   h += savedHTML();
   LECS.forEach(L=>{
     const p = lecProg(L), color = uc(L.id); let nxt = nl && nl[0]===L.id ? nl[1] : null;
@@ -369,7 +410,9 @@ function renderHome(){
     hd.addEventListener('click', tog);
     hd.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tog(); } });
   });
-  const c = $('#cont'); if(c) c.addEventListener('click',()=>open(nl[0], nl[1]));
+  const c = $('#cont'); if(c) c.addEventListener('click',()=>{ if(rp) openAt(rp.L.id, rp.i, rp.k); else open(nl[0], nl[1]); });
+  const cr = $('#cram'); if(cr) cr.addEventListener('click', openCram);
+  document.querySelectorAll('.pk-done').forEach(b=>b.addEventListener('click',()=>{ S.park = (S.park||[]).filter(x=>String(x.at)!==b.dataset.at); save(); renderHome(); }));
   $('#rev').addEventListener('click', openReview);
 }
 
@@ -412,6 +455,7 @@ document.addEventListener('click', e=>{
 
 /* ---------- player ---------- */
 let P = null;
+window.__app = { get P(){ return P; }, get combo(){ return combo; } };   // read-only hook for automated checks
 function buildSteps(L, i){
   const steps = [];
   if(i==='boss'){
@@ -424,12 +468,20 @@ function buildSteps(L, i){
   } else {
     const Ls = L.lessons[i];
     steps.push({t:'mission'});
-    Ls.cards.forEach(c=>steps.push({t:'card', c}));
-    Ls.checks.forEach(c=>steps.push({t:'cloze', c}));
+    // each check goes two screens after the card it's about, so recall comes every minute or so
+    const cards = Ls.cards, slot = cards.map(()=>[]);
+    const ct = cards.map(c=>toksJS(plain(c.h)));
+    Ls.checks.forEach(ch=>{ const t = toksJS(ch.c.replace(/\{\{c\d::(.*?)\}\}/g,'$1') + ' ' + (ch.e||''));
+      let best = 0, bs = -1; ct.forEach((set,j)=>{ let n = 0; t.forEach(w=>{ if(set.has(w)) n++; }); if(n > bs){ bs = n; best = j; } });
+      if(!cards.length){ steps.push({t:'cloze', c:ch}); return; }
+      let at = Math.min(cards.length-1, best+2); while(slot[at].length && at < cards.length-1) at++; slot[at].push(ch); });
+    cards.forEach((c,j)=>{ steps.push({t:'card', c}); slot[j].forEach(ch=>steps.push({t:'cloze', c:ch})); });
     steps.push({t:'ican'});
   }
   return steps;
 }
+const STOPJS = new Set('the a an and or of to in is are be by for with on as it its that this from at which can not no into when than then so their they them one two three more less all any each other also only most often'.split(' '));
+function toksJS(t){ return new Set((t.toLowerCase().match(/[a-z0-9\u03b1-\u03c9+\-]{3,}/g)||[]).filter(w=>!STOPJS.has(w))); }
 function open(lid, i){
   const L = LECS.find(x=>x.id===lid);
   P = {L, i, steps: buildSteps(L,i), k:0, got:0, asked:0, answered:{}};
@@ -442,7 +494,7 @@ function open(lid, i){
 function close(){ $('#player').hidden = true; document.body.style.overflow=''; P = null; try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} renderHome(); }
 $('#pclose').addEventListener('click', close);
 $('#pback').addEventListener('click', goBack);
-document.addEventListener('keydown', e=>{ if(!P || $('#player').hidden || e.target.closest('input,select,textarea')) return;
+document.addEventListener('keydown', e=>{ if(!P || $('#player').hidden || !$('#parkbox').hidden || e.target.closest('input,select,textarea')) return;
   const np = e.code==='Numpad4' ? 'f' : (e.code==='Numpad1' ? 'b' : null);
   const fwd = np ? np==='f' : (e.key==='ArrowRight' || e.key===' ' || e.code==='Space' || e.key==='4');
   const bwd = np ? np==='b' : (e.key==='ArrowLeft' || e.key==='1');
@@ -476,7 +528,7 @@ function goBack(){
   if(!P) return;
   if(P.board){ if(P.bp>0){ P.bp--; show(); } return; }
   if(P.k>0){ P.k--; show(); return; }
-  const pv = (P.i==='review'||P.i==='sheet') ? null : prevOf(P.L.id, P.i);
+  const pv = (P.i==='review'||P.i==='sheet'||P.i==='cram') ? null : prevOf(P.L.id, P.i);
   if(pv){ open(pv[0], pv[1]); const st = P.steps; let k = st.length-1; while(k>0 && st[k].t!=='card') k--; P.k = k; show(); }
 }
 function goNext(){ $('#pnext').click(); }
@@ -487,11 +539,13 @@ function clozeHTML(c){
   return esc(c.c).replace(/\{\{c\d::(.*?)\}\}/g, (m, a)=>`<button type="button" class="blank" data-a="${esc(a)}" data-i="${n++}">?</button>`);
 }
 function show(){
-  const st = P.steps[P.k], L = P.L, Ls = P.i==='boss'?null:L.lessons[P.i];
-  const lab = P.i==='review' ? 'Review pile' : P.i==='sheet' ? `${L.code} <span>· Board cheat sheet</span>` : P.i==='boss' ? `${L.code} <span>· Boss level: ${esc(L.badge)}</span>` : `${L.code} <span>· Lesson ${P.i+1} · ${esc(Ls.title)}</span>`;
+  const st = P.steps[P.k], L = P.L, Ls = (typeof P.i==='number') ? L.lessons[P.i] : null;
+  if(st.t!=='reward' && !P.board){ if(typeof P.i==='number' || P.i==='boss'){ S.pos = {lid:L.id, i:P.i, k:P.k}; save(); } else if(P.i==='cram'){ S.cramk = P.k; save(); } }
+  if(P.i==='cram'){ if(st.t==='reward'){ delete S.cramk; save(); } if(st.lid) $('#player').style.setProperty('--uc', uc(st.lid)); }
+  const lab = P.i==='cram' ? 'Cram path <span>\u00b7 only what she tests</span>' : P.i==='review' ? 'Review pile' : P.i==='sheet' ? `${L.code} <span>· Board cheat sheet</span>` : P.i==='boss' ? `${L.code} <span>· Boss level: ${esc(L.badge)}</span>` : `${L.code} <span>· Lesson ${P.i+1} · ${esc(Ls.title)}</span>`;
   $('#plabel').innerHTML = lab; $('#plabel').title = $('#plabel').textContent;
   const total = P.steps.length; $('#pfill').style.width = (P.k/(total-1)*100)+'%'; $('#pcount').textContent = `${P.k+1}/${total}`;
-  const pvx = (P.i==='review'||P.i==='sheet') ? null : prevOf(L.id, P.i);
+  const pvx = (P.i==='review'||P.i==='sheet'||P.i==='cram') ? null : prevOf(L.id, P.i);
   $('#pback').hidden = P.k===0 && !pvx;
   const nb = $('#pnext'); nb.textContent = 'Next'; $('#pback').textContent = P.k===0 ? 'Prev lesson' : 'Back';
   let h = '';
@@ -499,7 +553,7 @@ function show(){
     h = `<span class="tag">${L.code} · Lesson ${P.i+1} of ${L.lessons.length}</span><h2 class="ltitle">${esc(Ls.title)}</h2>
     <div class="mission"><h4>Your mission</h4>${Ls.obj.map(o=>`<label class="chk"><input type="checkbox" disabled><span>${esc(o)}</span></label>`).join('')}
     ${Ls.skim?`<p class="skimnote"><b>Don't sweat:</b> ${esc(Ls.skim)}</p>`:''}</div>
-    <p class="hint">${Ls.cards.length} quick screens, then ${Ls.checks.length || 'no'} check${Ls.checks.length===1?'':'s'}. You'll tick these off at the end.</p>`;
+    <p class="hint">${Ls.cards.length} quick screens with ${Ls.checks.length || 'no'} quick check${Ls.checks.length===1?'':'s'} mixed in. You'll tick these off at the end.</p>`;
     nb.textContent = "Let's go";
   } else if(st.t==='card'){
     const c = st.c; const lab = {hook:'Memory trick', trap:'Exam trap', nancy:'How Nancy says it', easy:'Easy marks', she:'She emphasized this', conn:'Connects to', story:'The story so far', big:'The big idea'}[c.k];
@@ -517,6 +571,12 @@ function show(){
     h = `<span class="tag">Last step</span><h2 class="ltitle">Tick what you can do now</h2><div class="mission">${Ls.obj.map((o,j)=>`<label class="chk"><input type="checkbox" data-j="${j}" ${S.ticks[lkey(L.id,P.i)+'-'+j]?'checked':''}><span>I can explain: ${esc(o)}</span></label>`).join('')}</div>
     <p class="hint">Not sure about one? Tap Back and look again. It's faster than relearning it Thursday night.</p>`;
     nb.textContent = 'Finish lesson';
+  } else if(st.t==='cramintro'){
+    h = `<span class="tag">Cram path</span><h2 class="ltitle">Only what she tests</h2><div class="mission"><h4>Your mission</h4>
+      <label class="chk"><input type="checkbox" disabled><span>Read every \u25ce tested spot, with its big idea and traps</span></label>
+      <label class="chk"><input type="checkbox" disabled><span>Answer her practice questions for each lecture</span></label></div>
+      <p class="hint">${CRAM_N} stops. Your place is saved, so you can stop and come back.</p>`;
+    nb.textContent = "Let's go";
   } else if(st.t==='bossintro'){
     h = `<span class="tag">${L.code} boss level</span><h2 class="ltitle">How Nancy asks about ${esc(L.name)}</h2><div class="mission"><h4>Your mission</h4>
       <label class="chk"><input type="checkbox" disabled><span>Spot what each question wording is really testing</span></label>
@@ -530,7 +590,7 @@ function show(){
     h = st.html; nb.textContent = st.btn || 'Back to path';
   }
   syncSave();
-  const bt = $('#pboard'); bt.hidden = (P.i==='review'); bt.setAttribute('aria-pressed', P.board ? 'true':'false');
+  const bt = $('#pboard'); bt.hidden = (P.i==='review'||P.i==='cram'); bt.setAttribute('aria-pressed', P.board ? 'true':'false');
   if(P.board){
     if(P.i==='sheet' || P.i==='boss'){ P.bpages = [lectureSheet(L)]; } else { P.bpages = lessonPages(L, Ls); }
     P.bp = Math.min(P.bp||0, P.bpages.length-1);
@@ -571,6 +631,7 @@ function wire(st, pin){
     pin.querySelectorAll('.gm button').forEach(b=>b.addEventListener('click',()=>{
       pin.querySelectorAll('.gm button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel');
       const got = b.classList.contains('got'), prev = P.answered[P.k];
+      if(!prev) bump(got);
       if(prev==='got') P.got--; P.answered[P.k] = got?'got':'miss'; if(got) P.got++;
       const n = st.c.n; S.review = S.review.filter(x=>x!==n); if(!got) S.review.push(n); save();
       setTimeout(()=>{ if(P){ P.k++; show(); } }, 380);
@@ -580,16 +641,23 @@ function wire(st, pin){
   if(st.t==='prac'){
     const ex = pin.querySelector('.qexp');
     pin.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{ const j=+o.dataset.j; const a=st.q.ans;
-      pin.querySelectorAll('.opt').forEach(x=>{ x.disabled=true; if(+x.dataset.j===a) x.classList.add('right'); }); if(j!==a) o.classList.add('wrong'); ex.hidden=false; }));
+      pin.querySelectorAll('.opt').forEach(x=>{ x.disabled=true; if(+x.dataset.j===a) x.classList.add('right'); }); if(j!==a) o.classList.add('wrong'); ex.hidden=false; bump(j===a); }));
     const sa = pin.querySelector('#showa'); if(sa) sa.addEventListener('click',()=>{ ex.hidden=false; sa.hidden=true; });
   }
   if(st.t==='ican'){
     pin.querySelectorAll('input[data-j]').forEach(c=>c.addEventListener('change',()=>{ S.ticks[lkey(P.L.id,P.i)+'-'+c.dataset.j] = c.checked; save(); }));
   }
 }
+let combo = 0;
+function bump(ok){
+  combo = ok ? combo + 1 : 0;
+  const el = $('#pcombo'); if(el){ el.hidden = combo < 2; el.textContent = combo + ' in a row'; el.classList.remove('popc'); void el.offsetWidth; if(ok) el.classList.add('popc'); }
+  if(ok && combo >= 5 && combo % 5 === 0){ toast(combo + ' in a row. Locked in.'); confetti(combo % 10 === 0); }
+}
 const CHEERS = ['Lesson cleared!','Nailed it!','Locked in!','That one is yours now.','Keep the streak going!','Brain upgraded.'];
 function finish(){
   const L = P.L; P.steps = P.steps.filter(s=>s.t!=='reward');
+  if(S.pos && S.pos.lid===L.id && S.pos.i===P.i){ delete S.pos; save(); }
   if(P.i==='boss'){
     const first = !S.boss[L.id]; S.boss[L.id] = true; if(first) S.xp += 50; save();
     const nl = nextLesson();
@@ -609,6 +677,23 @@ function finish(){
     <p>${lastOfLec ? `Every ${L.code} lesson done. The boss level is next, and the badge is waiting.` : `${left} lesson${left===1?'':'s'} left in ${L.code}.`}</p></div>`});
   P.after = nl;
   P.k = P.steps.length-1; show(); confetti(false);
+}
+function cramSteps(){
+  const st = [{t:'cramintro'}];
+  LECS.forEach(L=>{
+    L.lessons.forEach(Ls=>{ const ex = Ls.cards.filter(c=>c.k==='exam'); if(!ex.length) return;
+      const big = Ls.cards.find(c=>c.k==='big'), tr = Ls.cards.filter(c=>c.k==='trap'||c.k==='easy');
+      [big, ...ex, ...tr].filter(Boolean).forEach(c=>st.push({t:'card', lid:L.id, c:Object.assign({}, c, {kick: L.code + ' \u00b7 ' + Ls.title})})); });
+    L.boss_q.filter(q=>q.hers).forEach(q=>st.push({t:'prac', lid:L.id, q}));
+  });
+  st.push({t:'reward', btn:'Back to path', html:`<div class="reward"><p class="big">Cram path cleared</p><p>That's every spot her practice set tests, plus her questions. Anything shaky? Save it, or run the review pile.</p></div>`});
+  return st;
+}
+const CRAM_N = cramSteps().length - 2;
+function openCram(){
+  P = {L:LECS[0], i:'cram', steps:cramSteps(), k:0, got:0, answered:{}};
+  if(S.cramk && S.cramk < P.steps.length-1) P.k = S.cramk;
+  $('#player').hidden = false; document.body.style.overflow = 'hidden'; show();
 }
 function openReview(){
   const all = LECS.flatMap(L=>L.lessons.flatMap(x=>x.checks)); const byN = {}; all.forEach(c=>byN[c.n]=c);
