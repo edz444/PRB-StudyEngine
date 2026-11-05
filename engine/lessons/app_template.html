@@ -122,6 +122,13 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 .chk input:checked::after{content:""; width:7px; height:13px; border:solid var(--go-ink); border-width:0 3px 3px 0; transform:rotate(45deg) translate(-1px,-1px)}
 .chk input:disabled{opacity:.7; cursor:default}
 .skimnote{font-size:14px; color:var(--soft); margin:6px 0 4px}
+/* blue shooting star: must-memorize facts (flashcard answers, marked where they're taught) */
+.must{color:var(--blue,#2563eb); font-weight:700; background:color-mix(in srgb, var(--blue,#2563eb) 14%, transparent); border-radius:6px; padding:0 4px 0 2px; -webkit-box-decoration-break:clone; box-decoration-break:clone}
+.must strong{color:inherit}
+.must-i{width:1.05em; height:1.05em; vertical-align:-.17em; margin-right:2px}
+.board .must{color:#1d4ed8; background:none; padding:0; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px}
+.starkey{display:inline-flex; align-items:center; gap:4px; color:var(--blue,#2563eb); font-weight:700}
+.starkey .must-i{width:1.1em; height:1.1em}
 /* streak sits on the lesson-name line so the top bar keeps room for the progress bar */
 .plrow{display:flex; align-items:center; gap:8px; max-width:760px; margin:0 auto; padding-left:max(14px, env(safe-area-inset-left,0px)); padding-right:max(14px, env(safe-area-inset-right,0px)); box-sizing:border-box} .plrow .plabel{flex:1; min-width:0; margin:-4px 0 2px; padding:0}
 .ptop .bdtoggle[hidden]{display:none !important}
@@ -553,7 +560,8 @@ function show(){
     h = `<span class="tag">${L.code} · Lesson ${P.i+1} of ${L.lessons.length}</span><h2 class="ltitle">${esc(Ls.title)}</h2>
     <div class="mission"><h4>Your mission</h4>${Ls.obj.map(o=>`<label class="chk"><input type="checkbox" disabled><span>${esc(o)}</span></label>`).join('')}
     ${Ls.skim?`<p class="skimnote"><b>Don't sweat:</b> ${esc(Ls.skim)}</p>`:''}</div>
-    <p class="hint">${Ls.cards.length} quick screens with ${Ls.checks.length || 'no'} quick check${Ls.checks.length===1?'':'s'} mixed in. You'll tick these off at the end.</p>`;
+    <p class="hint">${Ls.cards.length} quick screens with ${Ls.checks.length || 'no'} quick check${Ls.checks.length===1?'':'s'} mixed in. You'll tick these off at the end.</p>
+    <p class="hint"><span class="starkey"><svg class="must-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 14l7-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/><path d="M3 18l6-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".35"/><path d="M16 3l1.9 4.6 4.9.4-3.7 3.2 1.1 4.8-4.2-2.6-4.2 2.6 1.1-4.8-3.7-3.2 4.9-.4z" fill="currentColor"/></svg>Blue shooting star</span> = memorize this exact fact. It's a flashcard answer.</p>`;
     nb.textContent = "Let's go";
   } else if(st.t==='card'){
     const c = st.c; const lab = {hook:'Memory trick', trap:'Exam trap', nancy:'How Nancy says it', easy:'Easy marks', she:'She emphasized this', conn:'Connects to', story:'The story so far', big:'The big idea'}[c.k];

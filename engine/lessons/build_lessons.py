@@ -218,6 +218,52 @@ for D in DATA:
         L['checks'] = [{'n': c['n'], 'c': c['c'], 'e': c['e'], 'hook': c['hook']} for c in L['checks']]
 
 GL = [{'t': t, 'm': m, 'd': d} for t, m, d, w in G]
+
+# ---------- must-memorize stars ----------
+# A fact that is a flashcard answer is something to memorize. Find where each answer is taught
+# (first in the lesson that holds its quick check, then anywhere in the lecture) and mark that spot.
+STAR_SVG = ('<svg class="must-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 14l7-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/>'
+            '<path d="M3 18l6-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".35"/>'
+            '<path d="M16 3l1.9 4.6 4.9.4-3.7 3.2 1.1 4.8-4.2-2.6-4.2 2.6 1.1-4.8-3.7-3.2 4.9-.4z" fill="currentColor"/></svg>')
+STAR_SKIP = set('both one two three four five six low high on off up down in out yes no increase decrease more less all none same opposite normal false true'.split())
+STAR_CAP = 7
+def star_lessons(DATA):
+    total = 0
+    for L in DATA:
+        per = {}
+        def mark(ls_i, pat, label):
+            nonlocal total
+            ls = L['lessons'][ls_i]
+            if per.get(ls_i, 0) >= STAR_CAP: return False
+            for c in ls['cards']:
+                if c['k'] not in ('text', 'list', 'big', 'table'): continue
+                soup = BeautifulSoup(c['h'], 'html.parser')
+                for node in soup.find_all(string=True):
+                    if node.parent.name in ('svg', 'path', 'code') or node.find_parent(class_='must'): continue
+                    m = pat.search(str(node))
+                    if not m: continue
+                    t = str(node); target = node
+                    par = node.parent
+                    if par.name in ('strong', 'b') and par.get_text() == t and m.start() == 0 and m.end() == len(t):
+                        target = par; frag = BeautifulSoup(f'<span class="must" title="Must memorize: {H.escape(label)}">{STAR_SVG}{str(par)}</span>', 'html.parser')
+                        target.replace_with(frag)
+                    else:
+                        frag = BeautifulSoup(H.escape(t[:m.start()]) + f'<span class="must" title="Must memorize">{STAR_SVG}{H.escape(m.group(0))}</span>' + H.escape(t[m.end():]), 'html.parser')
+                        target.replace_with(frag)
+                    c['h'] = str(soup); per[ls_i] = per.get(ls_i, 0) + 1; total += 1
+                    return True
+            return False
+        done = set()
+        for i, ls in enumerate(L['lessons']):
+            for ch in ls['checks']:
+                for a in re.findall(r'\{\{c\d::(.*?)\}\}', ch['c']):
+                    a = a.strip(' ,.;')
+                    if len(a) < 3 or a.lower() in STAR_SKIP or len(a.split()) > 6 or a.lower() in done: continue
+                    pat = re.compile(r'(?<![\w-])' + re.escape(a) + r'(?![\w])', re.I)
+                    order = [i] + [j for j in range(len(L['lessons'])) if j != i]
+                    if any(mark(j, pat, a) for j in order): done.add(a.lower())
+    print('stars placed:', total)
+star_lessons(DATA)
 json.dump({'lecs': DATA, 'gloss': GL}, open(BUILD / 'lessons.json', 'w'), ensure_ascii=False)
 for D in DATA:
     nl = len(D['lessons']); nc = sum(len(L['cards']) for L in D['lessons']); nk = sum(len(L['checks']) for L in D['lessons'])
