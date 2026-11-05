@@ -1,4 +1,4 @@
-# Study engine: lecture slides -> plain-English guide, Lesson Path app, Anki deck, NotebookLM PDFs.
+# PRB-StudyEngine: lecture slides -> plain-English guide, Lesson Path app, Anki deck, NotebookLM PDFs.
 # Pick a course with COURSE=courses/<name> (defaults to the first folder in courses/).
 COURSE ?= $(firstword $(filter-out courses/_template,$(wildcard courses/*)))
 export COURSE

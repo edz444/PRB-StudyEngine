@@ -1,4 +1,10 @@
-# Study engine
+# PRB-StudyEngine
+
+Pack-a-Punch for lecture slides: drop the slides in, and get back a plain-English guide, a game-style Lesson Path with Panaboard board pages, and a matching Anki deck.
+
+## Using it with Claude
+
+Attach this repo to a Claude session, hand over the slides, and say which course and exam. The `interactive-lesson-path`, `illustrated-study-guide` and `anki-slide-deck` skills tell Claude to clone this repo and build on it, so every course gets the exact same app. Claude writes only the course content (`courses/<name>/`) and leaves `engine/` alone unless you ask for a new feature, which then goes into the engine for every course.
 
 Turn a course's lecture slides into a full study kit, in my style:
 

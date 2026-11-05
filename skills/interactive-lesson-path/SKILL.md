@@ -131,4 +131,4 @@ Test it the way the live page is served: page as UTF-8, web fonts blocked so the
 - `[hidden]` needing `!important` on display:block elements
 - sed character classes corrupting UTF-8 arrows and Greek letters (edit in Python instead)
 
-Publish with an icon, then tell him in a few lines how to start (tap Continue), how the board pages and jump menu work, and that progress saves per browser. If the method lives in his study-engine repo, mirror changes there and zip it with `git archive` only, because the build folders hold instructor slide images.
+Publish with an icon, then tell him in a few lines how to start (tap Continue), how the board pages and jump menu work, and that progress saves per browser. If the method lives in his PRB-StudyEngine repo, mirror changes there and zip it with `git archive` only, because the build folders hold instructor slide images.

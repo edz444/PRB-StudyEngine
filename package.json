@@ -1,5 +1,5 @@
 {
-  "name": "study-engine",
+  "name": "prb-studyengine",
   "private": true,
   "description": "Browser scripts for the study engine: diagram PNGs, image-occlusion label boxes, NotebookLM PDFs and smoke tests.",
   "scripts": {
