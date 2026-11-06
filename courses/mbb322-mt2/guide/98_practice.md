@@ -13,6 +13,7 @@ How she tests, from this set:
 - Short answers ask you to compare two systems, "rationalize" a rule from first principles, or "define, then explain the rationale" for a drug. Each wants a mechanism, not a restated question.
 - Multiple-choice wrong options are real facts from a different pathway (STAT, SMAD, Cbl, Sos, ryanodine receptor). If an option is true somewhere else in the course, it's probably the trap.
 - "Which is INCORRECT" questions have four true statements. Mark each one T or F first.
+- In her own practice set the right option was usually the longest one. The options here are rewritten to similar lengths and the app shuffles them, so you practice reading every option instead of leaning on that clue. On the real exam, treat length as a tiebreaker at most.
 :::
 
 :::q
@@ -64,19 +65,19 @@ Transducin stays active because it can't hydrolyze the analog. cGMP phosphodiest
 :::
 
 :::q
-9\. (Her Q10, L5) A mutation in Gαq prevents it from hydrolyzing GTP. After stimulating a Gq-coupled receptor, which profile would you see over time? A. Sustained low Ca2+ because PLC can't be activated B. A brief IP3 spike that quickly returns to baseline C. Continuously elevated DAG at the membrane and sustained high cytoplasmic Ca2+ D. Massive accumulation of PIP2 E. Hyperactivation of PKA by cross-talk
+9\. (Her Q10, L5) A mutation in Gαq prevents it from hydrolyzing GTP. After stimulating a Gq-coupled receptor, which profile would you see over time? A. Sustained low Ca2+, because PLC can no longer be switched on B. A short IP3 spike that feedback quickly brings back to baseline C. DAG stays high in the membrane and cytoplasmic Ca2+ stays high D. PIP2 piles up in the inner leaflet because nothing cuts it E. PKA becomes hyperactive through cross-talk from the Gq branch
 ???
 C. Gαq can't turn itself off, so PLC-β keeps cutting PIP2. DAG stays high, IP3 keeps the ER Ca2+ channels open, and Ca2+ stays high. A is backwards, B assumes the off switch works, D is backwards (PIP2 gets used up), and PKA belongs to the Gαs branch.
 :::
 
 :::q
-10\. (Her Q11, L5) A drug chelates all DAG in the plasma membrane of smooth muscle cells. You then add a hormone that activates a Gq-coupled GPCR. What happens downstream? A. IP3 isn't made and Ca2+ stays locked in the ER B. Cytosolic Ca2+ rises normally, but PKC fails to be fully activated at the membrane C. PKC is constantly active and goes to the nucleus without Ca2+ D. The GPCR is immediately desensitized and endocytosed E. PLC reverses and makes PIP2
+10\. (Her Q11, L5) A drug chelates all DAG in the plasma membrane of smooth muscle cells. You then add a hormone that activates a Gq-coupled GPCR. What happens downstream? A. IP3 isn't made, so Ca2+ stays locked inside the ER B. Ca2+ rises normally, but PKC can't fully switch on C. PKC stays on and moves to the nucleus without needing Ca2+ D. The GPCR is desensitized and pulled inside right away E. PLC runs in reverse and rebuilds PIP2 at a faster rate
 ???
 B. PLC-β still makes IP3, so the Ca2+ branch works. PKC needs both Ca2+ and DAG at the membrane, so with DAG gone it can't fully activate.
 :::
 
 :::q
-11\. (Her Q12, L6) A drug locks the sarcoplasmic reticulum Ca2+ release channels permanently open. What is the immediate state of the muscle? A. Permanently relaxed, because the SR pulls all Ca2+ out of the cytoplasm B. Continuous, sustained contraction, because cytosolic Ca2+ stays high and can't be pumped away C. T-tubules become ordinary membrane and action potentials stop D. ACh receptors upregulate 500% E. The cell switches to Mg2+ to power shortening
+11\. (Her Q12, L6) A drug locks the sarcoplasmic reticulum Ca2+ release channels permanently open. What is the immediate state of the muscle? A. It goes limp, because the SR pulls all the Ca2+ back in B. It stays contracted, because cytosolic Ca2+ stays high C. T-tubules become plain membrane, so action potentials stop D. ACh receptors at the junction increase about 500% E. The fiber switches to Mg2+ to power its shortening
 ???
 B. With the release channels stuck open, Ca2+ leaks out of the SR as fast as the pumps return it, so Ca2+ stays bound to troponin, tropomyosin stays moved, and myosin keeps pulling. A has the direction backwards.
 :::
@@ -94,55 +95,55 @@ E. PLC-β cuts PIP2 into two messengers at once, DAG and IP3. Ca2+ is a second m
 :::
 
 :::q
-14\. (Her Q15, L7) What type of protein is channelrhodopsin-2, and how does it respond to light? A. A GPCR that activates adenylyl cyclase under UV light B. A light-gated ion channel that opens with blue light, letting cations rush in C. An active pump that uses green light to push Na+ out D. A light-sensitive protease activated by infrared E. A nuclear receptor that binds DNA under red light
+14\. (Her Q15, L7) What type of protein is channelrhodopsin-2, and how does it respond to light? A. A GPCR that switches on adenylyl cyclase in UV light B. A channel that opens in blue light and lets cations in C. A pump that uses green light to push Na+ out of the cell D. A protease that breaks down the cell wall in infrared light E. A nuclear receptor that binds promoter DNA in red light
 ???
 B. ChR2 is itself the channel. Blue light (about 470 nm) flips its retinal and opens the pore. A describes a GPCR and C describes a pump, which are the other light tools.
 :::
 
 :::q
-15\. (Her Q16, L7) When blue light hits a neuron expressing ChR2, what ionic movement happens and how does it affect the resting potential? A. K+ diffuses in and hyperpolarizes the membrane B. Cations (mainly Na+) rush in and depolarize the membrane toward threshold C. Cl- diffuses in, moving the membrane away from threshold D. Na+ is pumped out using ATP E. The channel locks closed
+15\. (Her Q16, L7) When blue light hits a neuron expressing ChR2, what ionic movement happens and how does it affect the resting potential? A. K+ diffuses in, which hyperpolarizes the membrane B. Cations, mainly Na+, flow in and depolarize the membrane C. Cl- diffuses in, pushing the membrane away from threshold D. Na+ is pumped out against its gradient using ATP E. The channel locks shut and traps the resting ions inside
 ???
 B. Na+ and other cations flow in down their gradient, the membrane depolarizes, and the neuron fires. C is what halorhodopsin does.
 :::
 
 :::q
-16\. (Her second Q16, L10) What property of a substance is the Ames test designed to detect and measure directly? A. Disrupting the lipid bilayer B. Acting as a mutagen by inducing reverse mutations in a specialized bacterial strain C. Speeding entry into S phase D. Activating ryanodine receptors E. Toxicity toward the nuclear pore
+16\. (Her second Q16, L10) What property of a substance is the Ames test designed to detect and measure directly? A. Whether it physically breaks up the lipid bilayer B. Whether it causes reverse mutations in a bacterial strain C. How much it speeds a cell's entry into S phase D. How strongly it opens ryanodine receptors in muscle E. How toxic it is to the nuclear pore complex
 ???
 B. The Ames test measures mutagenicity by counting bacteria that regain the ability to make histidine (revertants). Her option says E. coli; the classic strain is his- Salmonella, but it's still the right answer.
 :::
 
 :::q
-17\. (Her Q17, L6) What happens to an action potential if the delayed K+ channels are blocked while Na+ and leak channels work normally? A. It fails to depolarize at threshold B. The cell bursts from osmotic imbalance C. It depolarizes normally but takes much longer to return to rest D. Na+ channels lock open E. Rest shifts to +60 mV
+17\. (Her Q17, L6) What happens to an action potential if the delayed K+ channels are blocked while Na+ and leak channels work normally? A. It never depolarizes, even after reaching threshold B. The cell swells and bursts from an osmotic imbalance C. It rises normally but returns to rest much more slowly D. The Na+ channels lock permanently in the open state E. The resting potential jumps straight to about +60 mV
 ???
 C. The rise depends on Na+ channels, which still work. The fall needs K+ to leave, so with only inactivation and leak bringing it down, repolarization is much slower and there's no undershoot. A is what a Na+ channel blocker does.
 :::
 
 :::q
-18\. (Her Q18, L11) Which fact about tumor-suppressor mutations is INCORRECT? A. They allow unregulated proliferation and survival B. Both copies must be knocked out to show a phenotype C. They commonly arise by chromosomal translocation or gene amplification D. Some code for proteins that promote apoptosis E. They act as cellular brakes that get broken or removed
+18\. (Her Q18, L11) Which fact about tumor-suppressor mutations is INCORRECT? A. They allow unregulated proliferation and survival B. Both copies must be lost before a phenotype shows C. They usually arise by translocation or amplification D. Some code for proteins that promote apoptosis E. They act as cell brakes that get broken or removed
 ???
 C. Translocation and amplification make more or new protein, which is how proto-oncogenes become oncogenes. Tumor suppressors are lost by deletion, point mutation or methylation.
 :::
 
 :::q
-19\. (Her Q19, L10) Which statement about cytokine receptors is incorrect? A. They bind tightly to JAK kinases B. The Epo receptor is an example C. The intracellular domain has a tyrosine kinase domain D. They can bind interleukins E. They can lead to activation of transcription factors
+19\. (Her Q19, L10) Which statement about cytokine receptors is incorrect? A. They bind tightly to JAK kinases inside the cell B. The Epo receptor is one example of this family C. Their inside tail has its own tyrosine kinase D. Some of them bind interleukins as their ligand E. They can end by switching on transcription factors
 ???
 C. Cytokine receptors have no kinase of their own. They borrow JAK, which is permanently attached, and JAK activates STATs.
 :::
 
 :::q
-20\. (Her Q20, L8) Once an RTK dimerizes, how do the intracellular kinase domains become activated? A. They recruit a tyrosine phosphatase to remove inhibitory phosphates B. They cross-phosphorylate specific tyrosines on their partner's intracellular domain C. They use SH2 domains to bind and activate Ras D. They release GDP so GTP can bind E. They bind the E3 ligase Cbl, which activates them
+20\. (Her Q20, L8) Once an RTK dimerizes, how do the intracellular kinase domains become activated? A. They recruit a phosphatase that strips inhibitory phosphates B. Each one phosphorylates tyrosines on its partner's tail C. Their SH2 domains grab Ras and switch it on directly D. They drop GDP from their active site so GTP can bind E. They bind the E3 ligase Cbl, which turns their kinase on
 ???
 B. Each kinase phosphorylates the other's activation lip. D is how G proteins and Ras switch on, and Cbl tags RTKs for shutdown.
 :::
 
 :::q
-21\. (Her Q21, L11) Once β-catenin escapes degradation and enters the nucleus, how does it drive transcription? A. It phosphorylates transcription factors directly B. It binds TCF/LEF, displaces co-repressors like Groucho and recruits co-activators C. It binds STAT proteins D. It binds SMAD proteins E. It binds APC in the nucleus
+21\. (Her Q21, L11) Once β-catenin escapes degradation and enters the nucleus, how does it drive transcription? A. It acts as a kinase and phosphorylates TCF directly B. It binds TCF/LEF, pushes off Groucho, brings co-activators C. It binds STAT proteins and carries them onto the DNA D. It pairs with SMAD proteins to switch on target genes E. It binds APC in the nucleus to keep genes switched off
 ???
 B. β-catenin is a co-activator, not a kinase or a DNA-binding protein. STAT is JAK-STAT, SMADs are TGFβ, and APC is part of the destruction complex in the cytoplasm.
 :::
 
 :::q
-22\. (Her Q22, L8) A FRET biosensor has CFP fused to Ras and YFP fused to the Ras-binding domain of Raf. What happens to the FRET signal when a growth factor stimulates the cell? A. It drops to zero because Ras moves to the nucleus B. It increases because Ras-GTP binds Raf, bringing CFP and YFP close together C. It stays the same D. It drops because Sos makes Ras hydrolyze GTP
+22\. (Her Q22, L8) A FRET biosensor has CFP fused to Ras and YFP fused to the Ras-binding domain of Raf. What happens to the FRET signal when a growth factor stimulates the cell? A. It drops to zero because active Ras leaves for the nucleus B. It rises because Ras-GTP binds Raf, bringing CFP near YFP C. It stays the same, because FRET only measures protein amount D. It drops because Sos makes Ras hydrolyze its GTP to GDP
 ???
 B. The growth factor activates Ras through GRB2 and Sos, and only Ras-GTP binds Raf's Ras-binding domain, so the two labels come close and FRET rises. Sos is a GEF that turns Ras on; hydrolysis is GAP's job.
 :::
@@ -164,7 +165,7 @@ Both. Ras is a small monomeric GTPase (a G protein) and its gene is a proto-onco
 :::
 
 :::q
-3\. Which is NOT a second messenger? A. cAMP B. IP3 C. Ca2+ D. phospholipase C-β E. DAG
+3\. Which is NOT a second messenger? A. cAMP B. IP3 C. Ca2+ D. PLC-β E. DAG
 ???
 D. PLC-β is the effector enzyme that makes IP3 and DAG.
 :::
@@ -194,7 +195,7 @@ Only the sev + RasD fly. Without Boss there's no ligand for Sev, so the precurso
 :::
 
 :::q
-8\. Posterior retinal ganglion cell axons avoid posterior tectum because: A. anterior tectum attracts them B. posterior tectum has high ephrinA that repels high-EphA axons C. posterior axons lack Eph receptors D. ephrinB is GPI-anchored
+8\. Posterior retinal ganglion cell axons avoid posterior tectum because: A. the anterior tectum attracts them and pulls them forward B. ephrinA, high at the back, repels axons with lots of EphA C. posterior axons have no Eph receptors on their growth cones D. ephrinB is GPI-anchored, so only it can reach these axons
 ???
 B. She wrote on the slide that it's repulsion from posterior tectum, not attraction to anterior.
 :::
@@ -242,7 +243,7 @@ Oncogene (stuck gas pedal), tumor suppressor loss (failed brakes), caretaker/DNA
 :::
 
 :::q
-16\. Gleevec treats CML by: A. removing the Philadelphia chromosome B. blocking the ATP-binding pocket of Bcr-Abl C. activating Ras-GAP D. blocking the Epo receptor E. inhibiting telomerase
+16\. Gleevec treats CML by: A. removing the Philadelphia chromosome B. plugging the ATP pocket of Bcr-Abl C. switching on the Ras-GAP NF1 D. blocking the Epo receptor's ligand E. shutting down telomerase activity
 ???
 B. It targets the fusion protein's kinase. The translocation is still there.
 :::
@@ -272,7 +273,7 @@ Epigenetic silencing: the Rb promoter's CpG island is methylated (5-methylcytosi
 :::
 
 :::q
-21\. In the absence of Wnt, which statement is TRUE? A. β-catenin binds TCF and activates Myc B. Dishevelled pulls axin away from the destruction complex C. β-catenin is phosphorylated by GSK-3 and CK1 and degraded by the proteasome D. Groucho is displaced from TCF E. APC is inactive
+21\. In the absence of Wnt, which statement is TRUE? A. β-catenin binds TCF and switches on Myc B. Dishevelled pulls axin out of the complex C. GSK-3 and CK1 tag β-catenin for destruction D. Groucho gets pushed off TCF by β-catenin E. APC drops out and the complex goes inactive
 ???
 C. With no Wnt, the destruction complex (axin, APC, GSK-3, CK1) phosphorylates β-catenin and it gets destroyed. A, B and D describe the Wnt-ON state.
 :::

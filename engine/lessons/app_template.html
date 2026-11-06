@@ -571,7 +571,7 @@ function show(){
     h = `<span class="tag">Quick check</span><div class="qcard">${clozeHTML(c)}<div class="qexp" hidden><b>Why:</b> ${esc(c.e)}${c.hook?`<br><b>Trick:</b> ${esc(c.hook)}`:''}</div>
     <div class="gm" hidden><button type="button" class="got">Got it</button><button type="button" class="miss">Missed it</button></div></div><p class="hint">Say the answer in your head, then tap each blank (or press Space) to check.</p>`;
   } else if(st.t==='prac'){
-    const q = st.q;
+    const q = mcView(st);
     h = `<span class="tag">Her style of question</span><div class="qcard"><p style="margin:0">${esc(q.q)}</p>` +
       (q.opts ? `<div class="opts">${q.opts.map((o,j)=>`<button type="button" class="opt" data-j="${j}">${'ABCDE'[j]}. ${esc(o)}</button>`).join('')}</div>` : `<p class="hint">Answer it out loud: verdict first, then the reason.</p><button type="button" class="bigbtn ghost" id="showa" style="margin-top:8px">Show answer</button>`) +
       `<div class="qexp" hidden>${esc(q.a)}</div></div>`;
@@ -648,7 +648,7 @@ function wire(st, pin){
   }
   if(st.t==='prac'){
     const ex = pin.querySelector('.qexp');
-    pin.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{ const j=+o.dataset.j; const a=st.q.ans;
+    pin.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{ const j=+o.dataset.j; const a=mcView(st).ans;
       pin.querySelectorAll('.opt').forEach(x=>{ x.disabled=true; if(+x.dataset.j===a) x.classList.add('right'); }); if(j!==a) o.classList.add('wrong'); ex.hidden=false; bump(j===a); }));
     const sa = pin.querySelector('#showa'); if(sa) sa.addEventListener('click',()=>{ ex.hidden=false; sa.hidden=true; });
   }
@@ -661,6 +661,21 @@ function bump(ok){
   combo = ok ? combo + 1 : 0;
   const el = $('#pcombo'); if(el){ el.hidden = combo < 2; el.textContent = combo + ' in a row'; el.classList.remove('popc'); void el.offsetWidth; if(ok) el.classList.add('popc'); }
   if(ok && combo >= 5 && combo % 5 === 0){ toast(combo + ' in a row. Locked in.'); confetti(combo % 10 === 0); }
+}
+// Multiple choice: shuffle the options once per showing so the answer letter gives nothing away,
+// and rewrite letter references in the explanation ("C.", "A is backwards") to the new letters.
+// Options that point at other options ("A and B") keep their original order.
+function mcView(st){
+  if(st.mc) return st.mc;
+  const q = st.q;
+  if(!q.opts || q.ans==null || q.opts.some(o=>/^(?:[A-E](?:,| and)\s)+[A-E]$|all of the above|none of the above|both/i.test(o.trim()))){ st.mc = q; return q; }
+  const idx = q.opts.map((_,i)=>i);
+  for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+  const newOf = {}; idx.forEach((orig,pos)=>{ newOf['ABCDE'[orig]] = 'ABCDE'[pos]; });
+  const a = q.a.replace(/^([A-E])\./, (m,L)=>newOf[L]+'.')
+    .replace(/(^|[\s(])([A-E])(?=(?:,| and| or| is| are| has| describes?| assumes?| was)\b)/g, (m,pre,L)=>pre+newOf[L]);
+  st.mc = Object.assign({}, q, {opts: idx.map(i=>q.opts[i]), ans: idx.indexOf(q.ans), a});
+  return st.mc;
 }
 const CHEERS = ['Lesson cleared!','Nailed it!','Locked in!','That one is yours now.','Keep the streak going!','Brain upgraded.'];
 function finish(){
