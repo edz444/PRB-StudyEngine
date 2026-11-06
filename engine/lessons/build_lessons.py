@@ -295,6 +295,26 @@ def build_cheat(D):
             stars.append({'sec': ls['title'], 'h': filled})
     out['star'] = stars
     return out
+
+# ---------- refresher: one short trick and one short trap per lesson ----------
+def _short(html, maxw):
+    b = BeautifulSoup(html, 'html.parser')
+    for lab in b.select('.co-lab'): lab.decompose()
+    t = re.sub(r'\s+', ' ', b.get_text()).strip()
+    t = re.sub(r'^(Plain version:|Exam trap:|Memory hook:)\s*', '', t)
+    sents = re.split(r'(?<=[.!?])\s+(?=[A-Z"(])', t)
+    out = ''
+    for x in sents:
+        if out and len((out + ' ' + x).split()) > maxw: break
+        out = (out + ' ' + x).strip()
+    if len(out.split()) > maxw + 8: out = ' '.join(out.split()[:maxw]) + '...'
+    return out
+for D in DATA:
+    for ls in D['lessons']:
+        hk = next((c for c in ls['cards'] if c['k'] == 'hook'), None)
+        tr = next((c for c in ls['cards'] if c['k'] in ('trap', 'easy')), None)
+        ls['rhook'] = _short(hk['h'], 26) if hk else ''
+        ls['rtrap'] = _short(tr['h'], 30) if tr else ''
 for D in DATA: D['cheat'] = build_cheat(D)
 star_lessons(DATA)
 json.dump({'lecs': DATA, 'gloss': GL}, open(BUILD / 'lessons.json', 'w'), ensure_ascii=False)

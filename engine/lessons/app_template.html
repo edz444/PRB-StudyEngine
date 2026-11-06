@@ -122,6 +122,26 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 .chk input:checked::after{content:""; width:7px; height:13px; border:solid var(--go-ink); border-width:0 3px 3px 0; transform:rotate(45deg) translate(-1px,-1px)}
 .chk input:disabled{opacity:.7; cursor:default}
 .skimnote{font-size:14px; color:var(--soft); margin:6px 0 4px}
+/* answer buttons and explanation stay hidden until every blank is revealed */
+.gm[hidden], .qexp[hidden]{display:none !important}
+/* ---------- refresher ---------- */
+.rf-row{margin:12px 0 2px} .rf-h{font:800 17px/1.2 'Baloo 2',sans-serif; margin:0 0 6px} .rf-h span{display:block; font:500 13px/1.3 var(--f-body,sans-serif); color:var(--soft)}
+.rf-chips{display:flex; flex-wrap:wrap; gap:8px}
+.rf-chip{font:800 16px/1 'Baloo 2',sans-serif; color:#fff; background:var(--uc); border:0; border-radius:14px; padding:10px 14px; box-shadow:0 4px 0 color-mix(in srgb, var(--uc) 60%, #000); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px}
+.rf-chip small{font:700 10px/1 var(--f-body,sans-serif); opacity:.9}
+.rf-chip:active{transform:translateY(3px); box-shadow:0 1px 0 color-mix(in srgb, var(--uc) 60%, #000)}
+.kc{border-radius:22px; padding:20px 20px 16px; background:linear-gradient(180deg, color-mix(in srgb, var(--uc) 22%, transparent), transparent 120px), var(--card, transparent); border:2px solid color-mix(in srgb, var(--uc) 45%, transparent)}
+.kc-n{font:800 12px/1 'Baloo 2',sans-serif; text-transform:uppercase; letter-spacing:.06em; color:var(--uc); margin:0 0 6px}
+.kc-t{font:800 26px/1.15 'Baloo 2',sans-serif; margin:0 0 12px}
+.kc-lead{font-size:18px; line-height:1.5; margin:0}
+.kc-pts{list-style:none; counter-reset:k; margin:0 0 12px; padding:0; display:grid; gap:10px}
+.kc-pts li{counter-increment:k; position:relative; padding:10px 12px 10px 46px; border-radius:14px; background:color-mix(in srgb, var(--uc) 10%, transparent); font-size:19px; line-height:1.4; font-weight:600}
+.kc-pts li::before{content:counter(k); position:absolute; left:10px; top:9px; width:26px; height:26px; border-radius:50%; background:var(--uc); color:#fff; font:800 15px/26px 'Baloo 2',sans-serif; text-align:center}
+.kc-hook, .kc-trap{border-radius:14px; padding:10px 12px; margin-top:8px; font-size:16px; line-height:1.45}
+.kc-hook span, .kc-trap span{display:block; font:800 12px/1 'Baloo 2',sans-serif; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px}
+.kc-hook{background:color-mix(in srgb, var(--green,#15803d) 14%, transparent)} .kc-hook span{color:var(--green,#15803d)}
+.kc-trap{background:color-mix(in srgb, var(--amber,#b45309) 14%, transparent)} .kc-trap span{color:var(--amber,#b45309)}
+@media (max-width:440px){ .kc{padding:16px 14px 12px} .kc-t{font-size:23px} .kc-pts li{font-size:17px; padding-left:42px} }
 /* ---------- per-lecture cheat sheet ---------- */
 .cheat{position:fixed; inset:0; z-index:70; background:var(--bg); display:flex; flex-direction:column}
 .cheat[hidden]{display:none !important}
@@ -403,13 +423,13 @@ function openSaved(k){
 }
 function toast(msg){ const el=$('#toast'); el.textContent=msg; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>{ el.hidden=true; }, 2600); }
 $('#psave').addEventListener('click', ()=>{
-  if(!P || P.i==='review' || P.i==='sheet' || P.i==='cram') return;
+  if(!P || P.i==='review' || P.i==='sheet' || P.i==='cram' || P.i==='refresh') return;
   const k = skey(P.L.id, P.i); S.saved = S.saved || {};
   if(S.saved[k]){ delete S.saved[k]; toast('Removed from Saved to revisit'); }
   else { S.saved[k] = {k: P.board ? 0 : P.k, at: Date.now(), note: ''}; toast('Saved. It is on the home screen under Saved to revisit.'); }
   save(); syncSave();
 });
-function syncSave(){ const b=$('#psave'); if(!P){ return; } const hide = (P.i==='review'||P.i==='sheet'||P.i==='cram'); b.hidden = hide; if(hide) return;
+function syncSave(){ const b=$('#psave'); if(!P){ return; } const hide = (P.i==='review'||P.i==='sheet'||P.i==='cram'||P.i==='refresh'); b.hidden = hide; if(hide) return;
   const on = !!(S.saved && S.saved[skey(P.L.id, P.i)]); b.setAttribute('aria-pressed', on?'true':'false'); b.querySelector('.sv-t').textContent = on ? 'Saved' : 'Save';
   b.setAttribute('aria-label', on ? 'Remove this lesson from Saved to revisit' : 'Save this lesson to revisit'); }
 
@@ -434,13 +454,14 @@ function renderHome(){
     PLAN.map((p,i)=>`<div class="day ${i===ti?'now':''}"><span class="dn">${p.name}</span>${p.lecs.map(x=>x==='review'?'Review':LECS.find(L=>L.id===x).code).join(' + ')}<div class="bar"><i style="width:${Math.round(dayProg(p)*100)}%"></i></div></div>`).join('') +
     `</div>` + (rp ? `<button class="bigbtn" id="cont">Pick up where you left off<small>${esc(rp.L.code + ': ' + (rp.i==='boss' ? 'boss level' : rp.L.lessons[rp.i].title) + ', screen ' + (rp.k+1))}</small></button>` : nl ? `<button class="bigbtn" id="cont">Continue<small>${esc(nl[1]==='boss' ? LECS.find(L=>L.id===nl[0]).code + ' boss level' : LECS.find(L=>L.id===nl[0]).code + ': ' + LECS.find(L=>L.id===nl[0]).lessons[nl[1]].title)}</small></button>` : `<button class="bigbtn" disabled>Every lesson done. You're ready.</button>`) +
     `<button class="bigbtn cram" id="cram">Cram path: only what she tests<small>${CRAM_N} stops, every \u25ce tested spot plus her practice questions${S.cramk ? ', picks up at stop ' + (S.cramk+1) : ''}</small></button>` +
+    `<div class="rf-row"><p class="rf-h">Quick refresher <span>key points and quick-fire facts, about 10 minutes a lecture</span></p><div class="rf-chips">${LECS.map(x=>{ const k=(S.refk||{})[x.id]; return `<button type="button" class="rf-chip" data-rf="${x.id}" style="--uc:${uc(x.id)}">${x.code}${k?`<small>stop ${k+1}</small>`:''}</button>`; }).join('')}</div></div>` +
     `<div class="row2"><button class="bigbtn ghost" id="rev">Review pile<small>${S.review.length} card${S.review.length===1?'':'s'} to fix</small></button><a class="bigbtn ghost" href="${esc(CFG.guideUrl)}" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Full guide<small>3D models and Pathway Lab</small></a></div></section>`;
   h += parkHTML();
   h += savedHTML();
   LECS.forEach(L=>{
     const p = lecProg(L), color = uc(L.id); let nxt = nl && nl[0]===L.id ? nl[1] : null;
     const closed = isClosed(L, p);
-    h += `<section class="unit ${closed?'closed':''}" style="--uc:${color}"><div class="unit-hd" role="button" tabindex="0" aria-expanded="${closed?'false':'true'}" data-tog="${L.id}" aria-label="${closed?'Show':'Hide'} ${L.code} lessons">${ring(p)}<div class="meta"><h3>${L.code} ${esc(L.name)}</h3><p>${esc(L.tag)} · ${L.lessons.length} lessons + boss</p><button class="bdlink cslink" data-cs="${L.id}">Cheat sheet</button><button class="bdlink" data-bd="${L.id}">Board cheat sheet</button></div><div class="badge-mini">${medal('#ffffff33', !S.boss[L.id], L.badge)}${S.boss[L.id]?esc(L.badge):'Locked'}</div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div><ol class="path" ${closed?'hidden':''}>`;
+    h += `<section class="unit ${closed?'closed':''}" style="--uc:${color}"><div class="unit-hd" role="button" tabindex="0" aria-expanded="${closed?'false':'true'}" data-tog="${L.id}" aria-label="${closed?'Show':'Hide'} ${L.code} lessons">${ring(p)}<div class="meta"><h3>${L.code} ${esc(L.name)}</h3><p>${esc(L.tag)} · ${L.lessons.length} lessons + boss</p><button class="bdlink cslink" data-rfu="${L.id}">Refresher</button><button class="bdlink cslink" data-cs="${L.id}">Cheat sheet</button><button class="bdlink" data-bd="${L.id}">Board cheat sheet</button></div><div class="badge-mini">${medal('#ffffff33', !S.boss[L.id], L.badge)}${S.boss[L.id]?esc(L.badge):'Locked'}</div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div><ol class="path" ${closed?'hidden':''}>`;
     let lastGroup = null;
     L.lessons.forEach((Ls,i)=>{
       if(Ls.group && Ls.group!==lastGroup){ h += `<li class="grouplab">${esc(Ls.group.replace(/^Part \d+: /,''))}</li>`; lastGroup = Ls.group; }
@@ -457,7 +478,8 @@ function renderHome(){
   $('#home').querySelectorAll('.sv-del').forEach(b=>b.addEventListener('click',()=>{ delete S.saved[b.dataset.k]; save(); renderHome(); }));
   $('#home').querySelectorAll('.sv-note').forEach(n=>n.addEventListener('input',()=>{ const s=S.saved[n.dataset.k]; if(s){ s.note=n.value; save(); } }));
   $('#home').querySelectorAll('.bdlink[data-bd]').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openSheet(b.dataset.bd); }));
-  $('#home').querySelectorAll('.cslink').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openCheat(b.dataset.cs); }));
+  $('#home').querySelectorAll('.cslink[data-cs]').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openCheat(b.dataset.cs); }));
+  $('#home').querySelectorAll('[data-rf],[data-rfu]').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openRefresh(b.dataset.rf || b.dataset.rfu); }));
   $('#home').querySelectorAll('.unit-hd[data-tog]').forEach(hd=>{
     const tog = ()=>{ const id = hd.dataset.tog, sec = hd.closest('.unit'), now = !sec.classList.contains('closed');
       S.open = S.open || {}; S.open[id] = !now; save();
@@ -584,7 +606,7 @@ function goBack(){
   if(!P) return;
   if(P.board){ if(P.bp>0){ P.bp--; show(); } return; }
   if(P.k>0){ P.k--; show(); return; }
-  const pv = (P.i==='review'||P.i==='sheet'||P.i==='cram') ? null : prevOf(P.L.id, P.i);
+  const pv = (P.i==='review'||P.i==='sheet'||P.i==='cram'||P.i==='refresh') ? null : prevOf(P.L.id, P.i);
   if(pv){ open(pv[0], pv[1]); const st = P.steps; let k = st.length-1; while(k>0 && st[k].t!=='card') k--; P.k = k; show(); }
 }
 function goNext(){ $('#pnext').click(); }
@@ -596,12 +618,13 @@ function clozeHTML(c){
 }
 function show(){
   const st = P.steps[P.k], L = P.L, Ls = (typeof P.i==='number') ? L.lessons[P.i] : null;
-  if(st.t!=='reward' && !P.board){ if(typeof P.i==='number' || P.i==='boss'){ S.pos = {lid:L.id, i:P.i, k:P.k}; save(); } else if(P.i==='cram'){ S.cramk = P.k; save(); } }
+  if(st.t!=='reward' && !P.board){ if(typeof P.i==='number' || P.i==='boss'){ S.pos = {lid:L.id, i:P.i, k:P.k}; save(); } else if(P.i==='cram'){ S.cramk = P.k; save(); } else if(P.i==='refresh'){ S.refk = S.refk || {}; S.refk[L.id] = P.k; save(); } }
+  if(P.i==='refresh' && st.t==='reward' && S.refk){ delete S.refk[L.id]; save(); }
   if(P.i==='cram'){ if(st.t==='reward'){ delete S.cramk; save(); } if(st.lid) $('#player').style.setProperty('--uc', uc(st.lid)); }
-  const lab = P.i==='cram' ? 'Cram path <span>\u00b7 only what she tests</span>' : P.i==='review' ? 'Review pile' : P.i==='sheet' ? `${L.code} <span>· Board cheat sheet</span>` : P.i==='boss' ? `${L.code} <span>· Boss level: ${esc(L.badge)}</span>` : `${L.code} <span>· Lesson ${P.i+1} · ${esc(Ls.title)}</span>`;
+  const lab = P.i==='refresh' ? `${L.code} <span>\u00b7 Refresher</span>` : P.i==='cram' ? 'Cram path <span>\u00b7 only what she tests</span>' : P.i==='review' ? 'Review pile' : P.i==='sheet' ? `${L.code} <span>· Board cheat sheet</span>` : P.i==='boss' ? `${L.code} <span>· Boss level: ${esc(L.badge)}</span>` : `${L.code} <span>· Lesson ${P.i+1} · ${esc(Ls.title)}</span>`;
   $('#plabel').innerHTML = lab; $('#plabel').title = $('#plabel').textContent;
   const total = P.steps.length; $('#pfill').style.width = (P.k/(total-1)*100)+'%'; $('#pcount').textContent = `${P.k+1}/${total}`;
-  const pvx = (P.i==='review'||P.i==='sheet'||P.i==='cram') ? null : prevOf(L.id, P.i);
+  const pvx = (P.i==='review'||P.i==='sheet'||P.i==='cram'||P.i==='refresh') ? null : prevOf(L.id, P.i);
   $('#pback').hidden = P.k===0 && !pvx;
   const nb = $('#pnext'); nb.textContent = 'Next'; $('#pback').textContent = P.k===0 ? 'Prev lesson' : 'Back';
   let h = '';
@@ -618,7 +641,7 @@ function show(){
   } else if(st.t==='cloze'){
     const c = st.c; P.asked = Math.max(P.asked, 0);
     h = `<span class="tag">Quick check</span><div class="qcard">${clozeHTML(c)}<div class="qexp" hidden><b>Why:</b> ${esc(c.e)}${c.hook?`<br><b>Trick:</b> ${esc(c.hook)}`:''}</div>
-    <div class="gm" hidden><button type="button" class="got">Got it</button><button type="button" class="miss">Missed it</button></div></div><p class="hint">Say the answer in your head, then tap each blank (or press Space) to check.</p>`;
+    <div class="gm" hidden><button type="button" class="got">Got it</button><button type="button" class="miss">${P.i==='refresh'?'Again':'Missed it'}</button></div></div><p class="hint">Say the answer in your head, then tap each blank (or press Space) to check.</p>`;
   } else if(st.t==='prac'){
     const q = mcView(st);
     h = `<span class="tag">Her style of question</span><div class="qcard"><p style="margin:0">${esc(q.q)}</p>` +
@@ -628,6 +651,16 @@ function show(){
     h = `<span class="tag">Last step</span><h2 class="ltitle">Tick what you can do now</h2><div class="mission">${Ls.obj.map((o,j)=>`<label class="chk"><input type="checkbox" data-j="${j}" ${S.ticks[lkey(L.id,P.i)+'-'+j]?'checked':''}><span>I can explain: ${esc(o)}</span></label>`).join('')}</div>
     <p class="hint">Not sure about one? Tap Back and look again. It's faster than relearning it Thursday night.</p>`;
     nb.textContent = 'Finish lesson';
+  } else if(st.t==='rintro'){
+    const nk = P.steps.filter(x=>x.t==='kcard').length, nq = P.steps.filter(x=>x.t==='cloze').length;
+    h = `<div class="kc kc-intro"><p class="kc-n">${L.code} refresher</p><h2 class="kc-t">${esc(L.name)}</h2><p class="kc-lead">${nk} key-point cards and ${nq} quick-fire facts. Read each card in one breath, then move on. Hit Again on anything shaky and it comes back at the end.</p>${L.onepage ? '' : ''}</div>`;
+    nb.textContent = "Let's go";
+  } else if(st.t==='kcard'){
+    const K = L.lessons[st.i];
+    h = `<div class="kc"><p class="kc-n">Lesson ${st.i+1} of ${L.lessons.length}</p><h2 class="kc-t">${esc(K.title)}</h2>
+      <ol class="kc-pts">${K.obj.map(o=>`<li>${esc(o)}</li>`).join('')}</ol>
+      ${K.rhook ? `<div class="kc-hook"><span>Remember</span>${esc(K.rhook)}</div>` : ''}
+      ${K.rtrap ? `<div class="kc-trap"><span>Don't fall for</span>${esc(K.rtrap)}</div>` : ''}</div>`;
   } else if(st.t==='cramintro'){
     h = `<span class="tag">Cram path</span><h2 class="ltitle">Only what she tests</h2><div class="mission"><h4>Your mission</h4>
       <label class="chk"><input type="checkbox" disabled><span>Read every \u25ce tested spot, with its big idea and traps</span></label>
@@ -647,7 +680,7 @@ function show(){
     h = st.html; nb.textContent = st.btn || 'Back to path';
   }
   syncSave();
-  const bt = $('#pboard'); bt.hidden = (P.i==='review'||P.i==='cram'); bt.setAttribute('aria-pressed', P.board ? 'true':'false');
+  const bt = $('#pboard'); bt.hidden = (P.i==='review'||P.i==='cram'||P.i==='refresh'); bt.setAttribute('aria-pressed', P.board ? 'true':'false');
   if(P.board){
     if(P.i==='sheet' || P.i==='boss'){ P.bpages = [lectureSheet(L)]; } else { P.bpages = lessonPages(L, Ls); }
     P.bp = Math.min(P.bp||0, P.bpages.length-1);
@@ -659,7 +692,7 @@ function show(){
   }
   const pin = $('#pin'); pin.innerHTML = `<div class="stage">${h}</div>`;
   $('#pbody').scrollTop = 0;
-  if(!P.board && (st.t==='card' || st.t==='mission')) linkTerms(pin);
+  if(!P.board && (st.t==='card' || st.t==='mission' || st.t==='kcard')) linkTerms(pin);
   if(P.board){
     pin.querySelectorAll('.bd-nav').forEach(b=>b.addEventListener('click',()=>{ P.bp += +b.dataset.d; show(); }));
     pin.querySelectorAll('.bd-dot').forEach(b=>b.addEventListener('click',()=>{ P.bp = +b.dataset.p; show(); }));
@@ -689,6 +722,7 @@ function wire(st, pin){
       pin.querySelectorAll('.gm button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel');
       const got = b.classList.contains('got'), prev = P.answered[P.k];
       if(!prev) bump(got);
+      if(!prev && !got && P.i==='refresh' && !st.again){ P.steps.splice(P.steps.length-1, 0, {t:'cloze', c:st.c, quick:true, again:true}); }
       if(prev==='got') P.got--; P.answered[P.k] = got?'got':'miss'; if(got) P.got++;
       const n = st.c.n; S.review = S.review.filter(x=>x!==n); if(!got) S.review.push(n); save();
       setTimeout(()=>{ if(P){ P.k++; show(); } }, 380);
@@ -793,6 +827,18 @@ function openCram(){
   P = {L:LECS[0], i:'cram', steps:cramSteps(), k:0, got:0, answered:{}};
   if(S.cramk && S.cramk < P.steps.length-1) P.k = S.cramk;
   $('#player').hidden = false; document.body.style.overflow = 'hidden'; show();
+}
+function refreshSteps(L){
+  const st = [{t:'rintro'}];
+  L.lessons.forEach((Ls,i)=>{ if(!Ls.obj || !Ls.obj.length) return; st.push({t:'kcard', i}); Ls.checks.slice(0,2).forEach(c=>st.push({t:'cloze', c, quick:true})); });
+  st.push({t:'reward', btn:'Back to path', html:`<div class="reward"><div class="pop">${medal(uc(L.id), false, L.code)}</div><p class="big">${L.code} refreshed</p><p>Every key point and quick-fire fact in ${esc(L.name)}. Anything you hit Again on is also in your review pile.</p></div>`});
+  return st;
+}
+function openRefresh(lid){
+  const L = LECS.find(x=>x.id===lid);
+  P = {L, i:'refresh', steps:refreshSteps(L), k:0, got:0, answered:{}};
+  const k = (S.refk||{})[lid]; if(k && k < P.steps.length-1) P.k = k;
+  $('#player').style.setProperty('--uc', uc(lid)); $('#player').hidden = false; document.body.style.overflow = 'hidden'; show();
 }
 function openReview(){
   const all = LECS.flatMap(L=>L.lessons.flatMap(x=>x.checks)); const byN = {}; all.forEach(c=>byN[c.n]=c);
