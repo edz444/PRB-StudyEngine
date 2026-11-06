@@ -77,6 +77,7 @@ Build the guide HTML, then parse it with BeautifulSoup into JSON:
 - The method, question-wording and one-page sections become the boss level and the badge reward screen.
 - Quick checks: reuse the course's Anki cloze cards (see the anki-slide-deck skill). Load every wording file, including the practice-set one, or the build fails with a KeyError. Each card belongs to the lecture in its section header, or to its `lec` value for practice-set cards; never guess a card's lecture from its number (that sent Lecture 6 checks into Lecture 11). Within its lecture, assign each card to the lesson whose text shares the most words with it.
 - Boss questions: a `(Her Qn, Lx)` tag routes the question to that lecture's boss level and it goes first; untagged ones go to the lecture with the most shared words. Multiple-choice ones become tappable options.
+- Multiple choice must not give itself away. Write every option to about the same length and detail, so the right one is never the obviously longest (it was in 18 of 21 of hers). The app shuffles the options each time a question is shown and rewrites letter references in the explanation ("C.", "A is backwards") to match; questions with options like "A and B" keep their order. Check by script that no correct option is noticeably the longest.
 - Add a glossary (term, match strings, definition) for tap-to-define popovers.
 
 ## Step 3: the app
