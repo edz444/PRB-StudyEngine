@@ -577,6 +577,10 @@ document.addEventListener('keydown', e=>{ if(!P || $('#player').hidden || !$('#p
   const fwd = np ? np==='f' : (e.key==='ArrowRight' || e.key===' ' || e.code==='Space' || e.key==='4');
   const bwd = np ? np==='b' : (e.key==='ArrowLeft' || e.key==='1');
   if(e.target.closest('button') && (e.key===' ')) { e.preventDefault(); }
+  if(e.key==='ArrowDown' && !P.board){ const st = P.steps[P.k];
+    if(st.t==='cloze' && !P.answered[P.k]){ e.preventDefault();   // down arrow: show every blank first, then a second press marks Again / Missed it
+      const hidden = [...document.querySelectorAll('#pin .blank:not(.shown)')]; if(hidden.length){ hidden.forEach(b=>b.click()); return; }
+      const m = document.querySelector('#pin .gm:not([hidden]) .miss'); if(m) m.click(); return; } }
   if(bwd){ e.preventDefault(); goBack(); return; }
   if(fwd){ e.preventDefault();
     if(P.board){ goNext(); return; }
