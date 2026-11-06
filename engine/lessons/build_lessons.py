@@ -263,6 +263,39 @@ def star_lessons(DATA):
                     order = [i] + [j for j in range(len(L['lessons'])) if j != i]
                     if any(mark(j, pat, a) for j in order): done.add(a.lower())
     print('stars placed:', total)
+
+# ---------- per-lecture cheat sheets ----------
+# Gather what's already written for each lecture into one scannable sheet: traps, memory tricks,
+# comparison tables, her wording decoded, must-memorize facts, how she asks, practice-set spots.
+def build_cheat(D):
+    h2, nodes = lecture_nodes(D['id'])
+    out = {'trap': [], 'hook': [], 'table': [], 'nancy': [], 'exam': [], 'ask': None}
+    sec = ''
+    for el in nodes:
+        if not getattr(el, 'name', None): continue
+        if el.name in ('h3', 'h4'):
+            sec = re.sub(r'\s*\{#.*?\}', '', txt(el)); continue
+        cls = el.get('class') or []
+        if el.name == 'aside':
+            kind = next((k for k in ('trap', 'easy', 'hook', 'nancy', 'exam') if f'co-{k}' in cls), None)
+            if not kind: continue
+            box = BeautifulSoup(str(el), 'html.parser').find('aside')
+            for lab in box.select('.co-lab'): lab.decompose()
+            item = {'sec': sec, 'h': box.decode_contents().strip(), 'k': kind}
+            out['trap' if kind in ('trap', 'easy') else kind].append(item)
+        elif 'tbl' in cls:
+            if sec.startswith('Reading her questions'): out['ask'] = str(el)
+            elif ' on one page' in sec: pass
+            else: out['table'].append({'sec': sec, 'h': str(el)})
+    stars = []
+    for ls in D['lessons']:
+        for ch in ls['checks']:
+            filled = H.escape(ch['c'])
+            filled = re.sub(r'\{\{c\d::(.*?)\}\}', lambda m: f'<b class="cs-ans">{m.group(1)}</b>', filled)
+            stars.append({'sec': ls['title'], 'h': filled})
+    out['star'] = stars
+    return out
+for D in DATA: D['cheat'] = build_cheat(D)
 star_lessons(DATA)
 json.dump({'lecs': DATA, 'gloss': GL}, open(BUILD / 'lessons.json', 'w'), ensure_ascii=False)
 for D in DATA:

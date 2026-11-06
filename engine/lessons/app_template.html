@@ -122,6 +122,53 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
 .chk input:checked::after{content:""; width:7px; height:13px; border:solid var(--go-ink); border-width:0 3px 3px 0; transform:rotate(45deg) translate(-1px,-1px)}
 .chk input:disabled{opacity:.7; cursor:default}
 .skimnote{font-size:14px; color:var(--soft); margin:6px 0 4px}
+/* ---------- per-lecture cheat sheet ---------- */
+.cheat{position:fixed; inset:0; z-index:70; background:var(--bg); display:flex; flex-direction:column}
+.cheat[hidden]{display:none !important}
+.cs-top{display:flex; align-items:center; gap:8px; padding:10px max(14px, env(safe-area-inset-left,0px)); border-bottom:1px solid var(--line); flex:none}
+.cs-tabs{flex:1; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none} .cs-tabs::-webkit-scrollbar{display:none}
+.cs-tab{flex:none; font:800 14px/1 'Baloo 2',sans-serif; padding:8px 11px; border-radius:999px; border:2px solid var(--uc); background:transparent; color:var(--uc); cursor:pointer}
+.cs-tab.on{background:var(--uc); color:#fff}
+.cs-body{flex:1; overflow-y:auto; padding:14px max(14px, env(safe-area-inset-right,0px)) 60px}
+.cs-body > *{max-width:860px; margin-left:auto; margin-right:auto}
+.cs-hd h2{margin:4px 0 2px; font-size:28px} .cs-lede{color:var(--soft); margin:0 0 10px}
+.cs-sect{border:2px solid var(--line); border-radius:18px; margin:12px auto; padding:0 14px; background:var(--card,transparent)}
+.cs-sect > summary{cursor:pointer; list-style:none; padding:12px 0; display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 8px}
+.cs-sect > summary::-webkit-details-marker{display:none}
+.cs-t{font:800 20px/1.2 'Baloo 2',sans-serif} .cs-n{font:800 12px/1 'Baloo 2',sans-serif; background:var(--uc); color:#fff; border-radius:999px; padding:4px 8px}
+.cs-sub{flex-basis:100%; font-size:13px; color:var(--soft)}
+.cs-sect > summary::after{content:"\25BE"; margin-left:auto; color:var(--soft)} .cs-sect:not([open]) > summary::after{content:"\25B8"}
+.cs-in{padding:0 0 12px}
+.cs-item{border-top:1px solid var(--line); padding:10px 0} .cs-item:first-child{border-top:0}
+.cs-item p{margin:4px 0} .cs-item ul{margin:4px 0; padding-left:20px}
+.cs-sec{font:700 12px/1.3 var(--f-mono, monospace); text-transform:uppercase; letter-spacing:.04em; color:var(--soft); margin:0 0 2px !important}
+.cs-sect.trap{border-color:color-mix(in srgb, var(--amber,#b45309) 60%, transparent)} .cs-sect.trap .cs-t{color:var(--amber,#b45309)}
+.cs-sect.hook .cs-t{color:var(--orange,#c2410c)} .cs-sect.nancy .cs-t{color:var(--indigo,#4338ca)}
+.cs-sect.star .cs-t{color:var(--blue,#2563eb)} .cs-sect.exam .cs-t{color:var(--rose,#be123c)} .cs-sect.cmp .cs-t, .cs-sect.ask .cs-t, .cs-sect.one .cs-t{color:var(--uc)}
+.cs-stars{margin:0; padding-left:20px} .cs-stars li{margin:6px 0; line-height:1.45}
+.cs-ans{color:var(--blue,#2563eb)}
+.cs-in .tbl{overflow-x:auto} .cs-in table{font-size:15px}
+.bdlink.cslink{margin-right:6px}
+@media (max-width:640px){
+  .cs-in .tbl{overflow:visible; border:0; background:none}
+  .cs-in table, .cs-in tbody, .cs-in tr, .cs-in td{display:block; width:auto; min-width:0}
+  .cs-in thead{display:none}
+  .cs-in tr{border:1px solid var(--line); border-radius:12px; padding:8px 10px; margin:8px 0}
+  .cs-in td{border:0 !important; padding:2px 0 !important}
+  .cs-in td:first-child{font-weight:800}
+  .cs-in td[data-label]:not(:first-child)::before{content:attr(data-label); display:block; font:700 11px/1.3 var(--f-mono, monospace); text-transform:uppercase; letter-spacing:.04em; color:var(--soft); margin-top:4px}
+}
+@media print{
+  body > *:not(#cheat){display:none !important}
+  .cheat{position:static; display:block} .cs-top{display:none} .cs-body{overflow:visible; padding:0}
+  .cs-sect{break-inside:auto; border-width:1px} .cs-item{break-inside:avoid}
+  .cs-sect > summary::after{content:none}
+  .cs-sect{display:block} .cs-sect > summary{display:block; break-after:avoid; page-break-after:avoid} .cs-in{display:block} .cs-item:first-child{break-before:avoid}
+  .cs-sect > summary .cs-n{margin-left:6px}
+  .cs-sect > summary .cs-sub{display:block}
+  .cheat .term{border:0 !important; text-decoration:none !important; background:none !important; color:inherit !important; padding:0 !important}
+  .cs-lede{display:none}
+}
 /* blue shooting star: must-memorize facts (flashcard answers, marked where they're taught) */
 .must{color:var(--blue,#2563eb); font-weight:700; background:color-mix(in srgb, var(--blue,#2563eb) 14%, transparent); border-radius:6px; padding:0 4px 0 2px; -webkit-box-decoration-break:clone; box-decoration-break:clone}
 .must strong{color:inherit}
@@ -278,6 +325,7 @@ h1.app{font-family:var(--f-play); font-weight:800; font-size:clamp(28px,6vw,38px
   <div class="pfoot"><div class="fin"><button class="bigbtn ghost back" id="pback" type="button">Back</button><button class="bigbtn" id="pnext" type="button">Next</button></div></div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="cheat" id="cheat" hidden><div class="cs-top"><button class="xbtn" id="csclose" aria-label="Close cheat sheet"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 4l12 12M16 4L4 16"/></svg></button><div class="cs-tabs" id="cstabs"></div><button class="bdtoggle" id="csprint" type="button">Print</button></div><div class="cs-body" id="csbody"></div></div>
 <div class="parkbox" id="parkbox" hidden><div class="pk-card"><p class="pk-h">Park it for your break</p><p class="pk-sub">Type the stray thought and get straight back to the lesson. It waits on the home screen.</p><textarea id="pktext" rows="3" placeholder="e.g. text Josh back, or: what does PAI-1 do again?"></textarea><div class="pk-btns"><button type="button" class="bigbtn" id="pksave">Park it</button><button type="button" class="bigbtn ghost" id="pkcancel">Back to lesson</button></div></div></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
 <div class="lb2" id="lb2" hidden><img alt=""></div>
@@ -392,7 +440,7 @@ function renderHome(){
   LECS.forEach(L=>{
     const p = lecProg(L), color = uc(L.id); let nxt = nl && nl[0]===L.id ? nl[1] : null;
     const closed = isClosed(L, p);
-    h += `<section class="unit ${closed?'closed':''}" style="--uc:${color}"><div class="unit-hd" role="button" tabindex="0" aria-expanded="${closed?'false':'true'}" data-tog="${L.id}" aria-label="${closed?'Show':'Hide'} ${L.code} lessons">${ring(p)}<div class="meta"><h3>${L.code} ${esc(L.name)}</h3><p>${esc(L.tag)} · ${L.lessons.length} lessons + boss</p><button class="bdlink" data-bd="${L.id}">Board cheat sheet</button></div><div class="badge-mini">${medal('#ffffff33', !S.boss[L.id], L.badge)}${S.boss[L.id]?esc(L.badge):'Locked'}</div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div><ol class="path" ${closed?'hidden':''}>`;
+    h += `<section class="unit ${closed?'closed':''}" style="--uc:${color}"><div class="unit-hd" role="button" tabindex="0" aria-expanded="${closed?'false':'true'}" data-tog="${L.id}" aria-label="${closed?'Show':'Hide'} ${L.code} lessons">${ring(p)}<div class="meta"><h3>${L.code} ${esc(L.name)}</h3><p>${esc(L.tag)} · ${L.lessons.length} lessons + boss</p><button class="bdlink cslink" data-cs="${L.id}">Cheat sheet</button><button class="bdlink" data-bd="${L.id}">Board cheat sheet</button></div><div class="badge-mini">${medal('#ffffff33', !S.boss[L.id], L.badge)}${S.boss[L.id]?esc(L.badge):'Locked'}</div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div><ol class="path" ${closed?'hidden':''}>`;
     let lastGroup = null;
     L.lessons.forEach((Ls,i)=>{
       if(Ls.group && Ls.group!==lastGroup){ h += `<li class="grouplab">${esc(Ls.group.replace(/^Part \d+: /,''))}</li>`; lastGroup = Ls.group; }
@@ -408,7 +456,8 @@ function renderHome(){
   $('#home').querySelectorAll('.sv-open').forEach(b=>b.addEventListener('click',()=>openSaved(b.dataset.k)));
   $('#home').querySelectorAll('.sv-del').forEach(b=>b.addEventListener('click',()=>{ delete S.saved[b.dataset.k]; save(); renderHome(); }));
   $('#home').querySelectorAll('.sv-note').forEach(n=>n.addEventListener('input',()=>{ const s=S.saved[n.dataset.k]; if(s){ s.note=n.value; save(); } }));
-  $('#home').querySelectorAll('.bdlink').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openSheet(b.dataset.bd); }));
+  $('#home').querySelectorAll('.bdlink[data-bd]').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openSheet(b.dataset.bd); }));
+  $('#home').querySelectorAll('.cslink').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); openCheat(b.dataset.cs); }));
   $('#home').querySelectorAll('.unit-hd[data-tog]').forEach(hd=>{
     const tog = ()=>{ const id = hd.dataset.tog, sec = hd.closest('.unit'), now = !sec.classList.contains('closed');
       S.open = S.open || {}; S.open[id] = !now; save();
@@ -434,7 +483,7 @@ let seen = new Set();
 function linkTerms(root){
   seen = new Set();
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){
-    const p = n.parentElement; if(!p || p.closest('svg,button,a,.term,code,.kick,.ltitle')) return NodeFilter.FILTER_REJECT; return NodeFilter.FILTER_ACCEPT; }});
+    const p = n.parentElement; if(!p || p.closest('svg,button,a,.term,code,.kick,.ltitle,.cs-sec')) return NodeFilter.FILTER_REJECT; return NodeFilter.FILTER_ACCEPT; }});
   const nodes = []; while(walker.nextNode()) nodes.push(walker.currentNode);
   nodes.forEach(n=>{
     const t = n.nodeValue; gre.lastIndex = 0; let m, last = 0, frag = null;
@@ -677,6 +726,33 @@ function mcView(st){
   st.mc = Object.assign({}, q, {opts: idx.map(i=>q.opts[i]), ans: idx.indexOf(q.ans), a});
   return st.mc;
 }
+function openCheat(lid){
+  const L = LECS.find(x=>x.id===lid), C = L.cheat || {};
+  const item = (x, cls) => `<div class="cs-item ${cls||''}">${x.sec?`<p class="cs-sec">${esc(x.sec)}</p>`:''}${x.h}</div>`;
+  const sect = (title, sub, body, n, open=true, cls='') => body ? `<details class="cs-sect ${cls}" ${open?'open':''}><summary><span class="cs-t">${title}</span>${n?`<span class="cs-n">${n}</span>`:''}<span class="cs-sub">${sub}</span></summary><div class="cs-in">${body}</div></details>` : '';
+  let h = `<header class="cs-hd" style="--uc:${uc(L.id)}"><p class="tag">${esc(L.code)} cheat sheet</p><h2>${esc(L.name)}</h2><p class="cs-lede">Everything to remember for this lecture on one scroll. Tap a heading to fold it away. Tap a dotted word for its meaning.</p></header>`;
+  h += sect('On one page', 'every part, its job, and the trick to remember it', L.onepage||'', 0, true, 'one');
+  h += sect("Don't get tricked", 'traps and easy marks she likes to test', (C.trap||[]).map(x=>item(x,'t')).join(''), (C.trap||[]).length, true, 'trap');
+  h += sect('Ways to remember', 'memory tricks, mnemonics and analogies', (C.hook||[]).map(x=>item(x,'h')).join(''), (C.hook||[]).length, true, 'hook');
+  h += sect('Compare and contrast', 'every side-by-side table in the lecture', (C.table||[]).map(x=>item(x,'tb')).join(''), (C.table||[]).length, true, 'cmp');
+  h += sect('Her wording, decoded', 'when her slide says it the hard way', (C.nancy||[]).map(x=>item(x,'n')).join(''), (C.nancy||[]).length, true, 'nancy');
+  h += sect('Must memorize', 'every flashcard fact, answer in blue', `<ul class="cs-stars">${(C.star||[]).map(x=>`<li>${x.h}</li>`).join('')}</ul>`, (C.star||[]).length, true, 'star');
+  h += sect('How she asks', 'question wording, what it tests, how you get tricked', C.ask||'', 0, true, 'ask');
+  h += sect('On her practice set', 'model answers for the spots she tested', (C.exam||[]).map(x=>item(x,'e')).join(''), (C.exam||[]).length, false, 'exam');
+  $('#csbody').innerHTML = h;
+  $('#cstabs').innerHTML = LECS.map(x=>`<button type="button" class="cs-tab ${x.id===lid?'on':''}" data-l="${x.id}" style="--uc:${uc(x.id)}">${x.code}</button>`).join('');
+  $('#cstabs').querySelectorAll('.cs-tab').forEach(b=>b.addEventListener('click',()=>openCheat(b.dataset.l)));
+  // label every table cell with its column header so rows can stack as cards on a phone
+  $('#csbody').querySelectorAll('table').forEach(t=>{ const hs=[...t.querySelectorAll('thead th')].map(th=>th.textContent.trim());
+    t.querySelectorAll('tbody tr').forEach(tr=>[...tr.children].forEach((td,i)=>{ if(hs[i]) td.setAttribute('data-label', hs[i]); })); });
+  $('#csbody').querySelectorAll('.cs-item, .cs-stars li, .cs-sect.one .cs-in, .cs-sect.ask .cs-in').forEach(el=>linkTerms(el));
+  $('#cheat').style.setProperty('--uc', uc(lid));
+  $('#cheat').hidden = false; document.body.style.overflow = 'hidden'; $('#csbody').scrollTop = 0;
+}
+function closeCheat(){ $('#cheat').hidden = true; document.body.style.overflow = ''; }
+$('#csclose').addEventListener('click', closeCheat);
+$('#csprint').addEventListener('click', ()=>{ document.querySelectorAll('#csbody details').forEach(d=>d.open = true); window.print(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('#cheat').hidden) closeCheat(); });
 const CHEERS = ['Lesson cleared!','Nailed it!','Locked in!','That one is yours now.','Keep the streak going!','Brain upgraded.'];
 function finish(){
   const L = P.L; P.steps = P.steps.filter(s=>s.t!=='reward');
