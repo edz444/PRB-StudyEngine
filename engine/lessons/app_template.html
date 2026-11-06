@@ -581,7 +581,8 @@ document.addEventListener('keydown', e=>{ if(!P || $('#player').hidden || !$('#p
   if(fwd){ e.preventDefault();
     if(P.board){ goNext(); return; }
     const st = P.steps[P.k];
-    if(st.t==='cloze' && !P.answered[P.k]){ const b = document.querySelector('#pin .blank:not(.shown)'); if(b) b.click(); return; }
+    if(st.t==='cloze' && !P.answered[P.k]){ const b = document.querySelector('#pin .blank:not(.shown)'); if(b){ b.click(); return; }
+      const g = document.querySelector('#pin .gm:not([hidden]) .got'); if(g){ g.click(); return; } return; }   // forward key: reveal each blank, then Got it
     goNext(); } });
 (function(){ let sx=null, sy=null; const el=document.getElementById('pbody');
   el.addEventListener('touchstart', e=>{ if(P && !P.board){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; } }, {passive:true});
