@@ -132,9 +132,9 @@ for m in re.finditer(r':::q\n(.*?)\n\?\?\?\n(.*?)\n:::', ptxt, re.S):
     q = re.sub(r'^\d+\\?\.\s*', '', q)
     opts = re.split(r'\s(?=[A-E]\.\s)', q)
     item = {'q': opts[0], 'a': a}
-    mt = re.match(r'\((Her [^,]+), L(\d+)\)\s*', item['q'])
+    mt = re.match(r'\(((?:Her|Predicted) [^,]+), L(\d+)\)\s*', item['q'])
     if mt:
-        item['lec'] = 'l' + mt.group(2); item['q'] = mt.group(1) + ': ' + item['q'][mt.end():]; item['hers'] = True
+        item['lec'] = 'l' + mt.group(2); item['q'] = mt.group(1) + ': ' + item['q'][mt.end():]; item['hers'] = mt.group(1).startswith('Her'); item['pred'] = mt.group(1).startswith('Predicted')
     if len(opts) >= 3:
         item['opts'] = [re.sub(r'^[A-E]\.\s*', '', o) for o in opts[1:]]
         mm = re.match(r'([A-E])\.', a)

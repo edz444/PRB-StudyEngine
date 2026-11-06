@@ -649,7 +649,7 @@ function show(){
     <div class="gm" hidden><button type="button" class="got">Got it</button><button type="button" class="miss">${P.i==='refresh'?'Again':'Missed it'}</button></div></div><p class="hint">Say the answer in your head, then tap each blank (or press Space) to check.</p>`;
   } else if(st.t==='prac'){
     const q = mcView(st);
-    h = `<span class="tag">${st.cram ? 'Her practice question \u00b7 ' + (LECS.find(x=>x.id===st.lid)||L).code : 'Her style of question'}</span><div class="qcard"><p style="margin:0">${esc(q.q)}</p>` +
+    h = `<span class="tag">${st.cram ? (st.extra ? 'Likely exam question, in her style \u00b7 ' : 'Her practice question \u00b7 ') + (LECS.find(x=>x.id===st.lid)||L).code : 'Her style of question'}</span><div class="qcard"><p style="margin:0">${esc(q.q)}</p>` +
       (q.opts ? `<div class="opts">${q.opts.map((o,j)=>`<button type="button" class="opt" data-j="${j}">${'ABCDE'[j]}. ${esc(o)}</button>`).join('')}</div>` : `<p class="hint">Answer it out loud: verdict first, then the reason.</p><button type="button" class="bigbtn ghost" id="showa" style="margin-top:8px">Show answer</button>`) +
       `<div class="qexp" hidden>${esc(q.a)}</div></div>`;
   } else if(st.t==='ican'){
@@ -673,7 +673,8 @@ function show(){
     h = `<span class="tag">Cram path</span><h2 class="ltitle">The must-knows, lecture by lecture</h2><div class="mission"><h4>Your mission</h4>
       <label class="chk"><input type="checkbox" disabled><span>See each lecture at a glance: every part, its job, its trick</span></label>
       <label class="chk"><input type="checkbox" disabled><span>Lock in the ${CRAM_K} must-know lessons: key points, a way to remember, a trap to avoid</span></label>
-      <label class="chk"><input type="checkbox" disabled><span>Answer her ${CRAM_N} practice questions right where they're taught, then read why</span></label></div>
+      <label class="chk"><input type="checkbox" disabled><span>Answer her ${CRAM_N} practice questions right where they're taught, then read why</span></label>
+      <label class="chk"><input type="checkbox" disabled><span>Finish each lecture with ${CRAM_X} more exam-style questions on topics her set skipped</span></label></div>
       <p class="hint">Short answers: say the verdict, then the reason, then tap Show answer. Your place is saved, so you can stop and come back.</p>`;
     nb.textContent = "Let's go";
   } else if(st.t==='bossintro'){
@@ -856,11 +857,12 @@ function cramSteps(){
       qs.forEach((q,qi)=>{ if(qAt[qi]===li) placeQ(qi); });
     });
     qs.forEach((q,qi)=>{ if(qAt[qi] < 0) placeQ(qi); });   // questions with no lesson card go at the end of the lecture
+    L.boss_q.filter(q=>!q.hers).forEach(q=>st.push({t:'prac', lid:L.id, q, cram:true, extra:true}));   // more questions in her style, on topics her set skipped
   });
   st.push({t:'reward', btn:'Back to path', html:`<div class="reward"><p class="big">Cram path cleared</p><p>Every lecture at a glance, every must-know lesson, and every question on her practice set with the reason it's right. Anything shaky? Run the review pile, then sleep.</p></div>`});
   return st;
 }
-const CRAM_ALL = cramSteps(), CRAM_N = CRAM_ALL.filter(x=>x.t==='prac').length, CRAM_K = CRAM_ALL.filter(x=>x.t==='kcard').length;
+const CRAM_ALL = cramSteps(), CRAM_N = CRAM_ALL.filter(x=>x.t==='prac').length, CRAM_K = CRAM_ALL.filter(x=>x.t==='kcard').length, CRAM_X = CRAM_ALL.filter(x=>x.extra).length;
 function openCram(){
   P = {L:LECS[0], i:'cram', steps:cramSteps(), k:0, got:0, answered:{}};
   if(S.cramk && S.cramk < P.steps.length-1) P.k = S.cramk;
