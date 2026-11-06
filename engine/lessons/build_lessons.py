@@ -321,9 +321,10 @@ for D in DATA: D['cheat'] = build_cheat(D)
 _sq_path = str(COURSE / 'content' / 'slideqs.py')
 if os.path.exists(_sq_path):
     _sq = {}; exec(open(_sq_path, encoding='utf-8').read(), _sq)
-    for lid, li, qtext in _sq['Q']:
+    for e in _sq['Q']:
+        if isinstance(e, tuple): e = dict(lec=e[0], li=e[1], q=e[2])
         for D in DATA:
-            if D['id'] == lid and li < len(D['lessons']): D['lessons'][li].setdefault('slideq', []).append(qtext)
+            if D['id'] == e['lec'] and e['li'] < len(D['lessons']): D['lessons'][e['li']].setdefault('slideq', []).append(e)
 star_lessons(DATA)
 json.dump({'lecs': DATA, 'gloss': GL}, open(BUILD / 'lessons.json', 'w'), ensure_ascii=False)
 for D in DATA:

@@ -661,12 +661,10 @@ function show(){
     h = `<div class="kc kc-intro"><p class="kc-n">${L.code} refresher</p><h2 class="kc-t">${esc(L.name)}</h2><p class="kc-lead">${nk} key-point cards and ${nq} quick-fire facts. Read each card in one breath, then move on. Hit Again on anything shaky and it comes back at the end.</p>${L.onepage ? '' : ''}</div>`;
     nb.textContent = "Let's go";
   } else if(st.t==='slideq'){
-    const SL = LECS.find(x=>x.id===st.lid), SLs = SL.lessons[st.i];
-    const big = SLs.cards.find(c=>c.k==='big'), nan = SLs.cards.find(c=>c.k==='nancy');
-    const nanPlain = nan ? (plain(nan.h).split('Plain version:')[1]||'').trim() : '';
-    h = `<span class="tag">Question on her slide \u00b7 ${SL.code}</span><div class="qcard"><p style="margin:0;font-size:20px;font-weight:700">"${esc(st.q)}"</p>
+    const SL = LECS.find(x=>x.id===st.lid), E = (typeof st.q==='string') ? {q:st.q} : st.q;
+    h = `<span class="tag">Question on her slide \u00b7 ${SL.code}</span><div class="qcard"><p style="margin:0;font-size:20px;font-weight:700">"${esc(E.q)}"</p>
       <p class="hint">She wrote this on her slide, so expect it. Answer it out loud, then check.</p><button type="button" class="bigbtn ghost" id="showa" style="margin-top:8px">Show answer</button>
-      <div class="qexp" hidden>${big ? `<p><b>Answer:</b> ${cap1(big.h)}</p>` : ''}${nanPlain ? `<p><b>Her wording, decoded:</b> ${esc(nanPlain)}</p>` : ''}<p class="hint">The next card has the key points from ${esc(SLs.title)}.</p></div></div>`;
+      <div class="qexp" hidden>${E.ask ? `<p><b>What she's really asking:</b> ${esc(E.ask)}</p>` : ''}${E.ans ? `<p><b>Answer she wants:</b> ${esc(E.ans)}</p>` : ''}${E.know && E.know.length ? `<p style="margin-bottom:4px"><b>To answer it, know:</b></p><ul style="margin:0 0 0 18px;padding:0">${E.know.map(k=>`<li>${esc(k)}</li>`).join('')}</ul>` : ''}</div></div>`;
   } else if(st.t==='glance'){
     const GL2 = LECS.find(x=>x.id===st.lid);
     h = `<div class="kc"><p class="kc-n">${GL2.code} at a glance</p><h2 class="kc-t">${esc(GL2.name)}</h2><p class="hint" style="margin-top:-6px">Every part, its job, and the trick to remember it. Skim it, then the must-know lessons follow.</p><div class="cs-in glance">${GL2.onepage||''}</div></div>`;
