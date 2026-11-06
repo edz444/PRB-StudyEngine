@@ -9,6 +9,8 @@ Ethan learns best when material is broken into tiny steps he can tick off, with 
 
 Apply the humanizer skill to all prose. Write it so someone with no background in the subject could follow it.
 
+He strongly prefers interactive, visual, tap-through study tools over long wordy pages or PDFs. When he asks for a summary, cheat sheet, refresher or review, build it as a short, card-based mode inside the app first; a printable sheet is a bonus, never the main answer.
+
 ## Start from PRB-StudyEngine, every time
 He wants every course to get this exact app, so never rebuild it from this description when the engine is available. The working code lives in his private GitHub repo **PRB-StudyEngine** (shared engine in `engine/`, one folder per course in `courses/`, plus a working sample course in `courses/_template` and the finished MBB 322 course in `courses/mbb322-mt2`).
 
@@ -94,6 +96,7 @@ One self-contained HTML page with the lesson JSON inline. Slide images and any c
 - Tap-to-define: link glossary terms fresh every time a screen renders, once per term per screen, inside tables too. Never keep a session-wide "already linked" set; that made definitions vanish when he went back.
 - Boss level: mission, method and question-wording cards, practice questions (hers first), 6 random checks from the lecture, then a badge screen with a medal, +50 XP and the one-page summary table to screenshot. Give each lecture a fun badge name (for example "Signal Switcher").
 - Review pile: replays missed checks; "Got it" removes a card from the pile.
+- Quick refresher per lecture: a row of lecture chips on home (and a Refresher button on each unit) opens a short deck. It starts with an intro card, then for every lesson one big key-point card (lesson title, its key bullets as numbered chips, a one-line "Remember" trick in green and a one-line "Don't fall for" trap in amber, each cut to about 26 to 30 words) followed by up to two quick-fire cloze cards from that lesson. The miss button reads "Again" and puts the card back once at the end of the deck. It remembers its place per lecture (the chip shows "stop N"), takes about 10 minutes a lecture, and ends on a medal screen.
 - Cheat sheet per lecture: a "Cheat sheet" button on each unit opens a full-screen, scrollable sheet built from what the lecture already contains, in this order: On one page, Don't get tricked (all trap and easy-marks boxes), Ways to remember (all hooks), Compare and contrast (every table except the one-page and question tables), Her wording decoded, Must memorize (every flashcard with the answer filled in blue), How she asks (the question-wording table), and On her practice set (closed by default). Each item carries its lesson name as a small label, sections fold, tabs switch lectures, and definitions are tappable. On phones, tables stack each row as a labelled card. A Print button prints it cleanly (no dotted underlines, no orphaned headings), and the same view is exported as one PDF per lecture.
 - Save progress in localStorage under keys like `l9-3` (lecture id plus lesson index), wrapping every access in try/catch, and say on the page that it lives in this browser. Use the URL hash only for plain names like `#l5-3`.
 
@@ -168,7 +171,7 @@ Test it the way the live page is served: page as UTF-8, web fonts blocked so the
 - a lightbox class name colliding with button label classes
 - the guide CSS putting borders on h2 and h3, including the board title
 - `.bigbtn` needing box-sizing:border-box
-- `[hidden]` needing `!important` on display:block and inline-flex elements (top-bar buttons included)
+- `[hidden]` needing `!important` on display:block and inline-flex elements (top-bar buttons included); the Got it / Missed it row (`.gm`, display:flex) showed before the blanks were revealed until `.gm[hidden]` was forced
 - a home-screen local variable named `P` shadowing the player state inside home click handlers; open lessons through a top-level helper
 - sed character classes corrupting UTF-8 arrows and Greek letters (edit in Python instead)
 
