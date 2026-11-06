@@ -316,6 +316,14 @@ for D in DATA:
         ls['rhook'] = _short(hk['h'], 26) if hk else ''
         ls['rtrap'] = _short(tr['h'], 30) if tr else ''
 for D in DATA: D['cheat'] = build_cheat(D)
+
+# ---------- questions she wrote on her slides (optional course file) ----------
+_sq_path = str(COURSE / 'content' / 'slideqs.py')
+if os.path.exists(_sq_path):
+    _sq = {}; exec(open(_sq_path, encoding='utf-8').read(), _sq)
+    for lid, li, qtext in _sq['Q']:
+        for D in DATA:
+            if D['id'] == lid and li < len(D['lessons']): D['lessons'][li].setdefault('slideq', []).append(qtext)
 star_lessons(DATA)
 json.dump({'lecs': DATA, 'gloss': GL}, open(BUILD / 'lessons.json', 'w'), ensure_ascii=False)
 for D in DATA:
