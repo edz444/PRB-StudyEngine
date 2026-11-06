@@ -453,7 +453,7 @@ function renderHome(){
   h += `<section class="today"><h2>${P ? "Today's mission: " + P.name : 'Final stretch'}</h2><p class="daydesc">${P ? P.desc : 'Clear anything left on the path, then hit your review pile.'}</p><div class="days">` +
     PLAN.map((p,i)=>`<div class="day ${i===ti?'now':''}"><span class="dn">${p.name}</span>${p.lecs.map(x=>x==='review'?'Review':LECS.find(L=>L.id===x).code).join(' + ')}<div class="bar"><i style="width:${Math.round(dayProg(p)*100)}%"></i></div></div>`).join('') +
     `</div>` + (rp ? `<button class="bigbtn" id="cont">Pick up where you left off<small>${esc(rp.L.code + ': ' + (rp.i==='boss' ? 'boss level' : rp.L.lessons[rp.i].title) + ', screen ' + (rp.k+1))}</small></button>` : nl ? `<button class="bigbtn" id="cont">Continue<small>${esc(nl[1]==='boss' ? LECS.find(L=>L.id===nl[0]).code + ' boss level' : LECS.find(L=>L.id===nl[0]).code + ': ' + LECS.find(L=>L.id===nl[0]).lessons[nl[1]].title)}</small></button>` : `<button class="bigbtn" disabled>Every lesson done. You're ready.</button>`) +
-    `<button class="bigbtn cram" id="cram">Cram path: only what she tests<small>${CRAM_N} stops, every \u25ce tested spot plus her practice questions${S.cramk ? ', picks up at stop ' + (S.cramk+1) : ''}</small></button>` +
+    `<button class="bigbtn cram" id="cram">Cram path: only what she tests<small>all ${CRAM_N} of her practice questions, each with the reason it's right${S.cramk ? ', picks up at stop ' + (S.cramk+1) : ''}</small></button>` +
     `<div class="rf-row"><p class="rf-h">Quick refresher <span>key points and quick-fire facts, about 10 minutes a lecture</span></p><div class="rf-chips">${LECS.map(x=>{ const k=(S.refk||{})[x.id]; return `<button type="button" class="rf-chip" data-rf="${x.id}" style="--uc:${uc(x.id)}">${x.code}${k?`<small>stop ${k+1}</small>`:''}</button>`; }).join('')}</div></div>` +
     `<div class="row2"><button class="bigbtn ghost" id="rev">Review pile<small>${S.review.length} card${S.review.length===1?'':'s'} to fix</small></button><a class="bigbtn ghost" href="${esc(CFG.guideUrl)}" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Full guide<small>3D models and Pathway Lab</small></a></div></section>`;
   h += parkHTML();
@@ -649,7 +649,7 @@ function show(){
     <div class="gm" hidden><button type="button" class="got">Got it</button><button type="button" class="miss">${P.i==='refresh'?'Again':'Missed it'}</button></div></div><p class="hint">Say the answer in your head, then tap each blank (or press Space) to check.</p>`;
   } else if(st.t==='prac'){
     const q = mcView(st);
-    h = `<span class="tag">Her style of question</span><div class="qcard"><p style="margin:0">${esc(q.q)}</p>` +
+    h = `<span class="tag">${st.cram ? 'Her practice question \u00b7 ' + (LECS.find(x=>x.id===st.lid)||L).code : 'Her style of question'}</span><div class="qcard"><p style="margin:0">${esc(q.q)}</p>` +
       (q.opts ? `<div class="opts">${q.opts.map((o,j)=>`<button type="button" class="opt" data-j="${j}">${'ABCDE'[j]}. ${esc(o)}</button>`).join('')}</div>` : `<p class="hint">Answer it out loud: verdict first, then the reason.</p><button type="button" class="bigbtn ghost" id="showa" style="margin-top:8px">Show answer</button>`) +
       `<div class="qexp" hidden>${esc(q.a)}</div></div>`;
   } else if(st.t==='ican'){
@@ -668,9 +668,9 @@ function show(){
       ${K.rtrap ? `<div class="kc-trap"><span>Don't fall for</span>${esc(K.rtrap)}</div>` : ''}</div>`;
   } else if(st.t==='cramintro'){
     h = `<span class="tag">Cram path</span><h2 class="ltitle">Only what she tests</h2><div class="mission"><h4>Your mission</h4>
-      <label class="chk"><input type="checkbox" disabled><span>Read every \u25ce tested spot, with its big idea and traps</span></label>
-      <label class="chk"><input type="checkbox" disabled><span>Answer her practice questions for each lecture</span></label></div>
-      <p class="hint">${CRAM_N} stops. Your place is saved, so you can stop and come back.</p>`;
+      <label class="chk"><input type="checkbox" disabled><span>Answer each of her ${CRAM_N} practice questions before peeking</span></label>
+      <label class="chk"><input type="checkbox" disabled><span>Read the card after it: the model answer and why the other options are wrong</span></label></div>
+      <p class="hint">Short answers: say the verdict, then the reason, then tap Show answer. Your place is saved, so you can stop and come back.</p>`;
     nb.textContent = "Let's go";
   } else if(st.t==='bossintro'){
     h = `<span class="tag">${L.code} boss level</span><h2 class="ltitle">How Nancy asks about ${esc(L.name)}</h2><div class="mission"><h4>Your mission</h4>
@@ -817,17 +817,30 @@ function finish(){
   P.k = P.steps.length-1; show(); confetti(false);
 }
 function cramSteps(){
+  // One stop per question she gave: her full question first (answer it), then the card that explains it.
+  // A card that covers several of her questions comes after the last of them, so it never gives one away.
   const st = [{t:'cramintro'}];
+  const qnums = t => [...String(t).matchAll(/\bQ(\d+)\b/g)].map(m=>m[1]);
   LECS.forEach(L=>{
-    L.lessons.forEach(Ls=>{ const ex = Ls.cards.filter(c=>c.k==='exam'); if(!ex.length) return;
-      const big = Ls.cards.find(c=>c.k==='big'), tr = Ls.cards.filter(c=>c.k==='trap'||c.k==='easy');
-      [big, ...ex, ...tr].filter(Boolean).forEach(c=>st.push({t:'card', lid:L.id, c:Object.assign({}, c, {kick: L.code + ' \u00b7 ' + Ls.title})})); });
-    L.boss_q.filter(q=>q.hers).forEach(q=>st.push({t:'prac', lid:L.id, q}));
+    const qs = L.boss_q.filter(q=>q.hers);
+    const ex = [];
+    L.lessons.forEach(Ls=>Ls.cards.forEach(c=>{ if(c.k==='exam') ex.push({c, where: L.code + ' · ' + Ls.title}); }));
+    (L.boss_cards||[]).forEach(c=>{ if(c.k==='exam') ex.push({c, where: L.code + ' · boss level'}); });
+    const after = qs.map(()=>[]);
+    ex.forEach(x=>{
+      const t = plain(x.c.h), nums = qnums(t), ecoli = /E\. coli/.test(t);
+      let last = -1;
+      qs.forEach((q,i)=>{ const head = q.q.split(':')[0], isSecond = /second Q16/.test(head), mine = qnums(head);
+        if(isSecond ? ecoli : (!ecoli && mine.some(n=>nums.includes(n)))) last = i; });
+      if(last >= 0) after[last].push(x);
+    });
+    qs.forEach((q,i)=>{ st.push({t:'prac', lid:L.id, q, cram:true});
+      after[i].forEach(x=>st.push({t:'card', lid:L.id, why:true, c:Object.assign({}, x.c, {kick: 'Why, and where it is taught: ' + x.where})})); });
   });
-  st.push({t:'reward', btn:'Back to path', html:`<div class="reward"><p class="big">Cram path cleared</p><p>That's every spot her practice set tests, plus her questions. Anything shaky? Save it, or run the review pile.</p></div>`});
+  st.push({t:'reward', btn:'Back to path', html:`<div class="reward"><p class="big">Cram path cleared</p><p>You've now answered every question on her practice set and seen why each answer is right. Anything shaky? Save it, or run the review pile.</p></div>`});
   return st;
 }
-const CRAM_N = cramSteps().length - 2;
+const CRAM_N = cramSteps().filter(x=>x.t==='prac').length;
 function openCram(){
   P = {L:LECS[0], i:'cram', steps:cramSteps(), k:0, got:0, answered:{}};
   if(S.cramk && S.cramk < P.steps.length-1) P.k = S.cramk;
