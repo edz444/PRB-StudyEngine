@@ -209,3 +209,21 @@ Believe GAPDH. Beta-actin is itself an actin and can rise with myocardin's contr
 ???
 The count uses the fraction of negative droplets: copies per droplet equals minus the natural log of that fraction. All-negative means zero target, a real and valid zero. All-positive means the negative fraction is zero, and ln(0) is undefined, so no concentration can be computed. The reaction is saturated and must be diluted and rerun.
 :::
+
+:::q
+(Predicted calc, L8) Counts are 95, 101, 99, 105 in 75 nL quadrants. What volume seeds 300,000 cells?
+???
+Average = 100. Concentration = 100 x 13,333 = 1.333 x 10^6 cells/mL. Volume = 300,000 / 1,333,333 = 0.225 mL = 225 uL.
+:::
+
+:::q
+(Predicted calc, L8) Your RNA is 320 ng/uL. You need 10 uL of RT reaction at 40 ng/uL. How much RNA and how much water?
+???
+V1 = C2V2 / C1 = (40 x 10) / 320 = 1.25 uL RNA, plus 8.75 uL water to reach 10 uL.
+:::
+
+:::q
+(Predicted calc, L8) GAPDH reads 1000 in DM and 2000 in pMyo; alpha-SMA reads 80 in DM and 320 in pMyo. Did alpha-SMA really go up?
+???
+Normalize: DM 80/1000 = 0.08; pMyo 320/2000 = 0.16. Yes, normalized alpha-SMA doubled (0.16 vs 0.08), even though GAPDH also doubled, because dividing cancels the shared rise.
+:::

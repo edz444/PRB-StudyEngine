@@ -77,3 +77,14 @@ ddPCR splits the reaction into about {{c1::20,000}} droplets, and average copies
 # ---------- L7 W8 Analysis (manual) ----------
 SEM equals {{c1::SD}} divided by the {{c2::square root of n}}, so it is always smaller than SD and shrinks as you add replicates. ||| SD shows the spread of the data; SEM shows how precisely you know the mean. ~~~ SEM = SD over root n.
 
+
+# ---------- L8 Calculations ----------
+Cells per mL from a hemocytometer = average count divided by {{c1::75 nL}}, times {{c2::1,000,000}}. ||| Average the quadrants first, then convert nL to mL. ~~~ Count, divide by 75, blow up by a million.
+To make a dilution, use the rule {{c1::C1V1 = C2V2}}; solve for the one volume or concentration you are missing. ||| The amount of material stays the same, so the products are equal. ~~~ Same stuff, spread thinner.
+500 ng of DNA is {{c1::0.5}} µg, because there are {{c2::1000}} ng in one µg. ||| Divide nanograms by 1000 to get micrograms. ~~~ Drop ng by 1000.
+For a mastermix, multiply each single-reaction volume by the number of wells plus {{c1::one}} extra. ||| The extra reaction covers pipetting loss so the last well is not short. ~~~ Always n plus 1.
+A 0.6 percent agarose gel uses {{c1::0.6}} g of agarose per {{c2::100}} mL of buffer. ||| Percent means grams per 100 mL; scale from there. ~~~ Percent is grams per 100 mL.
+Transfection efficiency = GFP-positive nuclei divided by {{c1::total nuclei}}, times {{c2::100}}. ||| Green cells over all nuclei; the answer must be 0 to 100 percent. ~~~ Green over blue, times a hundred.
+SEM = SD divided by the {{c1::square root of n}}, so SEM is always {{c2::smaller}} than SD. ||| SD is spread; SEM is how precisely you know the mean. ~~~ SEM = SD over root n.
+In ddPCR, average copies per droplet = minus the natural log of the {{c1::negative fraction}}. ||| If no droplets are negative the fraction is zero and the math breaks. ~~~ Count the empties.
+
