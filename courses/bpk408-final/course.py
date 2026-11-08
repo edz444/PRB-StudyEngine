@@ -21,10 +21,9 @@ DEEPTUTOR_SKIP = ['## Practice, worked']
 APP_TITLE = 'BPK 408W Lesson Path'
 APP_EYEBROW = 'BPK 408W · Final Quiz · Weeks 1 to 8'
 EXAM = '2026-11-09T09:00'
-# Ethan can only study Saturday and Sunday; exam is Monday morning.
+# One-day cram: Sunday is the only study day, exam Monday morning.
 PLAN = [
-    {'date': '2026-11-07', 'name': 'Sat', 'lecs': ['l1', 'l2', 'l3', 'l4'], 'desc': 'Weeks 1 to 5: cells through RNA'},
-    {'date': '2026-11-08', 'name': 'Sun', 'lecs': ['l5', 'l6', 'l7', 'review'], 'desc': 'Weeks 6 to 8, then your review pile'},
+    {'date': '2026-11-08', 'name': 'Sun', 'lecs': ['l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'review'], 'desc': 'All eight weeks today, then your review pile'},
 ]
 LECS = [('l1', 'W1', 'Week 1', 'Growing and counting cells'),
         ('l2', 'W2', 'Week 2', 'Fluorescence microscopy'),
