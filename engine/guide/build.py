@@ -20,7 +20,7 @@ raw = "\n\n".join(open(f).read() for f in files)
 
 LABEL = {"hook": "Memory hook", "conn": "Connection", "trap": "Exam trap", "she": "She emphasized", "note": "About this guide", "easy": "Easy marks: don't lose these", "story": "Where we are in the story", "nancy": "Her wording, decoded", "key": "Key takeaways", "exam": "On her practice set"}
 callout_re = re.compile(r"^:::(\w+)\n(.*?)\n:::\s*$", re.S | re.M)
-fig_re = re.compile(r"\{\{fig:([a-z_0-9]+)\}\}")
+fig_re = re.compile(r"\{\{fig:([a-z_0-9]+)(?:\|[^}]*)?\}\}")
 slide_re = re.compile(r"\{\{slide:(L(\d+)-(\d+))\|([^}]*)\}\}")
 m3d_re = re.compile(r"\{\{3d:([a-z]+)\|([^}]*)\}\}")
 lab_re = re.compile(r"\{\{lab:([a-z]+)\|([^}]*)\}\}")
