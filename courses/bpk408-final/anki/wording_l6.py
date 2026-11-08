@@ -9,4 +9,5 @@ B = {
     33: dict(e="CNN is calponin, MHC is smooth muscle myosin heavy chain. Beta-actin may not stay steady in an actin experiment, so check your data.", nw="", hu=""),
     34: dict(e="If a housekeeping gene moves with treatment, normalizing to it adds error instead of removing it.", nw="", hu=""),
     35: dict(e="A longer product binds more dsDNA dye, so its positive droplets glow brighter. This is how you can tell mixed-up primer sets apart.", nw="", hu=""),
+    52: dict(e="Poisson uses the negative fraction to correct for droplets that hold more than one copy.", nw="", hu=""),
 }

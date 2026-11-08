@@ -9,4 +9,7 @@ B = {
     19: dict(e="Random primers help capture long mRNAs fully but also copy tRNA and rRNA.", nw="", hu=""),
     20: dict(e="Otherwise a condition could look like it has more of every transcript just because more RNA went in.", nw="", hu=""),
     21: dict(e="So a green (GFP) cell is also a myocardin-expressing cell. IRES is internal ribosome entry site.", nw="", hu=""),
+    47: dict(e="Naming the manual's reagents; DEPC water stops the eluted RNA from being chewed up.", nw="", hu=""),
+    48: dict(e="A loose gel for big rRNA, run gently so the bands stay sharp.", nw="", hu=""),
+    49: dict(e="Three stages; the 95 C step stops the reaction.", nw="", hu=""),
 }

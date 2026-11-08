@@ -55,3 +55,25 @@ A ddPCR well with no primers (the no-primer control) should show {{c1::only nega
 When improving the draft ddPCR bar graph, drop the bars for the housekeeping gene normalized to {{c1::itself}} (always 1.0), use {{c2::real gene names}}, and group bars so conditions sit side by side ||| Also add a legend, error bars for replicates, and consider showing pMyo relative to the pEGFP control. ~~~ A gene over itself is always 1: cut the bar that says nothing.
 "What do the data show" asks what you can {{c1::see in the plot}}, while "what do the data mean" asks what it says about the {{c2::cells}} ||| Show: two bands, rain, threshold position. Mean: which gene was expressed, whether the control worked. These are two separate answers. ~~~ Show is the eyes; mean is the brain.
 
+
+# ========== added from the lab-manual breakdown ==========
+# ---------- L3 W3-4 Myocardin (manual) ----------
+Transfection uses {{c1::Lipofectamine 3000}} as the cationic lipid, {{c2::P3000}} as a helper reagent on the DNA, and {{c3::Opti-MEM}} to dilute them so the complexes can form. ||| These are the three reagent names the manual uses, and practice question 2b wants them labelled. ~~~ Lipo wraps, P3000 helps, Opti-MEM dilutes.
+GM has {{c1::10}} percent fetal calf serum and DM has {{c2::1}} percent, and the two media also differ in {{c3::glucose}}, not only serum. ||| So a GM versus DM difference could come from serum, glucose or the transfection, which is why pEGFP-in-GM is the control. ~~~ 10 grows, 1 differentiates, glucose differs too.
+On the gene diagrams, draw a CArG box only on the {{c1::SRF-regulated}} gene, never on the {{c2::pMYOCD plasmid}} gene. ||| The plasmid gene runs off its own promoter; only SRF-target genes carry a CArG box. ~~~ CArG lives where SRF works.
+
+# ---------- L4 W5 RNA (manual) ----------
+RNA is lysed in {{c1::TRK}} buffer and eluted in {{c2::DEPC}}-treated water, which is water with its RNases destroyed. ||| Naming the manual's reagents; DEPC water stops the eluted RNA from being chewed up. ~~~ TRK breaks in, DEPC keeps it safe.
+The RNA gel is {{c1::0.6}} percent agarose run at {{c2::low}} voltage, and it is {{c3::non-denaturing}}, so folded shape affects how far RNA runs. ||| A loose gel for big rRNA, run gently so the bands stay sharp. ~~~ Loose gel, low volts, folded RNA.
+Reverse transcription runs {{c1::25}} C to prime, {{c2::46}} C to build cDNA, then {{c3::95}} C to inactivate the enzyme. ||| Three stages; the 95 C step stops the reaction. ~~~ Prime at 25, write at 46, stop at 95.
+
+# ---------- L5 W6 Staining (manual) ----------
+Staining fixes with {{c1::paraformaldehyde}}, permeabilizes with {{c2::Triton X-100}}, and blocks with {{c3::BSA}} to stop nonspecific staining. ||| Fix, open, then block before the dyes go on. ~~~ PFA freezes, Triton opens, BSA blocks.
+The red actin stain is {{c1::phalloidin}} linked to {{c2::Alexa 633}}, and the on-screen red is often {{c3::pseudocolour}}. ||| Phalloidin binds F-actin; the colour is assigned by the software. ~~~ Phalloidin finds actin, Alexa makes it red.
+
+# ---------- L6 W7 ddPCR (manual) ----------
+ddPCR splits the reaction into about {{c1::20,000}} droplets, and average copies per droplet is minus the natural log of {{c2::N-negative over N-total}}. ||| Poisson uses the negative fraction to correct for droplets that hold more than one copy. ~~~ 20,000 cups, count the empties.
+
+# ---------- L7 W8 Analysis (manual) ----------
+SEM equals {{c1::SD}} divided by the {{c2::square root of n}}, so it is always smaller than SD and shrinks as you add replicates. ||| SD shows the spread of the data; SEM shows how precisely you know the mean. ~~~ SEM = SD over root n.
+

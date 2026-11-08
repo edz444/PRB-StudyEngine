@@ -7,4 +7,5 @@ B = {
     41: dict(e="It checks for contamination or primer-free signal and sets the baseline fluorescence of a negative droplet.", nw="", hu=""),
     42: dict(e="Also add a legend, error bars for replicates, and consider showing pMyo relative to the pEGFP control.", nw="", hu=""),
     43: dict(e="Show: two bands, rain, threshold position. Mean: which gene was expressed, whether the control worked. These are two separate answers.", nw="", hu=""),
+    53: dict(e="SD shows the spread of the data; SEM shows how precisely you know the mean.", nw="", hu=""),
 }
