@@ -16,13 +16,13 @@ def words(t): return len(t.split())
 def txt(el): return re.sub(r'\s+', ' ', el.get_text(' ')).strip()
 
 def split_para(p):
-    """Split a long paragraph into sentence groups of about 55 words."""
+    """Split a long paragraph into short sentence groups, so each screen is one small idea."""
     t = p.decode_contents()
-    if words(p.get_text()) <= 75: return [f'<p>{t}</p>']
+    if words(p.get_text()) <= 42: return [f'<p>{t}</p>']
     parts = re.split(r'(?<=[.!?])\s+(?=[A-Z(])', t)
     out, cur = [], ''
     for s in parts:
-        if cur and words(BeautifulSoup(cur + ' ' + s, 'html.parser').get_text()) > 55:
+        if cur and words(BeautifulSoup(cur + ' ' + s, 'html.parser').get_text()) > 32:
             out.append(f'<p>{cur}</p>'); cur = s
         else:
             cur = (cur + ' ' + s).strip()
@@ -79,7 +79,7 @@ def build_cards(nodes):
             for piece in split_para(el):
                 pw = words(BeautifulSoup(piece, 'html.parser').get_text())
                 cur = words(BeautifulSoup(''.join(buf), 'html.parser').get_text()) if buf else 0
-                if buf and cur + pw > 70: flush()
+                if buf and cur + pw > 44: flush()
                 buf.append(piece)
             continue
         flush()
